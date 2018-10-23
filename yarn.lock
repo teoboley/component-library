@@ -877,10 +877,10 @@
   resolved "https://registry.yarnpkg.com/@emotion/weak-memoize/-/weak-memoize-0.1.2.tgz#4e4afffc61fb82fd0e55a4ed3c3041fd0a765a5a"
   integrity sha512-KZE0Nwk3N/2rszlX1VGhJKzM2OduGVMckIu59f5EEY33dH2ngbCYQyByQk1c2qUfBcFUWycyle/corEyNfodxg==
 
-"@material-ui/core@^3.3.0":
-  version "3.3.0"
-  resolved "https://registry.yarnpkg.com/@material-ui/core/-/core-3.3.0.tgz#f30838db346faa54f3a23dd795ebaf043144e331"
-  integrity sha512-h340FXiJyAEQ1+xnOBaqLib9f6M82DEn0CicMVRekwTtPhFR9dDYdJT30WDPczS2piNiQ9kuFfFcAE9UTbwcXQ==
+"@material-ui/core@3.2.2":
+  version "3.2.2"
+  resolved "https://registry.yarnpkg.com/@material-ui/core/-/core-3.2.2.tgz#5c622eeda8851a37a46d27583f0d6624e8ec4732"
+  integrity sha512-wDTJyR76+OBdlltiPs3lc1gD6zR+dSA6nITtgkBeLf1NvWfNotMWdvldIDnF3bu24ySAX9imfzDfkBu4Edtqww==
   dependencies:
     "@babel/runtime" "7.1.2"
     "@types/jss" "^9.5.6"
