@@ -3,7 +3,6 @@ import { Button as MuiButton, WithStyles } from "@material-ui/core";
 import styles from "./styles";
 import { withPropsStyles } from "../../../lib/material-ui";
 import { CSSProperties, DragEventHandler, MouseEventHandler } from "react";
-import { Ref } from "react";
 
 export enum EButtonType {
   TEXT = 'text',
