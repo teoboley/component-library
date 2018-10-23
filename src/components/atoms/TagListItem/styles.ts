@@ -14,6 +14,9 @@ export default (theme: Theme) => {
       backgroundColor: theme.palette.secondary.dark
     },
     renamingChip: {
+      position: "relative",
+      top: -6,
+      display: 'inline-block',
       height,
       borderRadius: 50,
       paddingLeft: 12,

@@ -8,6 +8,7 @@ import Tooltip from "../src/components/atoms/Tooltip";
 import Button, { EButtonType } from "../src/components/atoms/Button";
 import { red, blue, green, grey } from "@material-ui/core/colors";
 import ActionBar, { ActionBarTooltip, EActionBarType } from "../src/components/molecules/ActionBar";
+import TagListItem from "../src/components/atoms/TagListItem";
 
 // import { linkTo } from '@storybook/addon-links';
 
@@ -62,6 +63,23 @@ storiesOf('Button', module)
       <Button type={EButtonType.CONTAINED} color={red["400"]} withGlow style={{ marginRight: 20 }}>With Arrow</Button>
       <Button type={EButtonType.CONTAINED} color={blue["400"]} withGlow style={{ marginRight: 20 }}>With Icon</Button>
       <Button type={EButtonType.CONTAINED} color={green["500"]} withGlow style={{ marginRight: 20 }}>With Multiple Icons</Button>
+    </div>
+  })
+;
+
+storiesOf('Tag', module)
+  .add("No Renaming", () => {
+    return <div style={{ padding: 100, backgroundColor: "lightgrey" }}>
+      <TagListItem label={"With Arrow"} renaming={null}/>
+      <TagListItem label={"With Icon"} renaming={null}/>
+      <TagListItem label={"With Multiple Icons"} renaming={null}/>
+    </div>
+  })
+  .add("Renaming", () => {
+    return <div style={{ padding: 100, backgroundColor: "lightgrey" }}>
+      <TagListItem label={"With Arrow"} renaming={'With Arrow'}/>
+      <TagListItem label={"With Icon"} renaming={null}/>
+      <TagListItem label={"With Multiple Icons"} renaming={null}/>
     </div>
   })
 ;
