@@ -2,10 +2,14 @@ import * as React from "react";
 import { withStyles, WithStyles } from "@material-ui/core/styles";
 import { TextField } from "@material-ui/core";
 import styles from "./styles";
+import {CSSProperties} from "react";
 
 interface ITextInputBarViewModel extends WithStyles<typeof styles> {
   value: string;
   placeholder?: string;
+
+  style?: CSSProperties;
+  className?: string;
 }
 
 interface ITextInputBarActions {
@@ -31,6 +35,8 @@ const UnstyledTextInputBar: React.SFC<TextInputBarProps> = props => {
       placeholder={props.placeholder}
       value={props.value}
       onChange={e => props.onChange && props.onChange(e.target.value)}
+      className={props.className}
+      style={props.style}
     />
   );
 };

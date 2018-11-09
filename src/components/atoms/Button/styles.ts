@@ -22,7 +22,6 @@ export default (props: ButtonProps, theme: Theme) => {
         },
       },
     },
-    disabled: {},
     contained: {
       background: color,
       color: secondaryColor,

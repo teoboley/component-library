@@ -10,7 +10,7 @@ export default (theme: Theme) =>
       "&:focus": {
         boxShadow: "0 0 0 0.2rem rgba(255,255,255,.1)"
       },
-      backgroundColor: color(theme.palette.background.default).darken(0.025).hex(),
+      backgroundColor: color(theme.palette.background.default).darken(0.04).hex(),
       borderRadius: 4,
       fontSize: 16,
       padding: "10px 12px",

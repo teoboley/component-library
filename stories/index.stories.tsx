@@ -9,6 +9,7 @@ import Button, { EButtonType } from "../src/components/atoms/Button";
 import { red, blue, green, grey } from "@material-ui/core/colors";
 import ActionBar, { ActionBarTooltip, EActionBarType } from "../src/components/molecules/ActionBar";
 import TagListItem from "../src/components/atoms/TagListItem";
+import FileSelect from "../src/components/molecules/FileSelect";
 
 // import { linkTo } from '@storybook/addon-links';
 
@@ -50,12 +51,29 @@ storiesOf('Action Bar', module)
   })
 ;
 
+storiesOf('FileSelect', module)
+  .add("Text", () => {
+    return <div style={{ padding: 100, backgroundColor: "lightgrey" }}>
+      <div style={{ padding: 10 }}>
+        <FileSelect value={null} onSelect={action('onSelect')} />
+      </div>
+      <div style={{ padding: 10 }}>
+        <FileSelect value={null} placeholder={'File://'} onSelect={action('onSelect')}/>
+      </div>
+      <div style={{ padding: 10 }}>
+        <FileSelect value={null} placeholder={'Folder://'} buttonLabel={'Select Folder'} onSelect={action('onSelect')}/>
+      </div>
+    </div>
+  })
+;
+
 storiesOf('Button', module)
   .add("Text", () => {
     return <div style={{ padding: 100, backgroundColor: "lightgrey" }}>
         <Button color={red["400"]} withGlow>With Arrow</Button>
         <Button color={blue["400"]} withGlow>With Icon</Button>
         <Button color={green["500"]} withGlow>With Multiple Icons</Button>
+      <Button color={green["500"]} disabled withGlow>With Multiple Icons</Button>
     </div>
   })
   .add("Contained", () => {
@@ -63,6 +81,7 @@ storiesOf('Button', module)
       <Button type={EButtonType.CONTAINED} color={red["400"]} withGlow style={{ marginRight: 20 }}>With Arrow</Button>
       <Button type={EButtonType.CONTAINED} color={blue["400"]} withGlow style={{ marginRight: 20 }}>With Icon</Button>
       <Button type={EButtonType.CONTAINED} color={green["500"]} withGlow style={{ marginRight: 20 }}>With Multiple Icons</Button>
+      <Button type={EButtonType.CONTAINED} color={green["500"]} disabled withGlow style={{ marginRight: 20 }}>With Multiple Icons</Button>
     </div>
   })
 ;

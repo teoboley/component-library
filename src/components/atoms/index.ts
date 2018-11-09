@@ -7,3 +7,4 @@ export {default as SnackbarController} from "./SnackbarController";
 export {default as TagListItem} from "./TagListItem";
 export {default as TextInputBar} from "./TextInputBar";
 export {default as Tooltip} from "./Tooltip";
+export * from "./Typography";
