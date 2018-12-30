@@ -1,14 +1,16 @@
 import * as React from "react";
-import Typography from "@material-ui/core/Typography/Typography";
 import {CSSProperties} from "react";
+import {css, cx} from "emotion";
+import {ThemeConsumer} from "../../../../lib/theme";
 
 export enum EHeadingType {
-  H1 = 'h2',
-  H2 = 'h3',
-  H3 = 'h4',
-  H4 = 'h5',
-  H5 = 'h6',
-  H6 = 'subtitle1'
+  HERO,
+  H1,
+  H2,
+  H3,
+  H4,
+  H5,
+  H6
 }
 
 interface IHeadingViewModel {
@@ -21,11 +23,37 @@ interface IHeadingViewModel {
 type HeadingProps = IHeadingViewModel;
 
 const Heading: React.SFC<HeadingProps> = props => {
-  return (
-    <Typography variant={props.type} gutterBottom style={props.style} className={props.className}>
-      { props.children }
-    </Typography>
-  )
+  return <ThemeConsumer>{ theme => {
+
+    const baseCss = css({
+      marginTop: 0,
+      marginBottom: '0.35em'
+    });
+
+    switch (props.type) {
+      case EHeadingType.HERO:
+        return <h1 className={cx(css({...theme.typography.hero}), baseCss, props.className)}
+                   style={props.style}>{props.children}</h1>;
+      case EHeadingType.H1:
+        return <h1 className={cx(css({...theme.typography.h1}), baseCss, props.className)}
+                   style={props.style}>{props.children}</h1>;
+      case EHeadingType.H2:
+        return <h2 className={cx(css({...theme.typography.h2}), baseCss, props.className)}
+                   style={props.style}>{props.children}</h2>;
+      case EHeadingType.H3:
+        return <h3 className={cx(css({...theme.typography.h3}), baseCss, props.className)}
+                   style={props.style}>{props.children}</h3>;
+      case EHeadingType.H4:
+        return <h4 className={cx(css({...theme.typography.h4}), baseCss, props.className)}
+                   style={props.style}>{props.children}</h4>;
+      case EHeadingType.H5:
+        return <h5 className={cx(css({...theme.typography.h5}), baseCss, props.className)}
+                   style={props.style}>{props.children}</h5>;
+      case EHeadingType.H6:
+        return <h6 className={cx(css({...theme.typography.h6}), baseCss, props.className)}
+                   style={props.style}>{props.children}</h6>;
+    }
+  }}</ThemeConsumer>
 };
 
 export default Heading;

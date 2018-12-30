@@ -1,28 +1,21 @@
 import * as React from "react";
-import { Button as MuiButton, WithStyles } from "@material-ui/core";
-import styles from "./styles";
-import { withPropsStyles } from "../../../lib/material-ui";
-import { CSSProperties, MouseEventHandler } from "react";
+import {CSSProperties, MouseEventHandler} from "react";
+import {ThemeConsumer} from "../../../lib/theme";
+import {css, cx} from "emotion";
+import * as Color from "color";
+import Text, {ETextType} from "../Typography/Text";
 
 export enum EButtonType {
-  TEXT = 'text',
-  CONTAINED = 'contained',
-  CIRCLE = 'fab'
-}
-
-export enum EButtonSize {
-  SMALL = 'small',
-  MEDIUM = 'medium',
-  LARGE = 'large'
+  Text = 'text',
+  Contained = 'contained',
+  Outline = 'outline'
 }
 
 interface IButtonViewModel {
-  children: string | JSX.Element;
+  children: React.ReactNode;
   color?: string;
   secondaryColor?: string;
-  withGlow?: boolean;
   type?: EButtonType;
-  size?: EButtonSize;
 
   disabled?: boolean;
 
@@ -38,18 +31,89 @@ interface IButtonActions {
 
 export type ButtonProps = IButtonViewModel & IButtonActions;
 
-const Button: React.SFC<ButtonProps & WithStyles<ReturnType<typeof styles>>> = props => {
+const Button: React.SFC<ButtonProps> = props => {
   const { onClick, children, style, className, disabled, ...otherProps } = props;
-  const type = props.type || EButtonType.TEXT;
-  const size = props.size || "small";
+  const type = props.type || EButtonType.Text;
 
   return (
-    <span {...otherProps}>
-      <MuiButton variant={type} mini={type === EButtonType.CIRCLE && size === EButtonSize.SMALL} size={type !== EButtonType.CIRCLE ? size : undefined} onClick={onClick} disabled={disabled} classes={{ root: props.classes[type] }} className={className} style={style}>
-        {children}
-      </MuiButton>
-    </span>
+    <ThemeConsumer>
+      { theme => {
+        const baseStyles = css({
+          ...theme.typography.button,
+          backgroundColor: 'transparent',
+          borderRadius: 5,
+          border: 'none',
+          padding: '10px 14px',
+          textAlign: 'center',
+          display: 'inline-block',
+          cursor: 'pointer',
+          // transition: 'background-color 200ms, color 200ms, border 200ms, box-shadow 200ms',
+          '&:focus': {
+            outline: 'none'
+          }
+        });
+
+        const color = props.disabled ? 'darkgrey' : props.color && (props.color === 'primary' ? theme.palette.primaryColor : props.color === 'secondary' ? theme.palette.secondaryColor : props.color);
+        const secondaryColor = props.disabled ? 'grey' : props.secondaryColor || Color(color).darken(0.1).isDark() ? 'white' : 'black';
+
+        let styles = null;
+
+        switch (type) {
+          case EButtonType.Text:
+            styles = css({
+              border: `1px solid transparent`,
+              color: color,
+              '&:hover': !props.disabled && {
+                backgroundColor: Color(color).alpha(0.1).hsl().string(),
+              },
+              '&:active': !props.disabled && {
+                backgroundColor: Color(color).alpha(0.15).hsl().string(),
+              },
+              cursor: props.disabled ? 'not-allowed' : undefined
+            });
+            break;
+          case EButtonType.Outline:
+            styles = css({
+              border: `1px solid ${color}`,
+              color: color,
+              '&:hover': !props.disabled && {
+                color: secondaryColor,
+                backgroundColor: color,
+                borderColor: color
+              },
+              '&:active': !props.disabled && {
+                backgroundColor: Color(color).mix(Color("black"), 0.075).hsl().string(),
+                borderColor: Color(color).mix(Color("black"), 0.075).hsl().string()
+              },
+              cursor: props.disabled ? 'not-allowed' : undefined
+            });
+            break;
+          case EButtonType.Contained:
+            styles = css({
+              backgroundColor: color,
+              border: `1px solid ${color}`,
+              color: secondaryColor,
+              '&:hover': !props.disabled && {
+                backgroundColor: Color(color).mix(Color("white"), 0.25).hsl().string(),
+                borderColor: Color(color).mix(Color("white"), 0.25).hsl().string()
+              },
+              '&:active': !props.disabled && {
+                backgroundColor: Color(color).mix(Color("black"), 0.075).hsl().string(),
+                borderColor: Color(color).mix(Color("black"), 0.075).hsl().string()
+              },
+              cursor: props.disabled ? 'not-allowed' : undefined
+            });
+            break;
+        }
+
+        return (
+          <button onClick={onClick} style={style} className={cx(baseStyles, styles, className)} {...otherProps}>
+            { children }
+          </button>
+        );
+      }}
+    </ThemeConsumer>
   );
 };
 
-export default withPropsStyles(styles)(Button);
+export default Button;

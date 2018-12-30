@@ -1,12 +1,11 @@
 import * as React from "react";
-import {Chip, ClickAwayListener, Menu, MenuItem, Paper, TextField, withStyles, WithStyles} from "@material-ui/core";
-import classNames from "classnames";
+import {Chip, ClickAwayListener, TextField, withStyles, WithStyles} from "@material-ui/core";
+import {cx} from "emotion";
 import {withState} from "recompose";
 
 import styles from "./styles";
-import ContextMenu from "../ContextMenu";
 
-export interface ITagListItemViewModel {
+export interface ITagViewModel {
   icon?: JSX.Element;
   indentAmount?: number;
   label: string;
@@ -17,51 +16,30 @@ export interface ITagListItemViewModel {
   style?: React.CSSProperties;
 }
 
-export interface ITagListItemActions {
+export interface ITagActions {
   onSelect?: () => void;
   onDelete?: () => void;
   onSetRenaming?: (newTag: string | null) => void;
   onFinishRenaming?: (newTag: string) => void;
 }
 
-type TagListItemProps = ITagListItemViewModel &
-  ITagListItemActions &
+type TagProps = ITagViewModel &
+  ITagActions &
   WithStyles<typeof styles> & {
   setHovered: (hovered: boolean) => boolean;
 };
 
-class TagListItem extends React.Component<TagListItemProps> {
+class Tag extends React.Component<TagProps> {
   render() {
     return (
-      <span
-        className={this.props.className}
-        style={this.props.style}
-        onMouseEnter={() => this.props.setHovered(true)}
-        onMouseLeave={() => this.props.setHovered(false)}
-        onClick={!this.props.renaming ? this.props.onSelect : undefined}
-      >
-        <ContextMenu menuComponent={({isOpen, anchorElement, close}) =>
-          <Menu
-            id="simple-menu"
-            anchorEl={anchorElement}
-            open={isOpen}
-            onClose={close}
-            anchorOrigin={{vertical: 'center', horizontal: 'center'}}
+          <span
+            className={this.props.className}
+            style={this.props.style}
+            onMouseEnter={() => this.props.setHovered(true)}
+            onMouseLeave={() => this.props.setHovered(false)}
+            onClick={!this.props.renaming ? this.props.onSelect : undefined}
           >
-            <MenuItem onClick={e => {
-              e.preventDefault();
-              e.stopPropagation();
-              this.props.onSetRenaming && this.props.onSetRenaming(this.props.label);
-              close();
-            }}>Rename</MenuItem>
-            <MenuItem onClick={() => {
-              this.props.onDelete && this.props.onDelete();
-              close();
-            }}>Delete</MenuItem>
-            {/* <MenuItem onClick={close}>Tags...</MenuItem> */}
-          </Menu>
-        }>{({open}) =>
-          this.props.renaming !== null ?
+          {this.props.renaming !== null ?
             <ClickAwayListener onClickAway={() => this.props.onSetRenaming && this.props.onSetRenaming(null)}>
               <div className={this.props.classes.renamingChip}>
                 <TextField color="primary" className={this.props.classes.renamingChipTextField}
@@ -83,15 +61,10 @@ class TagListItem extends React.Component<TagListItemProps> {
               avatar={this.props.icon}
               label={`#${this.props.label}`}
               onDelete={this.props.hovered ? this.props.onDelete : undefined}
-              className={classNames(this.props.classes.chip, {
+              className={cx(this.props.classes.chip, {
                 [this.props.classes.selectedChip]: this.props.selected === true
               })}
-              onContextMenu={event => {
-                event.preventDefault();
-                open(event.currentTarget);
-              }}
-            />
-        }</ContextMenu>
+            />}
       </span>
     );
   }
@@ -99,4 +72,4 @@ class TagListItem extends React.Component<TagListItemProps> {
 
 const withHover = withState("hovered", "setHovered", false);
 
-export default withStyles(styles)(withHover(TagListItem));
+export default withStyles(styles)(withHover(Tag));

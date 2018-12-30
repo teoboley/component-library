@@ -4,8 +4,7 @@ import {
   StyleRules,
   withStyles,
   Theme,
-  WithStyles,
-  WithTheme, StyleRulesCallback
+  WithStyles
 } from '@material-ui/core/styles';
 import {PropInjector} from "@material-ui/core";
 import { WithStylesOptions } from "@material-ui/core/styles/withStyles";

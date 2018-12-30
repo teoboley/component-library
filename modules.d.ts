@@ -40,7 +40,6 @@ declare module 'slate-auto-replace' {
   export default AutoReplace;
 }
 
-declare module 'color';
 declare module 'type-of' {
   const typeOf = (something: any) => string;
   export default typeOf;
