@@ -4,6 +4,7 @@ import { CSSProperties } from 'react';
 import Popover, { TooltipPlacement } from '../Popover';
 import { css, cx } from 'emotion';
 import { getBWContrastingColor, ThemeConsumer } from '../../../lib/theme';
+import { ToggleAnimation } from '../../../lib/animation';
 
 type ChildFunction = ((
   params: { open: (anchorEl?: any) => void; close: () => void }
@@ -77,6 +78,7 @@ class Tooltip extends React.Component<TooltipProps, TooltipState> {
                 anchorEl={this.state.anchorEl}
                 arrowColor={this.props.withArrow ? backgroundColor : undefined}
                 placement={this.props.placement || { vertical: 'top' }}
+                animationComponent={DefaultPopoverAnimation}
               >
                 <div style={this.props.style} className={cx(tooltipStyle, this.props.className)}>
                   {this.props.content}
@@ -111,5 +113,17 @@ class Tooltip extends React.Component<TooltipProps, TooltipState> {
     );
   }
 }
+
+const DefaultPopoverAnimation: ToggleAnimation = ({ toggle, children }) => (
+  <div
+    className={css({
+      opacity: toggle ? 1 : 0,
+      transform: toggle ? 'scale(1)' : 'scale(0)',
+      transition: 'opacity 300ms, transform 300ms'
+    })}
+  >
+    {children}
+  </div>
+);
 
 export default Tooltip;

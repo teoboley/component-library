@@ -4,6 +4,7 @@ import * as PopperJS from 'popper.js';
 import ClickAwayListener from '@material-ui/core/ClickAwayListener';
 import { css, cx } from 'emotion';
 import { Transition, animated, config as springConfig } from 'react-spring';
+import { DisplayToggleAnimation, ToggleAnimation } from '../../../lib/animation';
 
 export interface TooltipPlacement {
   horizontal?: 'left' | 'center' | 'right';
@@ -24,6 +25,8 @@ interface IPopoverViewModel {
   anchorPosition?: AnchorPosition;
 
   arrowColor?: string;
+
+  animationComponent?: ToggleAnimation;
 
   style?: React.CSSProperties;
   className?: string;
@@ -82,14 +85,45 @@ const Popover: React.SFC<PopoverProps> = props => {
     }
   `;
 
+  const Animation = props.animationComponent || DisplayToggleAnimation;
+
+  return (
+    <div className={css({ display: 'inline-block' })}>
+      <Popper referenceElement={referenceElement} placement={placementConverter(props.placement)}>
+        {({ ref, style, placement, arrowProps }) => (
+          <div
+            ref={ref}
+            style={style}
+            className={cx(contentStyle, css({ pointerEvents: isOpen ? 'auto' : 'none' }))}
+            data-placement={placement}
+          >
+            <Animation toggle={isOpen}>
+              <ClickAwayListener onClickAway={() => isOpen && props.onClose && props.onClose()}>
+                {props.children}
+                {props.arrowColor && (
+                  <div
+                    data-placement={placement}
+                    ref={arrowProps.ref}
+                    style={arrowProps.style}
+                    className={getArrowStyle(props.arrowColor)}
+                  />
+                )}
+              </ClickAwayListener>
+            </Animation>
+          </div>
+        )}
+      </Popper>
+    </div>
+  );
+};
+
+const getArrowStyle = (arrowColor: string) => {
   const arrowWidth = '7.5px';
   const arrowHeight = '7.5px';
 
   const arrowOffset = '5.5px';
 
-  const arrowColor = props.arrowColor;
-
-  const arrowStyle = css`
+  return css`
     position: absolute;
 
     &[data-placement*='bottom'] {
@@ -136,41 +170,6 @@ const Popover: React.SFC<PopoverProps> = props => {
       border-style: solid;
     }
   `;
-
-  return (
-    <div className={css({ display: 'inline-block' })}>
-      <Popper referenceElement={referenceElement} placement={placementConverter(props.placement)}>
-        {({ ref, style, placement, arrowProps }) => (
-          <div
-            ref={ref}
-            style={style}
-            className={cx(contentStyle, css({ pointerEvents: isOpen ? 'auto' : 'none' }))}
-            data-placement={placement}
-          >
-            <div
-              className={css({
-                opacity: isOpen ? 1 : 0,
-                transform: isOpen ? 'scale(1)' : 'scale(0)',
-                transition: 'opacity 300ms, transform 300ms'
-              })}
-            >
-              <ClickAwayListener onClickAway={() => isOpen && props.onClose && props.onClose()}>
-                {props.children}
-                {props.arrowColor && (
-                  <div
-                    data-placement={placement}
-                    ref={arrowProps.ref}
-                    style={arrowProps.style}
-                    className={arrowStyle}
-                  />
-                )}
-              </ClickAwayListener>
-            </div>
-          </div>
-        )}
-      </Popper>
-    </div>
-  );
 };
 
 const placementConverter = (placement?: TooltipPlacement): PopperJS.Placement => {

@@ -94,7 +94,7 @@ const ContextMenu: React.SFC<ContextMenuProps> = props => {
           anchorEl={activeState && activeState.anchorEl}
           onClose={close}
           anchorReference={'anchorEl'}
-          placement={{ vertical: 'center', horizontal: 'center' }}
+          placement={{ vertical: 'center', horizontal: 'left' }}
           {...activeState &&
             activeState.mousePosition && {
               anchorPosition: {

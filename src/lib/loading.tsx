@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { css, keyframes } from 'react-emotion';
+import { css, cx, keyframes } from 'react-emotion';
 
 const baseColor = '#ddd';
 const shineColor = '#e8e8e8';
@@ -21,6 +21,9 @@ export const loadingGradient: React.CSSProperties = {
   animation: `${shineAnimation} ${animationDuration} infinite linear`
 };
 
-export const LoadingBlock: React.SFC<{}> = props => {
-  return <div className={css({ ...loadingGradient })} />;
+export const LoadingBlock: React.SFC<{
+  style?: React.CSSProperties;
+  className?: string;
+}> = props => {
+  return <div className={cx(css({ ...loadingGradient }), props.className)} style={props.style} />;
 };

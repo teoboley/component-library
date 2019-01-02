@@ -1,17 +1,14 @@
 import * as React from 'react';
-import { Chip, ClickAwayListener, TextField, withStyles, WithStyles } from '@material-ui/core';
-import { cx } from 'emotion';
-import { withState } from 'recompose';
-
-import styles from './styles';
+import { ClickAwayListener } from '@material-ui/core';
+import { css, cx } from 'emotion';
+import { ThemeConsumer } from '../../../lib/theme';
 
 export interface ITagViewModel {
   icon?: JSX.Element;
-  indentAmount?: number;
   label: string;
   selected?: boolean;
-  hovered: boolean;
   renaming: string | null;
+
   className?: string;
   style?: React.CSSProperties;
 }
@@ -23,28 +20,36 @@ export interface ITagActions {
   onFinishRenaming?: (newTag: string) => void;
 }
 
-type TagProps = ITagViewModel &
-  ITagActions &
-  WithStyles<typeof styles> & {
-    setHovered: (hovered: boolean) => boolean;
-  };
+type TagProps = ITagViewModel & ITagActions;
 
-class Tag extends React.Component<TagProps> {
-  render() {
-    return (
-      <span
-        className={this.props.className}
-        style={this.props.style}
-        onMouseEnter={() => this.props.setHovered(true)}
-        onMouseLeave={() => this.props.setHovered(false)}
-        onClick={!this.props.renaming ? this.props.onSelect : undefined}
-      >
-        {this.props.renaming !== null ? (
+function Tag(props: TagProps) {
+  return (
+    <ThemeConsumer>
+      {theme => {
+        return (
           <ClickAwayListener
-            onClickAway={() => this.props.onSetRenaming && this.props.onSetRenaming(null)}
+            onClickAway={() => props.renaming && props.onSetRenaming && props.onSetRenaming(null)}
           >
-            <div className={this.props.classes.renamingChip}>
-              <TextField
+            <div
+              style={props.style}
+              onClick={!props.renaming ? props.onSelect : undefined}
+              className={cx(
+                css({
+                  ...theme.typography.body,
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  height: 32,
+                  borderRadius: 50,
+                  paddingLeft: 12,
+                  paddingRight: 12,
+                  margin: 2,
+                  backgroundColor: 'white'
+                }),
+                props.className
+              )}
+            >
+              {props.label}
+              {/* <TextField
                 color="primary"
                 className={this.props.classes.renamingChipTextField}
                 InputProps={{ classes: { root: this.props.classes.renamingChipInput } }}
@@ -61,24 +66,13 @@ class Tag extends React.Component<TagProps> {
                     this.props.onSetRenaming && this.props.onSetRenaming(null);
                   }
                 }}
-              />
+              />*/}
             </div>
           </ClickAwayListener>
-        ) : (
-          <Chip
-            avatar={this.props.icon}
-            label={`#${this.props.label}`}
-            onDelete={this.props.hovered ? this.props.onDelete : undefined}
-            className={cx(this.props.classes.chip, {
-              [this.props.classes.selectedChip]: this.props.selected === true
-            })}
-          />
-        )}
-      </span>
-    );
-  }
+        );
+      }}
+    </ThemeConsumer>
+  );
 }
 
-const withHover = withState('hovered', 'setHovered', false);
-
-export default withStyles(styles)(withHover(Tag));
+export default Tag;

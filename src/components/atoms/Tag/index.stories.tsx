@@ -4,7 +4,7 @@ import { storiesOf } from '@storybook/react';
 import Tag from '.';
 
 storiesOf('Tag', module)
-  .add('No Renaming', () => {
+  .add('Not Renaming', () => {
     return (
       <div style={{ padding: 50 }}>
         <Tag label={'With Arrow'} renaming={null} />
