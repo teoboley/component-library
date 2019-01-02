@@ -1,4 +1,4 @@
-import { createStyles, Theme } from "@material-ui/core";
+import { createStyles, Theme } from '@material-ui/core';
 
 export default (theme: Theme) => {
   const height = 32;
@@ -7,14 +7,14 @@ export default (theme: Theme) => {
 
   return createStyles({
     chip: {
-      cursor: "pointer",
+      cursor: 'pointer',
       margin: theme.spacing.unit / 2
     },
     selectedChip: {
       backgroundColor: theme.palette.secondary.dark
     },
     renamingChip: {
-      position: "relative",
+      position: 'relative',
       top: -6,
       display: 'inline-block',
       height,
@@ -23,13 +23,11 @@ export default (theme: Theme) => {
       paddingRight: 12,
       backgroundColor
     },
-    renamingChipTextField: {
-     
-    },
+    renamingChipTextField: {},
     renamingChipInput: {
       minWidth: 30,
       fontFamily: theme.typography.fontFamily,
-      fontSize: theme.typography.pxToRem(13),
+      fontSize: theme.typography.pxToRem(13)
     }
   });
-}
+};

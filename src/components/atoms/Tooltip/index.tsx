@@ -1,29 +1,26 @@
 import * as React from 'react';
-import { WithStyles } from '@material-ui/core/styles';
-import MuiTooltip from '@material-ui/core/Tooltip';
+import { CSSProperties } from 'react';
 
-import styles from "./styles";
-import { Zoom } from "@material-ui/core";
-import { CSSProperties } from "react";
-import { withPropsStyles } from "../../../lib/material-ui";
+import Popover, { TooltipPlacement } from '../Popover';
+import { css, cx } from 'emotion';
+import { getBWContrastingColor, ThemeConsumer } from '../../../lib/theme';
 
-type ChildFunction = ((params: { open: (anchorEl?: any) => void; close: () => void; }) => React.ReactElement<any>);
+type ChildFunction = ((
+  params: { open: (anchorEl?: any) => void; close: () => void }
+) => React.ReactElement<any>);
 
 export interface ITooltipViewModel {
   children: React.ReactElement<any> | ChildFunction;
-
   content: React.ReactElement<any> | string;
+
   withArrow?: boolean;
+  color?: string;
   backgroundColor?: string;
   maxWidth?: number;
-  color?: string;
-  open?: boolean;
-  noPadding?: boolean;
-  distance?: number;
+
+  placement?: TooltipPlacement;
 
   disableHoverListener?: boolean;
-  disableFocusListener?: boolean;
-  disableTouchListener?: boolean;
 
   style?: CSSProperties;
   className?: string;
@@ -32,93 +29,87 @@ export interface ITooltipViewModel {
 export type TooltipProps = ITooltipViewModel;
 
 type TooltipState = {
-  arrowRef: any | null;
-  open: boolean;
   anchorEl: any | null;
-}
+};
 
-class Tooltip extends React.Component<TooltipProps & WithStyles<ReturnType<typeof styles>>, TooltipState> {
-  static getDerivedStateFromProps(nextProps: TooltipProps, prevState: TooltipState) {
-    if (nextProps.open !== undefined && nextProps.open !== prevState.open) {
-      return {
-        ...prevState,
-        open: nextProps.open,
-      };
-    }
-
-    // Return null to indicate no change to state.
-    return null;
-  }
+class Tooltip extends React.Component<TooltipProps, TooltipState> {
+  private childContainer: HTMLSpanElement | null;
 
   state = {
-    arrowRef: null,
-    anchorEl: null,
-    open: this.props.open || false
+    anchorEl: null
   };
 
-  constructor(props: TooltipProps & WithStyles<ReturnType<typeof styles>>) {
+  constructor(props: TooltipProps) {
     super(props);
-    this.handleArrowRef = this.handleArrowRef.bind(this);
     this.handleTooltipClose = this.handleTooltipClose.bind(this);
     this.handleTooltipOpen = this.handleTooltipOpen.bind(this);
   }
 
-  handleArrowRef(node: any) {
-    this.setState({
-      arrowRef: node,
-    });
-  };
-
   handleTooltipClose() {
-    this.setState({ open: false, anchorEl: null });
-  };
+    this.setState({ anchorEl: null });
+  }
 
   handleTooltipOpen(anchorEl?: any) {
-    this.setState({ open: true, anchorEl: anchorEl || null });
-  };
+    this.setState({ anchorEl: anchorEl || null });
+  }
 
   render() {
-    const { classes } = this.props;
+    const color =
+      this.props.color ||
+      (this.props.backgroundColor ? getBWContrastingColor(this.props.backgroundColor) : 'black');
+    const backgroundColor = this.props.backgroundColor || 'white';
 
     return (
-        <MuiTooltip
-          title={
-            <React.Fragment>
-              { this.props.content }
-              { this.props.withArrow && <span className={classes.arrowArrow} ref={this.handleArrowRef} />}
-            </React.Fragment>
-          }
-          placement="top"
-          TransitionComponent={Zoom}
-          classes={{ tooltip: classes.tooltip, popper: this.props.withArrow ? classes.arrowPopper : undefined }}
-          onClose={() => this.handleTooltipClose()}
-          onOpen={() => this.handleTooltipOpen()}
-          open={this.state.open}
-          disableHoverListener={this.props.disableHoverListener}
-          disableFocusListener={this.props.disableFocusListener}
-          disableTouchListener={this.props.disableTouchListener}
-          PopperProps={{
-            ...(this.state.anchorEl != null ? {
-              anchorEl: this.state.anchorEl,
-            } : {}),
-            popperOptions: {
-              modifiers: {
-                arrow: {
-                  enabled: this.props.withArrow && Boolean(this.state.arrowRef),
-                  element: this.state.arrowRef,
-                }
-              }
-            }
-          }}
-          style={this.props.style}
-          className={this.props.className}
-        >
-          <span style={{display: "inline-block"}}>
-          { {}.toString.call(this.props.children) === '[object Function]' ? (this.props.children as ChildFunction)({ open: this.handleTooltipOpen, close: this.handleTooltipClose }) : this.props.children as React.ReactElement<any> }
-          </span>
-        </MuiTooltip>
+      <ThemeConsumer>
+        {theme => {
+          const tooltipStyle = css({
+            ...theme.typography.tooltip,
+            backgroundColor,
+            borderRadius: 3,
+            color,
+            padding: '5px 7px',
+            maxWidth: this.props.maxWidth || 200
+          });
+
+          return (
+            <>
+              <Popover
+                anchorEl={this.state.anchorEl}
+                arrowColor={this.props.withArrow ? backgroundColor : undefined}
+                placement={this.props.placement || { vertical: 'top' }}
+              >
+                <div style={this.props.style} className={cx(tooltipStyle, this.props.className)}>
+                  {this.props.content}
+                </div>
+              </Popover>
+              <span style={{ display: 'inline-block' }}>
+                {{}.toString.call(this.props.children) === '[object Function]' ? (
+                  (this.props.children as ChildFunction)({
+                    open: this.handleTooltipOpen,
+                    close: this.handleTooltipClose
+                  })
+                ) : (
+                  <span
+                    className={css({ display: 'inline-block' })}
+                    ref={el => (this.childContainer = el)}
+                    onMouseEnter={() =>
+                      !this.props.disableHoverListener &&
+                      this.handleTooltipOpen(this.childContainer)
+                    }
+                    onMouseLeave={() =>
+                      !this.props.disableHoverListener && this.handleTooltipClose()
+                    }
+                  >
+                    {this.props.children as React.ReactElement<any>}
+                  </span>
+                )}
+              </span>
+            </>
+          );
+        }}
+      </ThemeConsumer>
     );
   }
 }
 
-export default withPropsStyles(styles)(Tooltip);
+export default Tooltip;

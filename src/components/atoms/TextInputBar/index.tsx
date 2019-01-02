@@ -1,8 +1,8 @@
-import * as React from "react";
-import { withStyles, WithStyles } from "@material-ui/core/styles";
-import { TextField } from "@material-ui/core";
-import styles from "./styles";
-import {CSSProperties} from "react";
+import * as React from 'react';
+import { withStyles, WithStyles } from '@material-ui/core/styles';
+import { TextField } from '@material-ui/core';
+import styles from './styles';
+import { CSSProperties } from 'react';
 
 interface ITextInputBarViewModel extends WithStyles<typeof styles> {
   value: string;

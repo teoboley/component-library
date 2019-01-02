@@ -1,7 +1,7 @@
-import * as React from "react";
+import * as React from 'react';
 import { css, cx } from 'emotion';
-import {ThemeConsumer} from "../../../lib/theme";
-import {Ref} from "react";
+import { ThemeConsumer } from '../../../lib/theme';
+import { Ref } from 'react';
 
 interface ICardViewModel {
   ref?: Ref<any>;
@@ -14,7 +14,8 @@ type CardProps = ICardViewModel;
 const baseStyles = css({
   display: 'inline-block',
   boxShadow: '0 0 40px 5px rgba(0,0,0,0.10)',
-  padding: 30
+  padding: 30,
+  borderRadius: 5
 });
 
 const Card: React.SFC<CardProps> = props => {
@@ -30,10 +31,9 @@ const Card: React.SFC<CardProps> = props => {
             {props.children}
           </div>
         );
-      }
-    }
+      }}
     </ThemeConsumer>
-  )
+  );
 };
 
 export default Card;

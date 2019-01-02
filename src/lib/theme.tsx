@@ -1,7 +1,8 @@
-import * as React from "react";
+import * as React from 'react';
 
 import Global from './global';
-import {CSSProperties} from "react";
+import { CSSProperties } from 'react';
+import * as Color from 'color';
 
 interface ThemePalette {
   primaryColor: string;
@@ -10,13 +11,18 @@ interface ThemePalette {
 }
 
 type ThemeTypographyStyle = Required<
-Pick<CSSProperties, 'fontFamily' | 'fontSize' | 'fontWeight' | 'color'>
+  Pick<CSSProperties, 'fontFamily' | 'fontSize' | 'fontWeight' | 'color'>
 > &
-Partial<Pick<CSSProperties, 'letterSpacing' | 'lineHeight' | 'textTransform' | 'fontStyle' | 'fontVariant'>>;
+  Partial<
+    Pick<
+      CSSProperties,
+      'letterSpacing' | 'lineHeight' | 'textTransform' | 'fontStyle' | 'fontVariant'
+    >
+  >;
 
 interface ThemeTypography {
-  fontFamily: CSSProperties["fontFamily"];
-  fontSize: CSSProperties["fontSize"];
+  fontFamily: CSSProperties['fontFamily'];
+  fontSize: CSSProperties['fontSize'];
 
   hero: ThemeTypographyStyle;
   h1: ThemeTypographyStyle;
@@ -30,6 +36,8 @@ interface ThemeTypography {
   body: ThemeTypographyStyle;
   caption: ThemeTypographyStyle;
   label: ThemeTypographyStyle;
+  tooltip: ThemeTypographyStyle;
+  formField: ThemeTypographyStyle;
   code: ThemeTypographyStyle;
 }
 
@@ -39,6 +47,10 @@ export interface Theme {
 }
 
 export const createTheme = (): Theme => {
+  const rootFontSize = 16;
+  const headerFontFamily = '"Avenir Next", "Segoe UI", Helvetica, Arial, sans-serif';
+  const textFontFamily = '"Source Sans Pro", Helvetica, Arial, sans-serif';
+
   return {
     palette: {
       primaryColor: '#005AE5',
@@ -46,95 +58,119 @@ export const createTheme = (): Theme => {
       background: 'white'
     },
     typography: {
-      fontFamily: "\"Source Sans Pro\", Helvetica, Arial, sans-serif",
-      fontSize: 14,
+      fontFamily: textFontFamily,
+      fontSize: rootFontSize,
       hero: {
-        color: "black",
-        fontFamily: "\"Avenir Next\", \"Segoe UI\", Helvetica, Arial, sans-serif",
-        fontSize: '8rem',
+        color: 'black',
+        fontFamily: headerFontFamily,
+        fontSize: rootFontSize * 8,
         fontWeight: 700,
         lineHeight: 0.75
       },
       h1: {
-        color: "black",
-        fontFamily: "\"Avenir Next\", \"Segoe UI\", Helvetica, Arial, sans-serif",
-        fontSize: '3.75rem',
+        color: 'black',
+        fontFamily: headerFontFamily,
+        fontSize: rootFontSize * 3.75,
         fontWeight: 700,
         lineHeight: 1
       },
       h2: {
-        color: "black",
-        fontFamily: "\"Avenir Next\", \"Segoe UI\", Helvetica, Arial, sans-serif",
-        fontSize: '3rem',
+        color: 'black',
+        fontFamily: headerFontFamily,
+        fontSize: rootFontSize * 3,
         fontWeight: 700,
         lineHeight: 1.04
       },
       h3: {
-        color: "black",
-        fontFamily: "\"Avenir Next\", \"Segoe UI\", Helvetica, Arial, sans-serif",
-        fontSize: '2.125rem',
+        color: 'black',
+        fontFamily: headerFontFamily,
+        fontSize: rootFontSize * 2.125,
         fontWeight: 700,
         lineHeight: 1.17
       },
       h4: {
-        color: "black",
-        fontFamily: "\"Avenir Next\", \"Segoe UI\", Helvetica, Arial, sans-serif",
-        fontSize: '1.5rem',
+        color: 'black',
+        fontFamily: headerFontFamily,
+        fontSize: rootFontSize * 1.5,
         fontWeight: 700,
         lineHeight: 1.33
       },
       h5: {
-        color: "black",
-        fontFamily: "\"Avenir Next\", \"Segoe UI\", Helvetica, Arial, sans-serif",
-        fontSize: '1.25rem',
+        color: 'black',
+        fontFamily: headerFontFamily,
+        fontSize: rootFontSize * 1.25,
         fontWeight: 700,
         lineHeight: 1.6
       },
       h6: {
-        color: "black",
-        fontFamily: "\"Avenir Next\", \"Segoe UI\", Helvetica, Arial, sans-serif",
-        fontSize: '1rem',
-        fontWeight: 700,
-        lineHeight: 1.6
+        color: 'black',
+        fontFamily: headerFontFamily,
+        fontSize: rootFontSize,
+        fontWeight: 700
       },
       button: {
-        color: "black",
-        fontFamily: "\"Source Sans Pro\", Helvetica, Arial, sans-serif",
-        fontSize: '0.875rem',
-        fontWeight: 500
+        color: 'black',
+        fontFamily: textFontFamily,
+        fontSize: rootFontSize * 0.875,
+        fontWeight: 600,
+        textTransform: 'uppercase',
+        letterSpacing: 2
       },
       link: {
-        color: "black",
-        fontFamily: "\"Source Sans Pro\", Helvetica, Arial, sans-serif",
-        fontSize: '1rem',
+        color: 'black',
+        fontFamily: textFontFamily,
+        fontSize: rootFontSize,
         fontWeight: 400
       },
       body: {
-        color: "black",
-        fontFamily: "\"Source Sans Pro\", Helvetica, Arial, sans-serif",
-        fontSize: '0.875rem',
-        fontWeight: 400
+        color: 'black',
+        fontFamily: textFontFamily,
+        fontSize: rootFontSize * 0.875,
+        fontWeight: 400,
+        lineHeight: 1.35
       },
       caption: {
-        color: "rgba(0, 0, 0, 0.5)",
-        fontFamily: "\"Source Sans Pro\", Helvetica, Arial, sans-serif",
-        fontSize: '0.75rem',
+        color: 'rgba(0, 0, 0, 0.5)',
+        fontFamily: textFontFamily,
+        fontSize: rootFontSize * 0.75,
         fontWeight: 400
       },
       label: {
-        color: "rgba(0, 0, 0, 0.5)",
-        fontFamily: "\"Source Sans Pro\", Helvetica, Arial, sans-serif",
-        fontSize: '0.75rem',
+        color: 'rgba(0, 0, 0, 0.5)',
+        fontFamily: textFontFamily,
+        fontSize: rootFontSize * 0.75,
         fontWeight: 400
       },
+      tooltip: {
+        color: 'black',
+        fontFamily: textFontFamily,
+        fontSize: rootFontSize * 0.875,
+        fontWeight: 400,
+        lineHeight: 1.35
+      },
+      formField: {
+        color: 'black',
+        fontFamily: textFontFamily,
+        fontSize: rootFontSize * 0.875,
+        fontWeight: 400,
+        lineHeight: 1.35
+      },
       code: {
-        color: "black",
+        color: 'black',
         fontFamily: '"Lucida Console", Monaco, monospace',
-        fontSize: '0.75rem',
+        fontSize: rootFontSize * 0.75,
         fontWeight: 400
       }
     }
   };
+};
+
+export const getBWContrastingColor = (color: string) => {
+  return Color(color)
+    .darken(0.1)
+    .isDark()
+    ? 'white'
+    : 'black';
 };
 
 // In order to have self-supporting components, we rely on default theme when not provided.
@@ -164,13 +200,12 @@ export const ThemeProvider: React.SFC<ThemeProviderProps> = props => {
   return (
     <ThemeConsumer>
       {outerTheme => {
-        const theme =
-          outerTheme === defaultTheme ? localTheme :  { ...outerTheme, ...localTheme };
+        const theme = outerTheme === defaultTheme ? localTheme : { ...outerTheme, ...localTheme };
 
         return <ThemeContext.Provider value={theme}>{children}</ThemeContext.Provider>;
       }}
     </ThemeConsumer>
-    );
+  );
 };
 
 // TODO: create withTheme HOC

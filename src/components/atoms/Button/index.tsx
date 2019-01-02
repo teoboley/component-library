@@ -1,9 +1,8 @@
-import * as React from "react";
-import {CSSProperties, MouseEventHandler} from "react";
-import {ThemeConsumer} from "../../../lib/theme";
-import {css, cx} from "emotion";
-import * as Color from "color";
-import Text, {ETextType} from "../Typography/Text";
+import * as React from 'react';
+import { CSSProperties, MouseEventHandler } from 'react';
+import { getBWContrastingColor, ThemeConsumer } from '../../../lib/theme';
+import { css, cx } from 'emotion';
+import * as Color from 'color';
 
 export enum EButtonType {
   Text = 'text',
@@ -37,24 +36,35 @@ const Button: React.SFC<ButtonProps> = props => {
 
   return (
     <ThemeConsumer>
-      { theme => {
+      {theme => {
         const baseStyles = css({
           ...theme.typography.button,
           backgroundColor: 'transparent',
-          borderRadius: 5,
+          borderRadius: 3,
           border: 'none',
           padding: '10px 14px',
           textAlign: 'center',
           display: 'inline-block',
           cursor: 'pointer',
+          margin: 2,
           // transition: 'background-color 200ms, color 200ms, border 200ms, box-shadow 200ms',
           '&:focus': {
             outline: 'none'
           }
         });
 
-        const color = props.disabled ? 'darkgrey' : props.color && (props.color === 'primary' ? theme.palette.primaryColor : props.color === 'secondary' ? theme.palette.secondaryColor : props.color);
-        const secondaryColor = props.disabled ? 'grey' : props.secondaryColor || Color(color).darken(0.1).isDark() ? 'white' : 'black';
+        const color = props.disabled
+          ? 'darkgrey'
+          : (props.color &&
+              (props.color === 'primary'
+                ? theme.palette.primaryColor
+                : props.color === 'secondary'
+                ? theme.palette.secondaryColor
+                : props.color)) ||
+            theme.palette.primaryColor;
+        const secondaryColor = props.disabled
+          ? 'grey'
+          : props.secondaryColor || getBWContrastingColor(color);
 
         let styles = null;
 
@@ -64,10 +74,16 @@ const Button: React.SFC<ButtonProps> = props => {
               border: `1px solid transparent`,
               color: color,
               '&:hover': !props.disabled && {
-                backgroundColor: Color(color).alpha(0.1).hsl().string(),
+                backgroundColor: Color(color)
+                  .alpha(0.1)
+                  .hsl()
+                  .string()
               },
               '&:active': !props.disabled && {
-                backgroundColor: Color(color).alpha(0.15).hsl().string(),
+                backgroundColor: Color(color)
+                  .alpha(0.15)
+                  .hsl()
+                  .string()
               },
               cursor: props.disabled ? 'not-allowed' : undefined
             });
@@ -77,13 +93,21 @@ const Button: React.SFC<ButtonProps> = props => {
               border: `1px solid ${color}`,
               color: color,
               '&:hover': !props.disabled && {
-                color: secondaryColor,
-                backgroundColor: color,
-                borderColor: color
+                backgroundColor: Color(color)
+                  .alpha(0.1)
+                  .hsl()
+                  .string()
               },
               '&:active': !props.disabled && {
-                backgroundColor: Color(color).mix(Color("black"), 0.075).hsl().string(),
-                borderColor: Color(color).mix(Color("black"), 0.075).hsl().string()
+                color: secondaryColor,
+                backgroundColor: Color(color)
+                  .alpha(0.5)
+                  .hsl()
+                  .string(),
+                borderColor: Color(color)
+                  .mix(Color('black'), 0.075)
+                  .hsl()
+                  .string()
               },
               cursor: props.disabled ? 'not-allowed' : undefined
             });
@@ -94,12 +118,24 @@ const Button: React.SFC<ButtonProps> = props => {
               border: `1px solid ${color}`,
               color: secondaryColor,
               '&:hover': !props.disabled && {
-                backgroundColor: Color(color).mix(Color("white"), 0.25).hsl().string(),
-                borderColor: Color(color).mix(Color("white"), 0.25).hsl().string()
+                backgroundColor: Color(color)
+                  .mix(Color('white'), 0.25)
+                  .hsl()
+                  .string(),
+                borderColor: Color(color)
+                  .mix(Color('white'), 0.25)
+                  .hsl()
+                  .string()
               },
               '&:active': !props.disabled && {
-                backgroundColor: Color(color).mix(Color("black"), 0.075).hsl().string(),
-                borderColor: Color(color).mix(Color("black"), 0.075).hsl().string()
+                backgroundColor: Color(color)
+                  .mix(Color('black'), 0.075)
+                  .hsl()
+                  .string(),
+                borderColor: Color(color)
+                  .mix(Color('black'), 0.075)
+                  .hsl()
+                  .string()
               },
               cursor: props.disabled ? 'not-allowed' : undefined
             });
@@ -107,8 +143,13 @@ const Button: React.SFC<ButtonProps> = props => {
         }
 
         return (
-          <button onClick={onClick} style={style} className={cx(baseStyles, styles, className)} {...otherProps}>
-            { children }
+          <button
+            onClick={onClick}
+            style={style}
+            className={cx(baseStyles, styles, className)}
+            {...otherProps}
+          >
+            {children}
           </button>
         );
       }}

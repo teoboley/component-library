@@ -1,7 +1,8 @@
-import * as React from "react";
+import * as React from 'react';
 
-import Menu from "../../molecules/Menu";
-import Button from "../../atoms/Button";
+import Menu from '../../molecules/Menu';
+import Button from '../../atoms/Button';
+import { css } from 'emotion';
 
 interface IContextMenuControllerActiveState {
   anchorEl: HTMLElement;
@@ -12,8 +13,20 @@ interface IContextMenuControllerActiveState {
 }
 
 interface IContextMenuControllerViewModel {
-  menuComponent: (menuController: { activeState: IContextMenuControllerActiveState | null; isOpen: boolean; close: () => void }) => JSX.Element;
-  children: (contextController: { open: (element: HTMLElement, mousePosition?: { x: number; y: number; }) => void; isOpen: boolean; close: () => void }) => JSX.Element;
+  menuComponent: (
+    menuController: {
+      activeState: IContextMenuControllerActiveState | null;
+      isOpen: boolean;
+      close: () => void;
+    }
+  ) => JSX.Element;
+  children: (
+    contextController: {
+      open: (element: HTMLElement, mousePosition?: { x: number; y: number }) => void;
+      isOpen: boolean;
+      close: () => void;
+    }
+  ) => JSX.Element;
 }
 
 type ContextMenuControllerProps = IContextMenuControllerViewModel;
@@ -22,7 +35,10 @@ interface IContextMenuControllerState {
   active: IContextMenuControllerActiveState | null;
 }
 
-export class ContextMenuController extends React.Component<ContextMenuControllerProps, IContextMenuControllerState> {
+export class ContextMenuController extends React.Component<
+  ContextMenuControllerProps,
+  IContextMenuControllerState
+> {
   readonly state = {
     active: null
   };
@@ -34,28 +50,36 @@ export class ContextMenuController extends React.Component<ContextMenuController
     this.handleClose = this.handleClose.bind(this);
   }
 
-  handleOpen(element: HTMLElement, mousePosition?: { x: number; y: number; }) {
+  handleOpen(element: HTMLElement, mousePosition?: { x: number; y: number }) {
     this.setState({ active: { anchorEl: element, mousePosition: mousePosition || null } });
-  };
+  }
 
   handleClose() {
     this.setState({ active: null });
-  };
+  }
 
   render() {
     const { active } = this.state;
 
     return (
       <>
-        { this.props.children({ open: this.handleOpen, isOpen: Boolean(active), close: this.handleClose }) }
-        { this.props.menuComponent({ activeState: this.state.active, isOpen: Boolean(active), close: this.handleClose }) }
+        {this.props.children({
+          open: this.handleOpen,
+          isOpen: Boolean(active),
+          close: this.handleClose
+        })}
+        {this.props.menuComponent({
+          activeState: this.state.active,
+          isOpen: Boolean(active),
+          close: this.handleClose
+        })}
       </>
     );
   }
 }
 
 interface IContextMenuViewModel {
-  options: Array<{ option: React.ReactNode; callback: () => void; }>;
+  options: Array<{ option: React.ReactNode; callback: () => void }>;
   style?: React.CSSProperties;
   className?: string;
 }
@@ -64,40 +88,51 @@ type ContextMenuProps = IContextMenuViewModel;
 
 const ContextMenu: React.SFC<ContextMenuProps> = props => {
   return (
-        <ContextMenuController menuComponent={({isOpen, activeState, close}) =>
-          <Menu
-            anchorEl={activeState && activeState.anchorEl}
-            onClose={close}
-
-            anchorReference={'anchorEl'}
-            anchorOrigin={{vertical: 'center', horizontal: 'center'}}
-
-            {...(activeState && activeState.mousePosition && {
-              anchorPosition: {top: activeState.mousePosition.y, left: activeState.mousePosition.x},
+    <ContextMenuController
+      menuComponent={({ isOpen, activeState, close }) => (
+        <Menu
+          anchorEl={activeState && activeState.anchorEl}
+          onClose={close}
+          anchorReference={'anchorEl'}
+          placement={{ vertical: 'center', horizontal: 'center' }}
+          {...activeState &&
+            activeState.mousePosition && {
+              anchorPosition: {
+                top: activeState.mousePosition.y,
+                left: activeState.mousePosition.x
+              },
               anchorReference: 'anchorPosition'
-            })}
-
-            style={props.style}
-            className={props.className}
-          >
-            {props.options.map((option, i) =>
-              <Button key={i} onClick={() => {
+            }}
+          style={props.style}
+          className={props.className}
+        >
+          {props.options.map((option, i) => (
+            <Button
+              key={i}
+              onClick={() => {
                 option.callback();
                 close();
-              }}>{option.option}</Button>
-            )}
-          </Menu>
-        }>
-          {({open}) =>
-            <span onContextMenu={e => {
-              e.preventDefault();
-              e.stopPropagation();
-              open(e.currentTarget, {x: e.clientX, y: e.clientY});
-            }}>
+              }}
+              className={css({ borderRadius: 0 })}
+            >
+              {option.option}
+            </Button>
+          ))}
+        </Menu>
+      )}
+    >
+      {({ open }) => (
+        <span
+          onContextMenu={e => {
+            e.preventDefault();
+            e.stopPropagation();
+            open(e.currentTarget, { x: e.clientX, y: e.clientY });
+          }}
+        >
           {props.children}
         </span>
-          }
-        </ContextMenuController>
+      )}
+    </ContextMenuController>
   );
 };
 

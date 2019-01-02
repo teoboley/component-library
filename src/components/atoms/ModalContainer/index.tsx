@@ -1,6 +1,6 @@
 import * as React from 'react';
 import * as Modal from 'react-modal';
-import {css} from "emotion";
+import { css } from 'emotion';
 
 interface IModalContainerViewModel {
   isOpen: boolean;
@@ -18,9 +18,8 @@ type ModalContainerProps = IModalContainerViewModel & IModalContainerActions;
 const ModalContainer: React.SFC<ModalContainerProps> = props => {
   return (
     <>
-      <style>{
-        // language=CSS
-        `
+      <style>{// language=CSS
+      `
         .ReactModal__Content > * {
           opacity: 0;
           transform: scale(0);
@@ -79,9 +78,7 @@ const ModalContainer: React.SFC<ModalContainerProps> = props => {
         className={props.className}
         closeTimeoutMS={1000}
       >
-        <div>
-          {props.children}
-        </div>
+        <div>{props.children}</div>
       </Modal>
     </>
   );
