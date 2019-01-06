@@ -23,14 +23,15 @@ const Text: React.SFC<TextProps> = props => {
       {theme => {
         const baseCss = css({
           ...theme.typography[props.type],
+          display: 'block',
           marginTop: 0,
           marginBottom: '0.35em'
         });
 
         return (
-          <p style={props.style} className={cx(baseCss, props.className)}>
+          <span style={props.style} className={cx(baseCss, props.className)}>
             {props.children}
-          </p>
+          </span>
         );
       }}
     </ThemeConsumer>

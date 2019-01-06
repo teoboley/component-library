@@ -4,19 +4,70 @@ import Global from './global';
 import { CSSProperties } from 'react';
 import * as Color from 'color';
 
+interface ThemeCodePalette {
+  window: {
+    background: string;
+    color: string;
+  };
+  meta: string;
+  number: string;
+  keyword: string;
+  def: string;
+  variable: [string, string, string];
+  type: string;
+  property: string;
+  operator: string;
+  string: [string, string];
+  comment: string;
+  link: string;
+  atom: string;
+  error: string;
+  tag: string;
+  attribute: string;
+  qualifier: string;
+  bracket: string;
+  builtin: string;
+  special: string;
+  cursor: string;
+  activeLineBackground: string;
+  guttersBackground: string;
+  gutterMarker: string;
+  gutterMarkerSubtle: string;
+  lineNumber: string;
+  matchingBracket: {
+    background: string;
+    color: string;
+  };
+  selectedBackground: string;
+  hintsCustom: {
+    color: string;
+    background: string;
+  };
+  hintsCustomActive: {
+    background: string;
+    color: string;
+  };
+}
+
 interface ThemePalette {
   primaryColor: string;
   secondaryColor: string;
   background: string;
+  code: ThemeCodePalette;
+  getColor(codeOrColor: string): string;
 }
 
-type ThemeTypographyStyle = Required<
-  Pick<CSSProperties, 'fontFamily' | 'fontSize' | 'fontWeight' | 'color'>
-> &
+type ThemeTypographyStyle = Required<Pick<CSSProperties, 'fontFamily' | 'fontSize'>> &
   Partial<
     Pick<
       CSSProperties,
-      'letterSpacing' | 'lineHeight' | 'textTransform' | 'fontStyle' | 'fontVariant'
+      | 'letterSpacing'
+      | 'lineHeight'
+      | 'textTransform'
+      | 'fontStyle'
+      | 'fontVariant'
+      | 'color'
+      | 'fontWeight'
     >
   >;
 
@@ -38,7 +89,8 @@ interface ThemeTypography {
   label: ThemeTypographyStyle;
   tooltip: ThemeTypographyStyle;
   formField: ThemeTypographyStyle;
-  code: ThemeTypographyStyle;
+  codeBlock: ThemeTypographyStyle;
+  codeLine: ThemeTypographyStyle;
 }
 
 export interface Theme {
@@ -51,11 +103,65 @@ export const createTheme = (): Theme => {
   const headerFontFamily = '"Avenir Next", "Segoe UI", Helvetica, Arial, sans-serif';
   const textFontFamily = '"Source Sans Pro", Helvetica, Arial, sans-serif';
 
+  const primaryColor = '#005AE5';
+  const secondaryColor = '#222222';
+
   return {
     palette: {
-      primaryColor: '#005AE5',
-      secondaryColor: '#222222',
-      background: 'white'
+      primaryColor: primaryColor,
+      secondaryColor: secondaryColor,
+      background: 'white',
+      code: {
+        window: {
+          background: '#222222',
+          color: '#A9B7C6'
+        },
+        meta: '#BBB529',
+        number: '#6897BB',
+        keyword: '#CC7832',
+        def: '#A9B7C6',
+        variable: ['#A9B7C6', '#A9B7C6', '#9876AA'],
+        type: '#AABBCC',
+        property: '#FFC66D',
+        operator: '#A9B7C6',
+        string: ['#6A8759', '#6A8759'],
+        comment: '#61A151',
+        link: '#CC7832',
+        atom: '#CC7832',
+        error: '#BC3F3C',
+        tag: '#629755',
+        attribute: '#6897bb',
+        qualifier: '#6A8759',
+        bracket: '#A9B7C6',
+        builtin: '#FF9E59',
+        special: '#FF9E59',
+        cursor: '#A9B7C6',
+        activeLineBackground: '#323232',
+        guttersBackground: '#292b2d',
+        gutterMarker: '#FFEE80',
+        gutterMarkerSubtle: '#D0D0D0',
+        lineNumber: '#606366',
+        matchingBracket: {
+          background: '#3B514D',
+          color: '#FFEF28'
+        },
+        selectedBackground: '#214283',
+        hintsCustom: {
+          color: '#9C9E9E',
+          background: '#3B3E3F'
+        },
+        hintsCustomActive: {
+          background: '#494D4E',
+          color: '#9C9E9E'
+        }
+      },
+      getColor(codeOrColor: string) {
+        return codeOrColor === 'primary'
+          ? this.primaryColor
+          : codeOrColor === 'secondary'
+          ? this.secondaryColor
+          : codeOrColor;
+      }
     },
     typography: {
       fontFamily: textFontFamily,
@@ -155,11 +261,17 @@ export const createTheme = (): Theme => {
         fontWeight: 400,
         lineHeight: 1.35
       },
-      code: {
-        color: 'black',
-        fontFamily: '"Lucida Console", Monaco, monospace',
+      codeBlock: {
+        fontFamily:
+          'Consolas, Menlo, Monaco, "Lucida Console", "Liberation Mono", "DejaVu Sans Mono", "Bitstream Vera Sans Mono", "Courier New", monospace, serif',
+        fontSize: rootFontSize * 0.875,
+        lineHeight: 1.5
+      },
+      codeLine: {
+        fontFamily:
+          "Consolas, Menlo, Monaco, 'Lucida Console', 'Liberation Mono', 'DejaVu Sans Mono', 'Bitstream Vera Sans Mono', 'Courier New', monospace, serif",
         fontSize: rootFontSize * 0.75,
-        fontWeight: 400
+        lineHeight: 1.5
       }
     }
   };

@@ -56,7 +56,7 @@ export const NewSnackbar: React.SFC<NewSnackbarProps> = props => {
       </div>
       {props.dismissable && (
         <Button
-          type={EButtonType.Text}
+          type={EButtonType.Overlay}
           className={css({ padding: '2px 2px 0px 2px', position: 'absolute', top: 2, right: 2 })}
         >
           <CloseIcon />

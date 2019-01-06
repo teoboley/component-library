@@ -5,7 +5,7 @@ import { css, cx } from 'emotion';
 import * as Color from 'color';
 
 export enum EButtonType {
-  Text = 'text',
+  Overlay = 'overlay',
   Contained = 'contained',
   Outline = 'outline'
 }
@@ -32,7 +32,7 @@ export type ButtonProps = IButtonViewModel & IButtonActions;
 
 const Button: React.SFC<ButtonProps> = props => {
   const { onClick, children, style, className, disabled, ...otherProps } = props;
-  const type = props.type || EButtonType.Text;
+  const type = props.type || EButtonType.Overlay;
 
   return (
     <ThemeConsumer>
@@ -55,13 +55,7 @@ const Button: React.SFC<ButtonProps> = props => {
 
         const color = props.disabled
           ? 'darkgrey'
-          : (props.color &&
-              (props.color === 'primary'
-                ? theme.palette.primaryColor
-                : props.color === 'secondary'
-                ? theme.palette.secondaryColor
-                : props.color)) ||
-            theme.palette.primaryColor;
+          : (props.color && theme.palette.getColor(props.color)) || theme.palette.primaryColor;
         const secondaryColor = props.disabled
           ? 'grey'
           : props.secondaryColor || getBWContrastingColor(color);
@@ -69,7 +63,7 @@ const Button: React.SFC<ButtonProps> = props => {
         let styles = null;
 
         switch (type) {
-          case EButtonType.Text:
+          case EButtonType.Overlay:
             styles = css({
               border: `1px solid transparent`,
               color: color,
@@ -90,7 +84,7 @@ const Button: React.SFC<ButtonProps> = props => {
             break;
           case EButtonType.Outline:
             styles = css({
-              border: `1px solid ${color}`,
+              border: `1.5px solid ${color}`,
               color: color,
               '&:hover': !props.disabled && {
                 backgroundColor: Color(color)
