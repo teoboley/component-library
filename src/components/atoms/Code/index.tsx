@@ -9,6 +9,7 @@ import predefinedThemes from './themes/index';
 
 import 'codemirror/mode/shell/shell';
 import 'codemirror/mode/javascript/javascript';
+import { useState } from 'react';
 
 interface ICodeViewModel {
   value: string;
@@ -33,85 +34,86 @@ interface ICodeState {
   value: string;
 }
 
-class Code extends React.Component<CodeProps, ICodeState> {
-  readonly state = {
-    value: this.props.value
-  };
+const Code: React.FC<CodeProps> = props => {
+    const [state, setState] = useState<ICodeState>({ value: props.value });
 
-  render() {
     const theme = useTheme();
-          const themeTypography = this.props.inline
+          const themeTypography = props.inline
             ? theme.typography.codeLine
             : theme.typography.codeBlock;
 
-          const currentCodeThemeStyle = this.props.theme
-            ? this.props.theme !== 'none' &&
-              Object.keys(predefinedThemes).includes(this.props.theme)
-              ? Code.getPredefinedTheme(this.props.theme as keyof typeof predefinedThemes)
+          const currentCodeThemeStyle = props.theme
+            ? props.theme !== 'none' &&
+              Object.keys(predefinedThemes).includes(props.theme)
+              ? getPredefinedTheme(props.theme as keyof typeof predefinedThemes)
               : null
-            : Code.getCustomTheme(theme.palette.code);
+            : getCustomTheme(theme.palette.code);
 
           return (
             <div
-              style={this.props.style}
+              style={props.style}
               className={cx(
                 codeMirrorBaseStyles,
                 currentCodeThemeStyle,
                 css({
-                  display: this.props.inline ? 'inline-block' : 'block',
+                  display: props.inline ? 'inline-block' : 'block',
                   '.CodeMirror': {
                     ...themeTypography,
-                    display: this.props.inline ? 'inline-block' : 'block',
+                    display: props.inline ? 'inline-block' : 'block',
                     height: 'auto',
                     borderRadius: 5,
-                    boxShadow: !this.props.inline ? '0 0 40px 5px rgba(0,0,0,0.10)' : undefined
+                    boxShadow: !props.inline ? '0 0 40px 5px rgba(0,0,0,0.10)' : undefined
                   },
                   '.CodeMirror .CodeMirror-lines': {
-                    paddingTop: !this.props.inline ? 10 : 2.5,
-                    paddingBottom: !this.props.inline ? 10 : 1.5
+                    paddingTop: !props.inline ? 10 : 2.5,
+                    paddingBottom: !props.inline ? 10 : 1.5
                   },
                   '.CodeMirror pre': {
-                    paddingLeft: !this.props.inline ? 10 : 7,
-                    paddingRight: !this.props.inline ? 10 : 7
+                    paddingLeft: !props.inline ? 10 : 7,
+                    paddingRight: !props.inline ? 10 : 7
                   },
                   '.CodeMirror .CodeMirror-linenumber': {
                     paddingRight: 8
                   },
                   '.CodeMirror .CodeMirror-cursor': {
-                    borderLeft: !this.props.editable ? 'none' : undefined
+                    borderLeft: !props.editable ? 'none' : undefined
                   }
                 }),
-                this.props.className
+                props.className
               )}
             >
               <CodeMirror
-                value={this.props.controlled ? this.props.value : this.state.value}
+                value={props.controlled ? props.value : state.value}
                 options={{
-                  lineNumbers: !this.props.inline && true,
-                  mode: this.props.mode,
-                  theme: this.props.theme || 'custom'
+                  lineNumbers: !props.inline && true,
+                  mode: props.mode,
+                  theme: props.theme || 'custom'
                 }}
                 onBeforeChange={(editor, data, value) => {
-                  if (this.props.editable) {
-                    if (!this.props.controlled) {
-                      this.setState({
+                  if (props.editable) {
+                    if (!props.controlled) {
+                      setState({
                         value
                       });
                     }
 
-                    if (this.props.onChange) {
-                      this.props.onChange(value);
+                    if (props.onChange) {
+                      props.onChange(value);
                     }
                   }
                 }}
               />
             </div>
     );
-  }
+  };
 
-  private static getCustomTheme(codePalette: Theme['palette']['code']): string {
-    // language=CSS
-    return css`
+function getPredefinedTheme(themeName: keyof typeof predefinedThemes) {
+  return predefinedThemes[themeName];
+}
+
+function getCustomTheme(codePalette: Theme['palette']['code']): string {
+  // language=CSS
+  return css`
       /**
           Based on "IntelliJ IDEA darcula theme" from IntelliJ IDEA by JetBrains
         */
@@ -268,11 +270,6 @@ class Code extends React.Component<CodeProps, ICodeState> {
         color: ${codePalette.hintsCustomActive.color} !important;
       }
     `;
-  }
-
-  private static getPredefinedTheme(themeName: keyof typeof predefinedThemes) {
-    return predefinedThemes[themeName];
-  }
 }
 
 export default Code;

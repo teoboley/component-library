@@ -2,7 +2,7 @@ import * as React from 'react';
 import { css, cx } from 'emotion';
 import { useTheme } from '../../../../lib/theme';
 import { withProps } from 'recompose';
-import { KeyboardEventHandler } from 'react';
+import { KeyboardEventHandler, useState } from 'react';
 
 type ValueTransformer<V> = { toString: (val: V) => string; fromString: (s: string) => V };
 
@@ -34,21 +34,15 @@ interface IFormFieldState {
   focused: boolean;
 }
 
-export class FormField extends React.Component<
-  FormFieldProps<string | undefined>,
-  IFormFieldState
-> {
-  readonly state = {
-    focused: false
-  };
-
-  render() {
+export const FormField: React.FC<FormFieldProps<string | undefined>> = props => {
     const theme = useTheme();
-          const activeColor = this.props.activeColor || theme.palette.primary;
-          const inactiveColor = this.props.inactiveColor || '#8D8D8D';
+    const [ state, setState ] = useState<IFormFieldState>({ focused: false });
+
+          const activeColor = props.activeColor || theme.palette.primary;
+          const inactiveColor = props.inactiveColor || '#8D8D8D';
 
           const iconStyles = css({
-            color: this.props.value ? activeColor : inactiveColor,
+            color: props.value ? activeColor : inactiveColor,
             display: 'flex',
             padding: 5,
             margin: '0px 3px',
@@ -68,8 +62,8 @@ export class FormField extends React.Component<
             padding: '5px 0px',
             display: 'inline-block',
             transition: 'border 200ms',
-            borderBottom: `2px solid ${this.props.value ? activeColor : inactiveColor}`,
-            color: this.props.value ? activeColor : inactiveColor,
+            borderBottom: `2px solid ${props.value ? activeColor : inactiveColor}`,
+            color: props.value ? activeColor : inactiveColor,
             '&::placeholder': {
               ...theme.typography.formField,
               color: inactiveColor
@@ -83,56 +77,55 @@ export class FormField extends React.Component<
 
           return (
             <span className={css({ display: 'inline-flex', margin: '0px 2px' })}>
-              {this.props.icon && <label className={iconStyles}>{this.props.icon}</label> }
+              {props.icon && <label className={iconStyles}>{props.icon}</label> }
               <input
-                type={this.props.type}
+                type={props.type}
                 placeholder={'Placeholder'}
-                style={this.props.style}
-                className={cx(inputStyles, this.props.className)}
+                style={props.style}
+                className={cx(inputStyles, props.className)}
                 value={
-                  this.props.value
-                    ? this.props.valueTransformer
-                      ? this.props.valueTransformer.toString(this.props.value)
-                      : this.props.value
+                  props.value
+                    ? props.valueTransformer
+                      ? props.valueTransformer.toString(props.value)
+                      : props.value
                     : ''
                 }
                 onChange={e => {
                   const val = e.target.value === '' ? null : e.target.value;
 
-                  if (this.props.onChange) {
-                    return this.props.onChange(
+                  if (props.onChange) {
+                    return props.onChange(
                       val !== null
-                        ? this.props.valueTransformer
-                          ? this.props.valueTransformer.fromString(val)
+                        ? props.valueTransformer
+                          ? props.valueTransformer.fromString(val)
                           : (val as any)
                         : null
                     );
                   }
                 }}
-                onKeyDown={this.props.onKeyDown}
+                onKeyDown={props.onKeyDown}
                 onFocus={() => {
-                  this.setState({
+                  setState({
                     focused: true
                   });
 
-                  if (this.props.onFocus) {
-                    this.props.onFocus();
+                  if (props.onFocus) {
+                    props.onFocus();
                   }
                 }}
                 onBlur={() => {
-                  this.setState({
+                  setState({
                     focused: false
                   });
 
-                  if (this.props.onBlur) {
-                    this.props.onBlur();
+                  if (props.onBlur) {
+                    props.onBlur();
                   }
                 }}
               />
             </span>
     );
-  }
-}
+};
 
 export function specifyFormType<V extends string | string[] | number | undefined>(
   type: string,
