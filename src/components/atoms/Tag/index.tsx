@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { ClickAwayListener } from '@material-ui/core';
 import { css, cx } from 'emotion';
-import { ThemeConsumer } from '../../../lib/theme';
+import { useTheme } from '../../../lib/theme';
 import { ButtonBase, EButtonType } from '../Button';
 
 export interface ITagViewModel {
@@ -27,9 +27,7 @@ export interface ITagActions {
 type TagProps = ITagViewModel & ITagActions;
 
 function Tag(props: TagProps) {
-  return (
-    <ThemeConsumer>
-      {theme => {
+  const theme = useTheme();
         const { color, ...textTheme } = theme.typography.label;
 
         return (
@@ -76,9 +74,6 @@ function Tag(props: TagProps) {
                 />*/}
             </ButtonBase>
           </ClickAwayListener>
-        );
-      }}
-    </ThemeConsumer>
   );
 }
 

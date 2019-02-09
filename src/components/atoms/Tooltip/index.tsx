@@ -3,7 +3,7 @@ import { CSSProperties } from 'react';
 
 import Popover, { TooltipPlacement } from '../Popover';
 import { css, cx } from 'emotion';
-import { getBWContrastingColor, ThemeConsumer } from '../../../lib/theme';
+import { getBWContrastingColor, useTheme } from '../../../lib/theme';
 import { ToggleAnimation } from '../../../lib/animation';
 
 type ChildFunction = ((
@@ -55,9 +55,7 @@ class Tooltip extends React.Component<TooltipProps, TooltipState> {
   }
 
   render() {
-    return (
-      <ThemeConsumer>
-        {theme => {
+const theme = useTheme();
           const color =
             (this.props.color && theme.palette.getColor(this.props.color)) ||
             (this.props.backgroundColor ? getBWContrastingColor(theme.palette.getColor(this.props.backgroundColor)) : 'black');
@@ -109,9 +107,6 @@ class Tooltip extends React.Component<TooltipProps, TooltipState> {
                 )}
               </span>
             </>
-          );
-        }}
-      </ThemeConsumer>
     );
   }
 }

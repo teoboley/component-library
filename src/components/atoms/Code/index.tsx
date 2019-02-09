@@ -2,7 +2,7 @@ import * as React from 'react';
 import { Controlled as CodeMirror } from 'react-codemirror2';
 import { css, cx } from 'emotion';
 
-import { Theme, ThemeConsumer } from '../../../lib/theme';
+import { Theme, useTheme } from '../../../lib/theme';
 
 import codeMirrorBaseStyles from './codemirror.base';
 import predefinedThemes from './themes/index';
@@ -39,9 +39,7 @@ class Code extends React.Component<CodeProps, ICodeState> {
   };
 
   render() {
-    return (
-      <ThemeConsumer>
-        {theme => {
+    const theme = useTheme();
           const themeTypography = this.props.inline
             ? theme.typography.codeLine
             : theme.typography.codeBlock;
@@ -108,9 +106,6 @@ class Code extends React.Component<CodeProps, ICodeState> {
                 }}
               />
             </div>
-          );
-        }}
-      </ThemeConsumer>
     );
   }
 

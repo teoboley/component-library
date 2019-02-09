@@ -1,7 +1,7 @@
 import * as React from 'react';
 import ReactSelect, { components as ReactSelectComponents } from 'react-select'
 import Color = require('color');
-import { getBWContrastingColor, ThemeConsumer } from '../../../lib/theme';
+import { getBWContrastingColor, useTheme } from '../../../lib/theme';
 import Tooltip from '../Tooltip';
 import { Spring } from 'react-spring';
 import Card from '../Card';
@@ -58,9 +58,9 @@ const Menu = (props: any) => {
 };
 
 const Select: React.FC<SelectProps> = props => {
+  const theme = useTheme();
+
   return (
-    <ThemeConsumer>
-      {theme =>
         <ReactSelect options={options} styles={{
           control: styles => ({ ...styles, backgroundColor: 'white', cursor: 'pointer' }),
           option: (styles, { data, isDisabled, isFocused, isSelected }) => (
@@ -91,9 +91,7 @@ const Select: React.FC<SelectProps> = props => {
             ...styles,
             ...theme.typography.label
           })
-        }} components={{ Menu }} className={props.className}/>
-      }</ThemeConsumer>
-  );
+        }} components={{ Menu }} className={props.className}/>);
 };
 
 export default Select;

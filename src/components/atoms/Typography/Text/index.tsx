@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { css, cx } from 'emotion';
-import { ThemeConsumer } from '../../../../lib/theme';
+import { useTheme } from '../../../../lib/theme';
 
 export enum ETextType {
   Body = 'body',
@@ -18,9 +18,8 @@ interface ITextViewModel {
 type TextProps = ITextViewModel;
 
 const Text: React.FC<TextProps> = props => {
-  return (
-    <ThemeConsumer>
-      {theme => {
+  const theme = useTheme();
+
         const baseCss = css({
           ...theme.typography[props.type],
           display: 'block',
@@ -32,9 +31,6 @@ const Text: React.FC<TextProps> = props => {
           <span style={props.style} className={cx(baseCss, props.className)}>
             {props.children}
           </span>
-        );
-      }}
-    </ThemeConsumer>
   );
 };
 

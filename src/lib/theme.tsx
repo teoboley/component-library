@@ -314,24 +314,19 @@ interface IThemeProviderViewModel {
 
 type ThemeProviderProps = IThemeProviderViewModel;
 
-export const ThemeConsumer = ThemeContext.Consumer;
+// export const ThemeConsumer = ThemeContext.Consumer;
 
 export const useTheme = () => {
   return useContext(ThemeContext);
 };
 
-export const ThemeProvider: React.SFC<ThemeProviderProps> = props => {
+export const ThemeProvider: React.FC<ThemeProviderProps> = props => {
   const { children, theme: localTheme } = props;
 
-  return (
-    <ThemeConsumer>
-      {outerTheme => {
-        const theme = outerTheme === defaultTheme ? localTheme : { ...outerTheme, ...localTheme };
+  const outerTheme = useTheme();
+  const theme = outerTheme === defaultTheme ? localTheme : { ...outerTheme, ...localTheme };
 
-        return <ThemeContext.Provider value={theme}>{children}</ThemeContext.Provider>;
-      }}
-    </ThemeConsumer>
-  );
+  return <ThemeContext.Provider value={theme}>{children}</ThemeContext.Provider>;
 };
 
 // TODO: create withTheme HOC

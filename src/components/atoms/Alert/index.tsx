@@ -2,7 +2,7 @@ import * as React from 'react';
 import { css, cx } from 'emotion';
 import CloseIcon from '@material-ui/icons/Close';
 
-import { getBWContrastingColor, ThemeConsumer } from '../../../lib/theme';
+import { getBWContrastingColor, useTheme } from '../../../lib/theme';
 
 import 'codemirror/mode/shell/shell';
 import 'codemirror/mode/javascript/javascript';
@@ -24,9 +24,7 @@ interface IAlertActions {
 type AlertProps = IAlertViewModel & IAlertActions;
 
 const Alert: React.FC<AlertProps> = props => {
-  return (
-    <ThemeConsumer>
-      {theme => {
+  const theme = useTheme();
         const backgroundColor = props.color ? theme.palette.getColor(props.color) : theme.palette.danger;
 
         return (
@@ -50,9 +48,6 @@ const Alert: React.FC<AlertProps> = props => {
               </div>
             </div>
           </DisplayToggleAnimation>
-        );
-      }}
-    </ThemeConsumer>
   );
 };
 

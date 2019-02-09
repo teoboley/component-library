@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { css, cx } from 'emotion';
-import { ThemeConsumer } from '../../../lib/theme';
+import { useTheme } from '../../../lib/theme';
 import { Ref } from 'react';
 
 interface ICardViewModel {
@@ -19,9 +19,7 @@ const baseStyles = css({
 });
 
 const Card: React.FC<CardProps> = props => {
-  return (
-    <ThemeConsumer>
-      {theme => {
+  const theme = useTheme();
         const styles = css({
           backgroundColor: theme.palette.background
         });
@@ -31,9 +29,6 @@ const Card: React.FC<CardProps> = props => {
             {props.children}
           </div>
         );
-      }}
-    </ThemeConsumer>
-  );
 };
 
 export default Card;

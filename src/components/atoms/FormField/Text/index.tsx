@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { css, cx } from 'emotion';
-import { ThemeConsumer } from '../../../../lib/theme';
+import { useTheme } from '../../../../lib/theme';
 import { withProps } from 'recompose';
 import { KeyboardEventHandler } from 'react';
 
@@ -43,9 +43,7 @@ export class FormField extends React.Component<
   };
 
   render() {
-    return (
-      <ThemeConsumer>
-        {theme => {
+    const theme = useTheme();
           const activeColor = this.props.activeColor || theme.palette.primary;
           const inactiveColor = this.props.inactiveColor || '#8D8D8D';
 
@@ -132,9 +130,6 @@ export class FormField extends React.Component<
                 }}
               />
             </span>
-          );
-        }}
-      </ThemeConsumer>
     );
   }
 }

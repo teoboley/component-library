@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { MouseEventHandler } from 'react';
-import { getBWContrastingColor, ThemeConsumer, useTheme } from '../../../lib/theme';
+import { getBWContrastingColor, useTheme } from '../../../lib/theme';
 import { css, cx } from 'emotion';
 import * as Color from 'color';
 
@@ -157,10 +157,7 @@ export type ButtonProps = IButtonViewModel & IButtonActions;
 const Button: React.FC<ButtonProps> = props => {
   const { children, style, className, ...otherProps } = props;
 
-  return (
-    <ThemeConsumer>
-      {theme => {
-
+  const theme = useTheme();
         const { color, ...buttonTheme } = theme.typography.button;
 
         return (
@@ -175,9 +172,6 @@ const Button: React.FC<ButtonProps> = props => {
             {children}
           </ButtonBase>
         );
-      }}
-    </ThemeConsumer>
-  );
 };
 
 export default Button;

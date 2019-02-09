@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { CSSProperties } from 'react';
 import { css, cx } from 'emotion';
-import { ThemeConsumer } from '../../../../lib/theme';
+import { useTheme } from '../../../../lib/theme';
 
 export enum EHeadingType {
   HERO,
@@ -23,9 +23,7 @@ interface IHeadingViewModel {
 type HeadingProps = IHeadingViewModel;
 
 const Heading: React.FC<HeadingProps> = props => {
-  return (
-    <ThemeConsumer>
-      {theme => {
+  const theme = useTheme();
         const baseCss = css({
           marginTop: 0,
           marginBottom: '0.35em'
@@ -96,9 +94,6 @@ const Heading: React.FC<HeadingProps> = props => {
               </h6>
             );
         }
-      }}
-    </ThemeConsumer>
-  );
 };
 
 export default Heading;
