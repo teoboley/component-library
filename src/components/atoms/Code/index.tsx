@@ -2,15 +2,15 @@ import * as React from 'react';
 import { Controlled as CodeMirror } from 'react-codemirror2';
 import { css, cx } from 'emotion';
 
-import { Theme, ThemeConsumer } from '../../../../lib/theme';
+import { Theme, ThemeConsumer } from '../../../lib/theme';
 
 import codeMirrorBaseStyles from './codemirror.base';
-import predefinedThemes from './themes';
+import predefinedThemes from './themes/index';
 
 import 'codemirror/mode/shell/shell';
 import 'codemirror/mode/javascript/javascript';
 
-interface ICodeBlockViewModel {
+interface ICodeViewModel {
   value: string;
   mode: any;
   theme?: (keyof typeof predefinedThemes) | 'none' | string;
@@ -23,17 +23,17 @@ interface ICodeBlockViewModel {
   className?: string;
 }
 
-interface ICodeBlockActions {
+interface ICodeActions {
   onChange?(value: string): void;
 }
 
-type CodeBlockProps = ICodeBlockViewModel & ICodeBlockActions;
+type CodeProps = ICodeViewModel & ICodeActions;
 
-interface ICodeBlockState {
+interface ICodeState {
   value: string;
 }
 
-class CodeBlock extends React.Component<CodeBlockProps, ICodeBlockState> {
+class Code extends React.Component<CodeProps, ICodeState> {
   readonly state = {
     value: this.props.value
   };
@@ -49,9 +49,9 @@ class CodeBlock extends React.Component<CodeBlockProps, ICodeBlockState> {
           const currentCodeThemeStyle = this.props.theme
             ? this.props.theme !== 'none' &&
               Object.keys(predefinedThemes).includes(this.props.theme)
-              ? CodeBlock.getPredefinedTheme(this.props.theme as keyof typeof predefinedThemes)
+              ? Code.getPredefinedTheme(this.props.theme as keyof typeof predefinedThemes)
               : null
-            : CodeBlock.getCustomTheme(theme.palette.code);
+            : Code.getCustomTheme(theme.palette.code);
 
           return (
             <div
@@ -280,4 +280,4 @@ class CodeBlock extends React.Component<CodeBlockProps, ICodeBlockState> {
   }
 }
 
-export default CodeBlock;
+export default Code;

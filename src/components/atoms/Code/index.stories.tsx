@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { storiesOf } from '@storybook/react';
-import CodeBlock from './CodeBlock/index';
+
+import CodeBlock from '.';
 import Text, { ETextType } from '../Typography/Text';
 
 storiesOf('Code Block', module)

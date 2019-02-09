@@ -15,7 +15,7 @@ interface IModalContainerActions {
 
 type ModalContainerProps = IModalContainerViewModel & IModalContainerActions;
 
-const ModalContainer: React.SFC<ModalContainerProps> = props => {
+const ModalContainer: React.FC<ModalContainerProps> = props => {
   return (
     <>
       <style>{// language=CSS

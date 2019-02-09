@@ -22,7 +22,7 @@ interface IHeadingViewModel {
 
 type HeadingProps = IHeadingViewModel;
 
-const Heading: React.SFC<HeadingProps> = props => {
+const Heading: React.FC<HeadingProps> = props => {
   return (
     <ThemeConsumer>
       {theme => {

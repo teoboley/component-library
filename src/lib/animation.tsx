@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { config as springConfig, Transition, animated } from 'react-spring';
 
-export type ToggleAnimation = React.ComponentType<{ toggle: boolean }>;
+export type ToggleAnimation = React.ComponentType<{ toggle: boolean; delay?: string; }>;
 export type TextAnimation = React.ComponentType<{ text: string }>;
 export type ItemsAnimation = React.ComponentType<{ items: any[] }>;
 export type Animation = ToggleAnimation | TextAnimation;

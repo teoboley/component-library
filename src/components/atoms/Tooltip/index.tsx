@@ -55,21 +55,22 @@ class Tooltip extends React.Component<TooltipProps, TooltipState> {
   }
 
   render() {
-    const color =
-      this.props.color ||
-      (this.props.backgroundColor ? getBWContrastingColor(this.props.backgroundColor) : 'black');
-    const backgroundColor = this.props.backgroundColor || 'white';
-
     return (
       <ThemeConsumer>
         {theme => {
+          const color =
+            (this.props.color && theme.palette.getColor(this.props.color)) ||
+            (this.props.backgroundColor ? getBWContrastingColor(theme.palette.getColor(this.props.backgroundColor)) : 'black');
+          const backgroundColor = this.props.backgroundColor || 'white';
+
           const tooltipStyle = css({
             ...theme.typography.tooltip,
             backgroundColor,
             borderRadius: 3,
             color,
             padding: '5px 7px',
-            maxWidth: this.props.maxWidth || 200
+            maxWidth: this.props.maxWidth || 200,
+            overflow: 'hidden'
           });
 
           return (
@@ -78,10 +79,11 @@ class Tooltip extends React.Component<TooltipProps, TooltipState> {
                 anchorEl={this.state.anchorEl}
                 arrowColor={this.props.withArrow ? backgroundColor : undefined}
                 placement={this.props.placement || { vertical: 'top' }}
-                animationComponent={DefaultPopoverAnimation}
               >
                 <div style={this.props.style} className={cx(tooltipStyle, this.props.className)}>
-                  {this.props.content}
+                  <DefaultTooltipTextAnimation toggle={Boolean(this.state.anchorEl)} delay={"100ms"}>
+                    {this.props.content}
+                  </DefaultTooltipTextAnimation>
                 </div>
               </Popover>
               <span style={{ display: 'inline-block' }}>
@@ -114,12 +116,12 @@ class Tooltip extends React.Component<TooltipProps, TooltipState> {
   }
 }
 
-const DefaultPopoverAnimation: ToggleAnimation = ({ toggle, children }) => (
+const DefaultTooltipTextAnimation: ToggleAnimation = ({ toggle, children, delay }) => (
   <div
     className={css({
-      opacity: toggle ? 1 : 0,
-      transform: toggle ? 'scale(1)' : 'scale(0)',
-      transition: 'opacity 300ms, transform 300ms'
+      opacity: toggle ? 1 : 0.5,
+      transform: toggle ? 'translateY(0px)' : 'translateY(20px)',
+      transition: `opacity 400ms ease${delay ? " " + delay : ""}, transform 300ms ease${delay ? " " + delay : ""}`
     })}
   >
     {children}

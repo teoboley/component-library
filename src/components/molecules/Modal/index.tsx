@@ -21,7 +21,7 @@ interface IModalActions {
 
 type ModalProps = IModalViewModel & IModalActions;
 
-const Modal: React.SFC<ModalProps> = props => {
+const Modal: React.FC<ModalProps> = props => {
   const HeadingAnimation = DisplayTextAnimation;
 
   return (

@@ -1,7 +1,7 @@
 import * as React from 'react';
 
 import Global from './global';
-import { CSSProperties } from 'react';
+import { CSSProperties, useContext } from 'react';
 import * as Color from 'color';
 
 interface ThemeCodePalette {
@@ -50,8 +50,12 @@ interface ThemeCodePalette {
 }
 
 interface ThemePalette {
-  primaryColor: string;
-  secondaryColor: string;
+  primary: string;
+  secondary: string;
+  disabled: string;
+  success: string;
+  danger: string;
+  warning: string;
   background: string;
   code: ThemeCodePalette;
   getColor(codeOrColor: string): string;
@@ -108,8 +112,12 @@ export const createTheme = (): Theme => {
 
   return {
     palette: {
-      primaryColor: primaryColor,
-      secondaryColor: secondaryColor,
+      primary: primaryColor,
+      secondary: secondaryColor,
+      disabled: "darkgrey",
+      success: "#35a537",
+      danger: "#e2353d",
+      warning: "#e2c81c",
       background: 'white',
       code: {
         window: {
@@ -156,11 +164,13 @@ export const createTheme = (): Theme => {
         }
       },
       getColor(codeOrColor: string) {
-        return codeOrColor === 'primary'
-          ? this.primaryColor
-          : codeOrColor === 'secondary'
-          ? this.secondaryColor
-          : codeOrColor;
+        let keyIndex = Object.keys(this).indexOf(codeOrColor);
+
+        if (keyIndex !== -1) {
+          return this[Object.keys(this)[keyIndex]];
+        } else {
+          return codeOrColor;
+        }
       }
     },
     typography: {
@@ -238,13 +248,13 @@ export const createTheme = (): Theme => {
       caption: {
         color: 'rgba(0, 0, 0, 0.5)',
         fontFamily: textFontFamily,
-        fontSize: rootFontSize * 0.75,
+        fontSize: rootFontSize * 0.875,
         fontWeight: 400
       },
       label: {
         color: 'rgba(0, 0, 0, 0.5)',
         fontFamily: textFontFamily,
-        fontSize: rootFontSize * 0.75,
+        fontSize: rootFontSize * 0.875,
         fontWeight: 400
       },
       tooltip: {
@@ -305,6 +315,10 @@ interface IThemeProviderViewModel {
 type ThemeProviderProps = IThemeProviderViewModel;
 
 export const ThemeConsumer = ThemeContext.Consumer;
+
+export const useTheme = () => {
+  return useContext(ThemeContext);
+};
 
 export const ThemeProvider: React.SFC<ThemeProviderProps> = props => {
   const { children, theme: localTheme } = props;

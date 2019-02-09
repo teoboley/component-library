@@ -19,7 +19,7 @@ interface IMenuActions {
 
 type MenuProps = IMenuViewModel & IMenuActions;
 
-const Menu: React.SFC<MenuProps> = props => {
+const Menu: React.FC<MenuProps> = props => {
   const { children, ...otherProps } = props;
 
   return (

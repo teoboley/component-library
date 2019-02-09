@@ -18,7 +18,7 @@ interface ITextInputBarActions {
 
 type TextInputBarProps = ITextInputBarViewModel & ITextInputBarActions;
 
-const UnstyledTextInputBar: React.SFC<TextInputBarProps> = props => {
+const UnstyledTextInputBar: React.FC<TextInputBarProps> = props => {
   return (
     <TextField
       InputProps={{
@@ -41,5 +41,5 @@ const UnstyledTextInputBar: React.SFC<TextInputBarProps> = props => {
   );
 };
 
-const TextInputBar = withStyles(styles)(UnstyledTextInputBar);
+const TextInputBar = withStyles(styles)(UnstyledTextInputBar as any); // FIXME
 export default TextInputBar;

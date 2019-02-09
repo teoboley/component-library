@@ -17,7 +17,7 @@ interface ITextViewModel {
 
 type TextProps = ITextViewModel;
 
-const Text: React.SFC<TextProps> = props => {
+const Text: React.FC<TextProps> = props => {
   return (
     <ThemeConsumer>
       {theme => {

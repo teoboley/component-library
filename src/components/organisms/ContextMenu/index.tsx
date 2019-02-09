@@ -86,7 +86,7 @@ interface IContextMenuViewModel {
 
 type ContextMenuProps = IContextMenuViewModel;
 
-const ContextMenu: React.SFC<ContextMenuProps> = props => {
+const ContextMenu: React.FC<ContextMenuProps> = props => {
   return (
     <ContextMenuController
       menuComponent={({ isOpen, activeState, close }) => (

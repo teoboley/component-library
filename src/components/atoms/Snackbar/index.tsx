@@ -18,7 +18,7 @@ interface INewSnackbarActions {}
 
 type NewSnackbarProps = INewSnackbarViewModel & INewSnackbarActions;
 
-export const NewSnackbar: React.SFC<NewSnackbarProps> = props => {
+export const NewSnackbar: React.FC<NewSnackbarProps> = props => {
   return (
     <Card
       style={props.style}

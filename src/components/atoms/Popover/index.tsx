@@ -3,8 +3,7 @@ import { Popper } from 'react-popper';
 import * as PopperJS from 'popper.js';
 import ClickAwayListener from '@material-ui/core/ClickAwayListener';
 import { css, cx } from 'emotion';
-import { Transition, animated, config as springConfig } from 'react-spring';
-import { DisplayToggleAnimation, ToggleAnimation } from '../../../lib/animation';
+import { ToggleAnimation } from '../../../lib/animation';
 
 export interface TooltipPlacement {
   horizontal?: 'left' | 'center' | 'right';
@@ -38,7 +37,7 @@ interface IPopoverActions {
 
 type PopoverProps = IPopoverViewModel & IPopoverActions;
 
-const Popover: React.SFC<PopoverProps> = props => {
+const Popover: React.FC<PopoverProps> = props => {
   let referenceElement: PopperJS.ReferenceObject | undefined = undefined;
 
   switch (props.anchorReference) {
@@ -85,7 +84,7 @@ const Popover: React.SFC<PopoverProps> = props => {
     }
   `;
 
-  const Animation = props.animationComponent || DisplayToggleAnimation;
+  const Animation = props.animationComponent || DefaultPopoverAnimation;
 
   return (
     <div className={css({ display: 'inline-block' })}>
@@ -99,15 +98,17 @@ const Popover: React.SFC<PopoverProps> = props => {
           >
             <Animation toggle={isOpen}>
               <ClickAwayListener onClickAway={() => isOpen && props.onClose && props.onClose()}>
-                {props.children}
-                {props.arrowColor && (
-                  <div
-                    data-placement={placement}
-                    ref={arrowProps.ref}
-                    style={arrowProps.style}
-                    className={getArrowStyle(props.arrowColor)}
-                  />
-                )}
+                <div>
+                  {props.children}
+                  {props.arrowColor && (
+                    <div
+                      data-placement={placement}
+                      ref={arrowProps.ref}
+                      style={arrowProps.style}
+                      className={getArrowStyle(props.arrowColor)}
+                    />
+                  )}
+                </div>
               </ClickAwayListener>
             </Animation>
           </div>
@@ -116,6 +117,18 @@ const Popover: React.SFC<PopoverProps> = props => {
     </div>
   );
 };
+
+const DefaultPopoverAnimation: ToggleAnimation = ({ toggle, children, delay }) => (
+  <div
+    className={css({
+      opacity: toggle ? 1 : 0,
+      transform: toggle ? 'scale(1)' : 'scale(0)',
+      transition: `opacity 300ms ease${delay ? " " + delay : ""}, transform 300ms ease${delay ? " " + delay : ""}`
+    })}
+  >
+    {children}
+  </div>
+);
 
 const getArrowStyle = (arrowColor: string) => {
   const arrowWidth = '7.5px';

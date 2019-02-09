@@ -18,7 +18,7 @@ const baseStyles = css({
   borderRadius: 5
 });
 
-const Card: React.SFC<CardProps> = props => {
+const Card: React.FC<CardProps> = props => {
   return (
     <ThemeConsumer>
       {theme => {

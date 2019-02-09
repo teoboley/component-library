@@ -2,6 +2,7 @@ import * as React from 'react';
 import { css, cx } from 'emotion';
 import { ThemeConsumer } from '../../../../lib/theme';
 import { withProps } from 'recompose';
+import { KeyboardEventHandler } from 'react';
 
 type ValueTransformer<V> = { toString: (val: V) => string; fromString: (s: string) => V };
 
@@ -22,6 +23,7 @@ interface IFormFieldViewModel<V> {
 
 interface IFormFieldActions<V> {
   onChange?: (value: V | null) => void;
+  onKeyDown?: KeyboardEventHandler<HTMLInputElement>;
   onBlur?: () => void;
   onFocus?: () => void;
 }
@@ -31,18 +33,6 @@ export type FormFieldProps<V> = IFormFieldViewModel<V> & IFormFieldActions<V>;
 interface IFormFieldState {
   focused: boolean;
 }
-
-const baseCSS = css({
-  backgroundColor: 'transparent',
-  border: '1px solid transparent',
-  margin: 0,
-  padding: '10px 14px',
-  display: 'inline-block',
-  '&:focus': {
-    outline: 'none'
-  },
-  transition: 'border 200ms'
-});
 
 export class FormField extends React.Component<
   FormFieldProps<string | undefined>,
@@ -56,28 +46,31 @@ export class FormField extends React.Component<
     return (
       <ThemeConsumer>
         {theme => {
-          const activeColor = this.props.activeColor || theme.palette.primaryColor;
+          const activeColor = this.props.activeColor || theme.palette.primary;
           const inactiveColor = this.props.inactiveColor || '#8D8D8D';
 
           const iconStyles = css({
-            backgroundColor: this.props.value || this.state.focused ? activeColor : inactiveColor,
-            borderRadius: '5px 0px 0px 5px',
-            color: 'white',
-            // mixBlendMode: 'screen',
+            color: this.props.value ? activeColor : inactiveColor,
             display: 'flex',
             padding: 5,
+            margin: '0px 3px',
             justifyContent: 'center',
             alignItems: 'center',
             '&:focus': {
-              backgroundColor: activeColor
+              color: activeColor
             },
-            transition: 'background-color 200ms'
+            transition: 'color 200ms'
           });
 
           const inputStyles = css({
             ...theme.typography.formField,
-            border: `1px solid ${this.props.value ? activeColor : inactiveColor}`,
-            borderRadius: this.props.icon ? '0px 5px 5px 0px' : 5,
+            backgroundColor: 'transparent',
+            width: 120,
+            border: 'none',
+            padding: '5px 0px',
+            display: 'inline-block',
+            transition: 'border 200ms',
+            borderBottom: `2px solid ${this.props.value ? activeColor : inactiveColor}`,
             color: this.props.value ? activeColor : inactiveColor,
             '&::placeholder': {
               ...theme.typography.formField,
@@ -85,18 +78,19 @@ export class FormField extends React.Component<
             },
             '&:focus': {
               color: activeColor,
-              border: `1px solid ${activeColor}`
+              borderBottom: `2px solid ${activeColor}`,
+              outline: 'none'
             }
           });
 
           return (
-            <span className={css({ display: 'inline-flex' })}>
-              {this.props.icon && <span className={iconStyles}>{this.props.icon}</span>}
+            <span className={css({ display: 'inline-flex', margin: '0px 2px' })}>
+              {this.props.icon && <label className={iconStyles}>{this.props.icon}</label> }
               <input
                 type={this.props.type}
                 placeholder={'Placeholder'}
                 style={this.props.style}
-                className={cx(baseCSS, inputStyles, this.props.className)}
+                className={cx(inputStyles, this.props.className)}
                 value={
                   this.props.value
                     ? this.props.valueTransformer
@@ -117,6 +111,7 @@ export class FormField extends React.Component<
                     );
                   }
                 }}
+                onKeyDown={this.props.onKeyDown}
                 onFocus={() => {
                   this.setState({
                     focused: true

@@ -6,4 +6,5 @@ export { default as SnackbarController } from './Snackbar';
 export { default as Tag } from './Tag';
 export { default as TextInputBar } from './TextInputBar';
 export { default as Tooltip } from './Tooltip';
+export { default as Select } from './Select';
 export * from './Typography';
