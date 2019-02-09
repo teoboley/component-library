@@ -20,17 +20,17 @@ type TextProps = ITextViewModel;
 const Text: React.FC<TextProps> = props => {
   const theme = useTheme();
 
-        const baseCss = css({
-          ...theme.typography[props.type],
-          display: 'block',
-          marginTop: 0,
-          marginBottom: '0.35em'
-        });
+  const baseCss = css({
+    ...theme.typography[props.type],
+    display: 'block',
+    marginTop: 0,
+    marginBottom: '0.35em'
+  });
 
-        return (
-          <span style={props.style} className={cx(baseCss, props.className)}>
-            {props.children}
-          </span>
+  return (
+    <span style={props.style} className={cx(baseCss, props.className)}>
+      {props.children}
+    </span>
   );
 };
 

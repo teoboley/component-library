@@ -11,7 +11,8 @@ storiesOf('Code Block', module)
         <div style={{ marginBottom: 10 }}>
           <Text type={ETextType.Body}>
             This is body text with some code:{' '}
-            <CodeBlock value={'echo "Hello World"'} mode={'text/x-sh'} inline editable />, it's pretty sweet.
+            <CodeBlock value={'echo "Hello World"'} mode={'text/x-sh'} inline editable />, it's
+            pretty sweet.
           </Text>
         </div>
         <CodeBlock

@@ -25,29 +25,39 @@ type AlertProps = IAlertViewModel & IAlertActions;
 
 const Alert: React.FC<AlertProps> = props => {
   const theme = useTheme();
-        const backgroundColor = props.color ? theme.palette.getColor(props.color) : theme.palette.danger;
+  const backgroundColor = props.color ? theme.palette.getColor(props.color) : theme.palette.danger;
 
-        return (
-          <DisplayToggleAnimation toggle={props.open}>
-            <div style={props.style} className={cx(css({
-              ...theme.typography.label,
-              display: 'flex',
-              justifyContent: 'space-between',
-              alignItems: 'center',
-              padding: "5px 10px 5px 15px",
-              borderRadius: 5,
-              margin: "2px 0px",
-              color: getBWContrastingColor(backgroundColor),
-              backgroundColor
-            }), props.className)}>
-              <div>
-                {props.children}
-              </div>
-              <div>
-                <Button color={getBWContrastingColor(backgroundColor)} onClick={props.onClose} className={css({ padding: "2px 2px 0px 2px" })}><CloseIcon /></Button>
-              </div>
-            </div>
-          </DisplayToggleAnimation>
+  return (
+    <DisplayToggleAnimation toggle={props.open}>
+      <div
+        style={props.style}
+        className={cx(
+          css({
+            ...theme.typography.label,
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            padding: '5px 10px 5px 15px',
+            borderRadius: 5,
+            margin: '2px 0px',
+            color: getBWContrastingColor(backgroundColor),
+            backgroundColor
+          }),
+          props.className
+        )}
+      >
+        <div>{props.children}</div>
+        <div>
+          <Button
+            color={getBWContrastingColor(backgroundColor)}
+            onClick={props.onClose}
+            className={css({ padding: '2px 2px 0px 2px' })}
+          >
+            <CloseIcon />
+          </Button>
+        </div>
+      </div>
+    </DisplayToggleAnimation>
   );
 };
 

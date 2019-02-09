@@ -146,11 +146,9 @@ export const ButtonBase: React.FC<ButtonBaseProps> = props => {
   );
 };
 
-interface IButtonViewModel extends IButtonBaseViewModel {
-}
+interface IButtonViewModel extends IButtonBaseViewModel {}
 
-interface IButtonActions extends IButtonBaseActions {
-}
+interface IButtonActions extends IButtonBaseActions {}
 
 export type ButtonProps = IButtonViewModel & IButtonActions;
 
@@ -158,20 +156,23 @@ const Button: React.FC<ButtonProps> = props => {
   const { children, style, className, ...otherProps } = props;
 
   const theme = useTheme();
-        const { color, ...buttonTheme } = theme.typography.button;
+  const { color, ...buttonTheme } = theme.typography.button;
 
-        return (
-          <ButtonBase
-            style={style}
-            className={cx(css({
-              ...buttonTheme,
-              textAlign: 'center'
-            }), className)}
-            {...otherProps}
-          >
-            {children}
-          </ButtonBase>
-        );
+  return (
+    <ButtonBase
+      style={style}
+      className={cx(
+        css({
+          ...buttonTheme,
+          textAlign: 'center'
+        }),
+        className
+      )}
+      {...otherProps}
+    >
+      {children}
+    </ButtonBase>
+  );
 };
 
 export default Button;

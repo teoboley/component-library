@@ -20,15 +20,15 @@ const baseStyles = css({
 
 const Card: React.FC<CardProps> = props => {
   const theme = useTheme();
-        const styles = css({
-          backgroundColor: theme.palette.background
-        });
+  const styles = css({
+    backgroundColor: theme.palette.background
+  });
 
-        return (
-          <div style={props.style} className={cx(baseStyles, styles, props.className)}>
-            {props.children}
-          </div>
-        );
+  return (
+    <div style={props.style} className={cx(baseStyles, styles, props.className)}>
+      {props.children}
+    </div>
+  );
 };
 
 export default Card;

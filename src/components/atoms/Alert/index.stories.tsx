@@ -4,9 +4,9 @@ import { blue, green, red } from '@material-ui/core/colors';
 import Alert from '.';
 import { css } from 'emotion';
 
-storiesOf('Alert', module)
-  .add('Default', () => {
-    return <div style={{ padding: 50 }}>
+storiesOf('Alert', module).add('Default', () => {
+  return (
+    <div style={{ padding: 50 }}>
       <div className={css({ marginBottom: 20 })}>
         <Alert open color={'primary'}>
           Primary
@@ -35,5 +35,6 @@ storiesOf('Alert', module)
           Green
         </Alert>
       </div>
-    </div>;
-  });
+    </div>
+  );
+});

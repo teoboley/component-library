@@ -114,10 +114,10 @@ export const createTheme = (): Theme => {
     palette: {
       primary: primaryColor,
       secondary: secondaryColor,
-      disabled: "darkgrey",
-      success: "#35a537",
-      danger: "#e2353d",
-      warning: "#e2c81c",
+      disabled: 'darkgrey',
+      success: '#35a537',
+      danger: '#e2353d',
+      warning: '#e2c81c',
       background: 'white',
       code: {
         window: {

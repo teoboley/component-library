@@ -28,33 +28,33 @@ type TagProps = ITagViewModel & ITagActions;
 
 function Tag(props: TagProps) {
   const theme = useTheme();
-        const { color, ...textTheme } = theme.typography.label;
+  const { color, ...textTheme } = theme.typography.label;
 
-        return (
-          <ClickAwayListener
-            onClickAway={() => props.renaming && props.onSetRenaming && props.onSetRenaming(null)}
-          >
-            <ButtonBase type={props.selected ? EButtonType.Contained : EButtonType.Overlay}
-                        color={props.color}
-                        secondaryColor={props.secondaryColor}
-
-                        onClick={!props.renaming ? props.onSelect : undefined}
-
-                        style={props.style}
-                        className={cx(
-                          css({
-                            ...textTheme,
-                            display: 'inline-flex',
-                            alignItems: 'center',
-                            height: 32,
-                            borderRadius: 50,
-                            padding: "0px 12px",
-                            margin: 2
-                          }),
-                          props.className
-                        )}>
-                {props.label}
-                {/* <TextField
+  return (
+    <ClickAwayListener
+      onClickAway={() => props.renaming && props.onSetRenaming && props.onSetRenaming(null)}
+    >
+      <ButtonBase
+        type={props.selected ? EButtonType.Contained : EButtonType.Overlay}
+        color={props.color}
+        secondaryColor={props.secondaryColor}
+        onClick={!props.renaming ? props.onSelect : undefined}
+        style={props.style}
+        className={cx(
+          css({
+            ...textTheme,
+            display: 'inline-flex',
+            alignItems: 'center',
+            height: 32,
+            borderRadius: 50,
+            padding: '0px 12px',
+            margin: 2
+          }),
+          props.className
+        )}
+      >
+        {props.label}
+        {/* <TextField
                   color="primary"
                   className={this.props.classes.renamingChipTextField}
                   InputProps={{ classes: { root: this.props.classes.renamingChipInput } }}
@@ -72,8 +72,8 @@ function Tag(props: TagProps) {
                     }
                   }}
                 />*/}
-            </ButtonBase>
-          </ClickAwayListener>
+      </ButtonBase>
+    </ClickAwayListener>
   );
 }
 

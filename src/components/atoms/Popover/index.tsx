@@ -123,7 +123,9 @@ const DefaultPopoverAnimation: ToggleAnimation = ({ toggle, children, delay }) =
     className={css({
       opacity: toggle ? 1 : 0,
       transform: toggle ? 'scale(1)' : 'scale(0)',
-      transition: `opacity 300ms ease${delay ? " " + delay : ""}, transform 300ms ease${delay ? " " + delay : ""}`
+      transition: `opacity 300ms ease${delay ? ' ' + delay : ''}, transform 300ms ease${
+        delay ? ' ' + delay : ''
+      }`
     })}
   >
     {children}
