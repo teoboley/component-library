@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { CSSProperties } from 'react';
+import { CSSProperties, useRef, useState } from 'react';
 
 import Popover, { TooltipPlacement } from '../Popover';
 import { css, cx } from 'emotion';
@@ -33,33 +33,24 @@ type TooltipState = {
   anchorEl: any | null;
 };
 
-class Tooltip extends React.Component<TooltipProps, TooltipState> {
-  private childContainer: HTMLSpanElement | null;
+const Tooltip: React.FC<TooltipProps> = props => {
+    const childContainer = useRef<HTMLSpanElement>(null);
+    const [state, setState] = useState<TooltipState>({ anchorEl: null });
 
-  state = {
-    anchorEl: null
-  };
-
-  constructor(props: TooltipProps) {
-    super(props);
-    this.handleTooltipClose = this.handleTooltipClose.bind(this);
-    this.handleTooltipOpen = this.handleTooltipOpen.bind(this);
-  }
-
-  handleTooltipClose() {
-    this.setState({ anchorEl: null });
-  }
-
-  handleTooltipOpen(anchorEl?: any) {
-    this.setState({ anchorEl: anchorEl || null });
-  }
-
-  render() {
 const theme = useTheme();
+
+    const handleTooltipClose = () => {
+      setState({ anchorEl: null });
+    };
+
+    const handleTooltipOpen = (anchorEl?: any) => {
+      setState({ anchorEl: anchorEl || null });
+    };
+
           const color =
-            (this.props.color && theme.palette.getColor(this.props.color)) ||
-            (this.props.backgroundColor ? getBWContrastingColor(theme.palette.getColor(this.props.backgroundColor)) : 'black');
-          const backgroundColor = this.props.backgroundColor || 'white';
+            (props.color && theme.palette.getColor(props.color)) ||
+            (props.backgroundColor ? getBWContrastingColor(theme.palette.getColor(props.backgroundColor)) : 'black');
+          const backgroundColor = props.backgroundColor || 'white';
 
           const tooltipStyle = css({
             ...theme.typography.tooltip,
@@ -67,49 +58,48 @@ const theme = useTheme();
             borderRadius: 3,
             color,
             padding: '5px 7px',
-            maxWidth: this.props.maxWidth || 200,
+            maxWidth: props.maxWidth || 200,
             overflow: 'hidden'
           });
 
           return (
             <>
               <Popover
-                anchorEl={this.state.anchorEl}
-                arrowColor={this.props.withArrow ? backgroundColor : undefined}
-                placement={this.props.placement || { vertical: 'top' }}
+                anchorEl={state.anchorEl}
+                arrowColor={props.withArrow ? backgroundColor : undefined}
+                placement={props.placement || { vertical: 'top' }}
               >
-                <div style={this.props.style} className={cx(tooltipStyle, this.props.className)}>
-                  <DefaultTooltipTextAnimation toggle={Boolean(this.state.anchorEl)} delay={"100ms"}>
-                    {this.props.content}
+                <div style={props.style} className={cx(tooltipStyle, props.className)}>
+                  <DefaultTooltipTextAnimation toggle={Boolean(state.anchorEl)} delay={"100ms"}>
+                    {props.content}
                   </DefaultTooltipTextAnimation>
                 </div>
               </Popover>
               <span style={{ display: 'inline-block' }}>
-                {{}.toString.call(this.props.children) === '[object Function]' ? (
-                  (this.props.children as ChildFunction)({
-                    open: this.handleTooltipOpen,
-                    close: this.handleTooltipClose
+                {{}.toString.call(props.children) === '[object Function]' ? (
+                  (props.children as ChildFunction)({
+                    open: handleTooltipOpen,
+                    close: handleTooltipClose
                   })
                 ) : (
                   <span
                     className={css({ display: 'inline-block' })}
-                    ref={el => (this.childContainer = el)}
+                    ref={childContainer}
                     onMouseEnter={() =>
-                      !this.props.disableHoverListener &&
-                      this.handleTooltipOpen(this.childContainer)
+                      !props.disableHoverListener &&
+                      handleTooltipOpen(childContainer.current)
                     }
                     onMouseLeave={() =>
-                      !this.props.disableHoverListener && this.handleTooltipClose()
+                      !props.disableHoverListener && handleTooltipClose()
                     }
                   >
-                    {this.props.children as React.ReactElement<any>}
+                    {props.children as React.ReactElement<any>}
                   </span>
                 )}
               </span>
             </>
     );
-  }
-}
+  };
 
 const DefaultTooltipTextAnimation: ToggleAnimation = ({ toggle, children, delay }) => (
   <div
