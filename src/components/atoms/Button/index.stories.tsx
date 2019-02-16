@@ -34,6 +34,9 @@ const renderButtonsWithType = (type: EButtonType) => {
 };
 
 storiesOf('Button', module)
+  .add('Highlight', () => {
+    return renderButtonsWithType(EButtonType.Highlight);
+  })
   .add('Overlay', () => {
     return renderButtonsWithType(EButtonType.Overlay);
   })

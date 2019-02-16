@@ -4,10 +4,11 @@ import CloseIcon from '@material-ui/icons/Close';
 
 import { getBWContrastingColor, useTheme } from '../../../lib/theme';
 
+import { DisplayToggleAnimation } from '../../../lib/animation';
+import Button, { EButtonType } from '../../atoms/Button';
+
 import 'codemirror/mode/shell/shell';
 import 'codemirror/mode/javascript/javascript';
-import { DisplayToggleAnimation } from '../../../lib/animation';
-import Button from '../Button';
 
 interface IAlertViewModel {
   color?: string;
@@ -49,6 +50,7 @@ const Alert: React.FC<AlertProps> = props => {
         <div>{props.children}</div>
         <div>
           <Button
+            type={EButtonType.Highlight}
             color={getBWContrastingColor(backgroundColor)}
             onClick={props.onClose}
             className={css({ padding: '2px 2px 0px 2px' })}

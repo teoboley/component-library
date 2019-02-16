@@ -3,7 +3,7 @@ import ReactSelect, { components as ReactSelectComponents } from 'react-select';
 import Color = require('color');
 import { getBWContrastingColor, useTheme } from '../../../lib/theme';
 import Tooltip from '../Tooltip';
-import { Spring } from 'react-spring';
+import { Spring } from 'react-spring/renderprops';
 import Card from '../Card';
 import { css } from 'emotion';
 

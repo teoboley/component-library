@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { config as springConfig, Transition, animated } from 'react-spring';
+import { config as springConfig, Transition, animated } from 'react-spring/renderprops';
 
 export type ToggleAnimation = React.ComponentType<{ toggle: boolean; delay?: string }>;
 export type TextAnimation = React.ComponentType<{ text: string }>;

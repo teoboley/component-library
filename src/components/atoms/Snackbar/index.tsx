@@ -1,24 +1,138 @@
 import * as React from 'react';
-import { IconButton, Snackbar } from '@material-ui/core';
+import { useContext, useEffect, useState } from 'react';
+import { css, cx } from 'emotion';
+import { useTransition, animated } from 'react-spring';
+
 import CloseIcon from '@material-ui/icons/Close';
 import Card from '../Card';
 import Heading, { EHeadingType } from '../Typography/Heading';
 import Text, { ETextType } from '../Typography/Text';
-import { css, cx } from 'emotion';
 import Button, { EButtonType } from '../Button';
+import { useRef } from 'react';
 
-interface INewSnackbarViewModel {
+
+
+let id = 0;
+
+type MessageElement = (onClose: () => void) => JSX.Element;
+
+interface IMessage {
+  key: number;
+  msgElement: MessageElement;
+  timeout?: number;
+}
+
+export type AddMessageFunc = (msgElement: MessageElement, timeout?: number | null) => void;
+
+export const MessageHub: React.FC<{ children: (input: AddMessageFunc) => void; }> = props => {
+  const [refMap] = useState<WeakMap<IMessage, HTMLElement>>(() => new WeakMap());
+  const [dismissMap] = useState<WeakMap<IMessage, () => void>>(() => new WeakMap());
+  const [items, setItems] = useState<Array<IMessage>>([]);
+
+  const transitions = useTransition(items, item => item.key, {
+    from: { opacity: 0, height: 0, marginTop: 0 },
+    enter: item => async (next: any) => {
+      const timer = item.timeout && setTimeout(() => {
+        setItems(state => state.filter(i => i.key !== item.key));
+      },item.timeout);
+
+      dismissMap.set(item, () => {
+        timer && clearTimeout(timer);
+        setItems(state => state.filter(i => i.key !== item.key));
+      });
+
+      await next({ opacity: 1, height: refMap.get(item)!.offsetHeight, marginTop: 5 });
+    },
+    leave: {
+      opacity: 0,
+      height: 0,
+      marginTop: 0
+    },
+    config: { tension: 125, friction: 20, precision: 0.1 }
+  });
+
+  useEffect(() => void props.children((msgElement, timeout = 5_000) => setItems(state => [...state, { key: id++, msgElement, timeout: timeout || undefined }])), []);
+
+  return (
+    <div className={css({
+      position: "fixed",
+      zIndex: 1000,
+      width: "0 auto",
+      top: 'unset',
+      bottom: '30px',
+      margin: '0 auto',
+      left: 30,
+      right: 30,
+      display: 'flex',
+      flexDirection: 'column',
+      pointerEvents: 'none',
+      alignItems: `flex-end`,
+      '@media (max-width: 680px)': {
+        alignItems: 'center'
+      }
+    })}>
+      {transitions.map(({ key, item, props: style }) => {
+        const Message = item.msgElement(() => {
+          dismissMap.has(item) && dismissMap.get(item)!();
+        });
+
+        return (
+          <animated.div key={key} style={style} className={css({
+            boxSizing: 'border-box',
+            position: 'relative',
+            overflow: 'hidden',
+            pointerEvents: 'auto'
+          })}>
+            <div ref={ref => ref && refMap.set(item, ref)}>
+              { Message }
+            </div>
+          </animated.div>
+        );
+      })}
+    </div>
+  )
+};
+
+export const MessageContext = React.createContext<AddMessageFunc>(() => {});
+
+export const MessageProvider: React.FC = props => {
+  const ref = useRef<AddMessageFunc | null>(null);
+  const [state, setState] = useState<{ value: AddMessageFunc | null }>({ value: null });
+
+  useEffect(() => void setState({ value: ref.current }));
+
+  return <>
+    <MessageContext.Provider value={state.value || (() => {})}>
+      {props.children}
+    </MessageContext.Provider>
+    <MessageHub children={add => {
+      ref.current = add;
+    }} />
+  </>
+};
+
+export const MessageConsumer = MessageContext.Consumer;
+
+export const useMessage = () => {
+  return useContext(MessageContext);
+};
+
+interface ISnackbarViewModel {
+  heading: React.ReactChild;
+  description: React.ReactChild;
   dismissable?: boolean;
 
   style?: React.CSSProperties;
   className?: string;
 }
 
-interface INewSnackbarActions {}
+interface ISnackbarActions {
+  onClose?(): void;
+}
 
-type NewSnackbarProps = INewSnackbarViewModel & INewSnackbarActions;
+type SnackbarProps = ISnackbarViewModel & ISnackbarActions;
 
-export const NewSnackbar: React.FC<NewSnackbarProps> = props => {
+export const Snackbar: React.FC<SnackbarProps> = props => {
   return (
     <Card
       style={props.style}
@@ -36,10 +150,10 @@ export const NewSnackbar: React.FC<NewSnackbarProps> = props => {
     >
       <div className={css({ marginRight: 20 })}>
         <Heading type={EHeadingType.H6} className={css({ marginBottom: 0 })}>
-          Snackbar Heading
+          { props.heading }
         </Heading>
         <Text type={ETextType.Caption} className={css({ marginBottom: 0 })}>
-          Some description
+          { props.description }
         </Text>
       </div>
       <div
@@ -51,13 +165,16 @@ export const NewSnackbar: React.FC<NewSnackbarProps> = props => {
           marginRight: props.dismissable ? 32 : undefined
         })}
       >
-        <Button type={EButtonType.Outline}>Bye</Button>
-        <Button type={EButtonType.Contained}>Aight</Button>
+        { props.children }
       </div>
       {props.dismissable && (
         <Button
-          type={EButtonType.Overlay}
+          type={EButtonType.Highlight}
           className={css({ padding: '2px 2px 0px 2px', position: 'absolute', top: 2, right: 2 })}
+          onClick={e => {
+            e.stopPropagation();
+            props.onClose && props.onClose();
+          }}
         >
           <CloseIcon />
         </Button>
@@ -65,122 +182,3 @@ export const NewSnackbar: React.FC<NewSnackbarProps> = props => {
     </Card>
   );
 };
-
-interface ISnackbarControllerViewModel {
-  children: (
-    snackbarController: {
-      open: (message: string, actions?: JSX.Element[]) => void;
-      isOpen: boolean;
-      close: () => void;
-    }
-  ) => JSX.Element;
-}
-
-type SnackbarControllerProps = ISnackbarControllerViewModel;
-
-interface ISnackbarModel {
-  message: string;
-  actions: JSX.Element[];
-  key: number;
-}
-
-interface ISnackbarControllerState {
-  open: boolean;
-  messageInfo: ISnackbarModel;
-}
-
-export default class SnackbarController extends React.Component<
-  SnackbarControllerProps,
-  ISnackbarControllerState
-> {
-  private queue: ISnackbarModel[] = [];
-
-  readonly state: ISnackbarControllerState = {
-    open: false,
-    messageInfo: {
-      message: '',
-      actions: [],
-      key: -1
-    }
-  };
-
-  constructor(props: SnackbarControllerProps) {
-    super(props);
-
-    this.handleOpen = this.handleOpen.bind(this);
-    this.processQueue = this.processQueue.bind(this);
-    this.handleClose = this.handleClose.bind(this);
-    this.handleExited = this.handleExited.bind(this);
-  }
-
-  handleOpen(message: string, actions: JSX.Element[]) {
-    this.queue.push({
-      message,
-      key: new Date().getTime(),
-      actions
-    });
-
-    if (this.state.open) {
-      // immediately begin dismissing current message
-      // to start showing new one
-      this.setState({ open: false });
-    } else {
-      this.processQueue();
-    }
-  }
-
-  processQueue() {
-    if (this.queue.length > 0) {
-      this.setState({
-        messageInfo: { actions: [], ...(this.queue.shift() || this.state.messageInfo) },
-        open: true
-      });
-    }
-  }
-
-  handleClose(event?: React.SyntheticEvent, reason?: string) {
-    if (reason === 'clickaway') {
-      return;
-    }
-    this.setState({ open: false });
-  }
-
-  handleExited() {
-    this.processQueue();
-  }
-
-  render() {
-    const { message, key, actions } = this.state.messageInfo;
-    return (
-      <>
-        {this.props.children({
-          open: this.handleOpen,
-          isOpen: this.state.open,
-          close: this.handleClose
-        })}
-        <Snackbar
-          style={{ marginBottom: 20 }}
-          key={key}
-          anchorOrigin={{
-            vertical: 'bottom',
-            horizontal: 'center'
-          }}
-          open={this.state.open}
-          autoHideDuration={6000}
-          onClose={this.handleClose}
-          onExited={this.handleExited}
-          ContentProps={{
-            'aria-describedby': 'message-id'
-          }}
-          message={<span id="message-id">{message}</span>}
-          action={[
-            ...(actions || []),
-            <IconButton key="close" aria-label="Close" color="inherit" onClick={this.handleClose}>
-              <CloseIcon />
-            </IconButton>
-          ]}
-        />
-      </>
-    );
-  }
-}
