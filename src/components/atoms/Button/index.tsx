@@ -11,11 +11,17 @@ export enum EButtonType {
   Highlight = 'highlight'
 }
 
+export enum EButtonSize {
+  Small = 'small',
+  Medium = 'medium',
+  Large = 'large'
+}
+
 interface IButtonBaseViewModel {
-  children: React.ReactNode;
   color?: string;
   secondaryColor?: string;
   type?: EButtonType;
+  size?: EButtonSize;
 
   disabled?: boolean;
 
@@ -34,6 +40,7 @@ type ButtonBaseProps = IButtonBaseViewModel & IButtonBaseActions;
 export const ButtonBase: React.FC<ButtonBaseProps> = props => {
   const { onClick, children, style, className, ...otherProps } = props;
   const type = props.type || EButtonType.Highlight;
+  const size = props.size || EButtonSize.Medium;
 
   const theme = useTheme();
 
@@ -41,7 +48,7 @@ export const ButtonBase: React.FC<ButtonBaseProps> = props => {
     backgroundColor: 'transparent',
     borderRadius: 3,
     border: 'none',
-    padding: '10px 14px',
+    padding: size === EButtonSize.Medium ? '10px 14px' : size === EButtonSize.Small ? '5px 7px' : '15px 21px',
     display: 'inline-block',
     textAlign: 'left',
     cursor: 'pointer',
@@ -68,14 +75,16 @@ export const ButtonBase: React.FC<ButtonBaseProps> = props => {
         border: `1px solid transparent`,
         color: color,
         '&:hover': !props.disabled && {
-          color: (Color(color).isDark() ? Color(color).lighten(0.5) : Color(color).darken(0.5))
-            .hsl()
-            .string()
+          // color: (Color(color).isDark() ? Color(color).lighten(0.5) : Color(color).darken(0.5))
+          //   .hsl()
+          //   .string(),
+          filter: 'brightness(130%)'
         },
         '&:active': !props.disabled && {
-          color: (Color(color).isDark() ? Color(color).lighten(0.75) : Color(color).darken(0.75))
-            .hsl()
-            .string()
+          // color: (Color(color).isDark() ? Color(color).lighten(0.75) : Color(color).darken(0.75))
+          //   .hsl()
+          //   .string(),
+          filter: 'brightness(100%)'
         },
         cursor: props.disabled ? 'not-allowed' : undefined
       });
@@ -165,7 +174,9 @@ export const ButtonBase: React.FC<ButtonBaseProps> = props => {
   );
 };
 
-interface IButtonViewModel extends IButtonBaseViewModel {}
+interface IButtonViewModel extends IButtonBaseViewModel {
+
+}
 
 interface IButtonActions extends IButtonBaseActions {}
 

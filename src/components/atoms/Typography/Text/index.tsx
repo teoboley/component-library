@@ -22,7 +22,6 @@ const Text: React.FC<TextProps> = props => {
 
   const baseCss = css({
     ...theme.typography[props.type],
-    display: 'block',
     marginTop: 0,
     marginBottom: '0.35em'
   });
