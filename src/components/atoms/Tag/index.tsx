@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { ClickAwayListener } from '@material-ui/core';
 import { css, cx } from 'emotion';
-import { useTheme } from '../../../lib/theme';
+import { useOverride, useTheme } from '../../../lib/theme';
 import { ButtonBase, EButtonType } from '../Button';
 
 export interface ITagViewModel {
@@ -24,9 +24,16 @@ export interface ITagActions {
   onFinishRenaming?: (newTag: string) => void;
 }
 
-type TagProps = ITagViewModel & ITagActions;
+export type TagProps = ITagViewModel & ITagActions;
 
-function Tag(props: TagProps) {
+export const tagOverrideName = 'tag';
+
+const Tag: React.FC<TagProps> = props => {
+  const Override = useOverride(tagOverrideName);
+  if (Override) {
+    return <Override {...props}/>;
+  }
+
   const theme = useTheme();
   const { color, ...textTheme } = theme.typography.label;
 

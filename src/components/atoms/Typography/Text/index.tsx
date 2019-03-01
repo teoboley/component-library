@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { css, cx } from 'emotion';
-import { useTheme } from '../../../../lib/theme';
+import { useOverride, useTheme } from '../../../../lib/theme';
 
 export enum ETextType {
   Body = 'body',
@@ -15,9 +15,16 @@ interface ITextViewModel {
   className?: string;
 }
 
-type TextProps = ITextViewModel;
+export type TextProps = ITextViewModel;
+
+export const textOverrideName = 'text';
 
 const Text: React.FC<TextProps> = props => {
+  const Override = useOverride(textOverrideName);
+  if (Override) {
+    return <Override {...props}/>;
+  }
+
   const theme = useTheme();
 
   const baseCss = css({

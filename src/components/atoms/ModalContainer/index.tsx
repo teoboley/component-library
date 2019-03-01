@@ -1,6 +1,7 @@
 import * as React from 'react';
 import * as Modal from 'react-modal';
 import { css } from 'emotion';
+import { useOverride } from '../../../lib/theme';
 
 interface IModalContainerViewModel {
   isOpen: boolean;
@@ -13,9 +14,16 @@ interface IModalContainerActions {
   onClose?: () => void;
 }
 
-type ModalContainerProps = IModalContainerViewModel & IModalContainerActions;
+export type ModalContainerProps = IModalContainerViewModel & IModalContainerActions;
+
+export const modalContainerOverrideName = 'modalContainer';
 
 const ModalContainer: React.FC<ModalContainerProps> = props => {
+  const Override = useOverride(modalContainerOverrideName);
+  if (Override) {
+    return <Override {...props}/>;
+  }
+
   return (
     <>
       <style>{// language=CSS

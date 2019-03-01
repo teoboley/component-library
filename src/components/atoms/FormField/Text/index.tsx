@@ -10,6 +10,7 @@ interface IFormFieldViewModel<V> {
   value: V | null;
 
   icon?: JSX.Element;
+  placeholder?: V | string;
 
   activeColor?: string;
   inactiveColor?: string;
@@ -60,7 +61,6 @@ export const FormField: React.FC<FormFieldProps<string | undefined>> = props => 
     width: 120,
     border: 'none',
     padding: '5px 0px',
-    display: 'inline-block',
     transition: 'border 200ms',
     borderBottom: `2px solid ${props.value ? activeColor : inactiveColor}`,
     color: props.value ? activeColor : inactiveColor,
@@ -76,11 +76,11 @@ export const FormField: React.FC<FormFieldProps<string | undefined>> = props => 
   });
 
   return (
-    <span className={css({ display: 'inline-flex', margin: '0px 2px' })}>
+    <div className={css({ display: 'flex', margin: '0px 2px' })}>
       {props.icon && <label className={iconStyles}>{props.icon}</label>}
       <input
         type={props.type}
-        placeholder={'Placeholder'}
+        placeholder={props.placeholder}
         style={props.style}
         className={cx(inputStyles, props.className)}
         value={
@@ -123,7 +123,7 @@ export const FormField: React.FC<FormFieldProps<string | undefined>> = props => 
           }
         }}
       />
-    </span>
+    </div>
   );
 };
 

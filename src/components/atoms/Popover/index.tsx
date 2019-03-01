@@ -4,6 +4,7 @@ import * as PopperJS from 'popper.js';
 import ClickAwayListener from '@material-ui/core/ClickAwayListener';
 import { css, cx } from 'emotion';
 import { ToggleAnimation } from '../../../lib/animation';
+import { useOverride } from '../../../lib/theme';
 
 export interface TooltipPlacement {
   horizontal?: 'left' | 'center' | 'right';
@@ -35,9 +36,16 @@ interface IPopoverActions {
   onClose?: () => void;
 }
 
-type PopoverProps = IPopoverViewModel & IPopoverActions;
+export type PopoverProps = IPopoverViewModel & IPopoverActions;
+
+export const popoverOverrideName = 'popover';
 
 const Popover: React.FC<PopoverProps> = props => {
+  const Override = useOverride(popoverOverrideName);
+  if (Override) {
+    return <Override {...props}/>;
+  }
+
   let referenceElement: PopperJS.ReferenceObject | undefined = undefined;
 
   switch (props.anchorReference) {
@@ -97,7 +105,12 @@ const Popover: React.FC<PopoverProps> = props => {
             data-placement={placement}
           >
             <Animation toggle={isOpen}>
-              <ClickAwayListener onClickAway={() => isOpen && props.onClose && props.onClose()}>
+              <ClickAwayListener onClickAway={e => {
+                console.log("CLICK AWAY LISTENER, IS OPEN: " + isOpen);
+                isOpen && props.onClose && props.onClose();
+                e.preventDefault();
+                e.stopPropagation();
+              }}>
                 <div>
                   {props.children}
                   {props.arrowColor && (

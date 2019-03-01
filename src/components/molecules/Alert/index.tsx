@@ -2,7 +2,7 @@ import * as React from 'react';
 import { css, cx } from 'emotion';
 import CloseIcon from '@material-ui/icons/Close';
 
-import { getBWContrastingColor, useTheme } from '../../../lib/theme';
+import { getBWContrastingColor, useOverride, useTheme } from '../../../lib/theme';
 
 import { DisplayToggleAnimation } from '../../../lib/animation';
 import Button, { EButtonType } from '../../atoms/Button';
@@ -22,9 +22,16 @@ interface IAlertActions {
   onClose?(): void;
 }
 
-type AlertProps = IAlertViewModel & IAlertActions;
+export type AlertProps = IAlertViewModel & IAlertActions;
+
+export const alertOverrideName = 'alert';
 
 const Alert: React.FC<AlertProps> = props => {
+  const Override = useOverride(alertOverrideName);
+  if (Override) {
+    return <Override {...props}/>;
+  }
+
   const theme = useTheme();
   const backgroundColor = props.color ? theme.palette.getColor(props.color) : theme.palette.danger;
 

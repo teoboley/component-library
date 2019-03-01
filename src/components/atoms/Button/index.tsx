@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { MouseEventHandler } from 'react';
-import { getBWContrastingColor, useTheme } from '../../../lib/theme';
+import { getBWContrastingColor, useOverride, useTheme } from '../../../lib/theme';
 import { css, cx } from 'emotion';
 import * as Color from 'color';
 
@@ -35,9 +35,16 @@ interface IButtonBaseActions {
   onContextMenu?: MouseEventHandler<HTMLButtonElement>;
 }
 
-type ButtonBaseProps = IButtonBaseViewModel & IButtonBaseActions;
+export type ButtonBaseProps = IButtonBaseViewModel & IButtonBaseActions;
+
+export const buttonBaseOverrideName = 'buttonBase';
 
 export const ButtonBase: React.FC<ButtonBaseProps> = props => {
+  const Override = useOverride(buttonBaseOverrideName);
+  if (Override) {
+    return <Override {...props}/>;
+  }
+
   const { onClick, children, style, className, ...otherProps } = props;
   const type = props.type || EButtonType.Highlight;
   const size = props.size || EButtonSize.Medium;
@@ -53,7 +60,7 @@ export const ButtonBase: React.FC<ButtonBaseProps> = props => {
     textAlign: 'left',
     cursor: 'pointer',
     margin: 2,
-    // transition: 'background-color 200ms, color 200ms, border 200ms, box-shadow 200ms',
+    // transition: 'cardBackground-color 200ms, color 200ms, border 200ms, box-shadow 200ms',
     '&:focus': {
       outline: 'none'
     }
@@ -182,7 +189,14 @@ interface IButtonActions extends IButtonBaseActions {}
 
 export type ButtonProps = IButtonViewModel & IButtonActions;
 
+export const buttonOverrideName = 'button';
+
 const Button: React.FC<ButtonProps> = props => {
+  const Override = useOverride(buttonOverrideName);
+  if (Override) {
+    return <Override {...props}/>;
+  }
+
   const { children, style, className, ...otherProps } = props;
 
   const theme = useTheme();

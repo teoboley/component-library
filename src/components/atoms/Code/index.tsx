@@ -2,7 +2,7 @@ import * as React from 'react';
 import { Controlled as CodeMirror } from 'react-codemirror2';
 import { css, cx } from 'emotion';
 
-import { Theme, useTheme } from '../../../lib/theme';
+import { Theme, useOverride, useTheme } from '../../../lib/theme';
 
 import codeMirrorBaseStyles from './codemirror.base';
 import predefinedThemes from './themes/index';
@@ -28,13 +28,20 @@ interface ICodeActions {
   onChange?(value: string): void;
 }
 
-type CodeProps = ICodeViewModel & ICodeActions;
+export type CodeProps = ICodeViewModel & ICodeActions;
 
 interface ICodeState {
   value: string;
 }
 
+export const codeOverrideName = 'code';
+
 const Code: React.FC<CodeProps> = props => {
+  const Override = useOverride(codeOverrideName);
+  if (Override) {
+    return <Override {...props}/>;
+  }
+
   const [state, setState] = useState<ICodeState>({ value: props.value });
 
   const theme = useTheme();

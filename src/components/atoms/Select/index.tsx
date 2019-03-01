@@ -1,7 +1,7 @@
 import * as React from 'react';
 import ReactSelect, { components as ReactSelectComponents } from 'react-select';
 import Color = require('color');
-import { getBWContrastingColor, useTheme } from '../../../lib/theme';
+import { getBWContrastingColor, useOverride, useTheme } from '../../../lib/theme';
 import Tooltip from '../Tooltip';
 import { Spring } from 'react-spring/renderprops';
 import Card from '../Card';
@@ -39,7 +39,7 @@ interface ISelectActions {
   onSelect?: (value: any) => void;
 }
 
-type SelectProps = ISelectViewModel & ISelectActions;
+export type SelectProps = ISelectViewModel & ISelectActions;
 
 const menuHeaderStyle = {
   padding: '8px 12px'
@@ -62,7 +62,14 @@ const Menu = (props: any) => {
   );
 };
 
+export const selectOverrideName = 'select';
+
 const Select: React.FC<SelectProps> = props => {
+  const Override = useOverride(selectOverrideName);
+  if (Override) {
+    return <Override {...props}/>;
+  }
+
   const theme = useTheme();
 
   return (

@@ -9,7 +9,7 @@ import Heading, { EHeadingType } from '../Typography/Heading';
 import Text, { ETextType } from '../Typography/Text';
 import Button, { EButtonType } from '../Button';
 import { useRef } from 'react';
-
+import { useOverride } from '../../../lib/theme';
 
 
 let id = 0;
@@ -130,9 +130,16 @@ interface ISnackbarActions {
   onClose?(): void;
 }
 
-type SnackbarProps = ISnackbarViewModel & ISnackbarActions;
+export type SnackbarProps = ISnackbarViewModel & ISnackbarActions;
+
+export const snackbarOverrideName = 'snackbar';
 
 export const Snackbar: React.FC<SnackbarProps> = props => {
+  const Override = useOverride(snackbarOverrideName);
+  if (Override) {
+    return <Override {...props}/>;
+  }
+
   return (
     <Card
       style={props.style}

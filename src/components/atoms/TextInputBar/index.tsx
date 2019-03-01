@@ -18,6 +18,8 @@ interface ITextInputBarActions {
 
 type TextInputBarProps = ITextInputBarViewModel & ITextInputBarActions;
 
+// FIXME: COMPLETE REFACTOR INTO FORMFIELD
+
 const UnstyledTextInputBar: React.FC<TextInputBarProps> = props => {
   return (
     <TextField

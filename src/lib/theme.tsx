@@ -3,6 +3,22 @@ import * as React from 'react';
 import Global from './global';
 import { CSSProperties, useContext } from 'react';
 import * as Color from 'color';
+import { buttonBaseOverrideName, ButtonBaseProps, buttonOverrideName, ButtonProps } from '../components/atoms/Button';
+import { cardOverrideName, CardProps } from '../components/atoms/Card';
+import { codeOverrideName, CodeProps } from '../components/atoms/Code';
+import { modalContainerOverrideName, ModalContainerProps } from '../components/atoms/ModalContainer';
+import { popoverOverrideName, PopoverProps } from '../components/atoms/Popover';
+import { selectOverrideName, SelectProps } from '../components/atoms/Select';
+import { snackbarOverrideName, SnackbarProps } from '../components/atoms/Snackbar';
+import { tagOverrideName, TagProps } from '../components/atoms/Tag';
+import { tooltipOverrideName, TooltipProps } from '../components/atoms/Tooltip';
+import { headingOverrideName, HeadingProps } from '../components/atoms/Typography/Heading';
+import { textOverrideName, TextProps } from '../components/atoms/Typography/Text';
+import { alertOverrideName, AlertProps } from '../components/molecules/Alert';
+import { menuOverrideName, MenuProps } from '../components/molecules/Menu';
+import { modalOverrideName, ModalProps } from '../components/molecules/Modal';
+import { treeOverrideName, TreeProps } from '../components/molecules/Tree';
+import { contextMenuOverrideName, ContextMenuProps } from '../components/organisms/ContextMenu';
 
 interface ThemeCodePalette {
   window: {
@@ -56,7 +72,7 @@ interface ThemePalette {
   success: string;
   danger: string;
   warning: string;
-  background: string;
+  cardBackground: string;
   code: ThemeCodePalette;
   getColor(codeOrColor: string): string;
 }
@@ -97,9 +113,30 @@ interface ThemeTypography {
   codeLine: ThemeTypographyStyle;
 }
 
+interface ThemeOverrides {
+  [buttonBaseOverrideName]?: React.ComponentType<ButtonBaseProps>;
+  [buttonOverrideName]?: React.ComponentType<ButtonProps>;
+  [cardOverrideName]?: React.ComponentType<CardProps>;
+  [codeOverrideName]?: React.ComponentType<CodeProps>;
+  [modalContainerOverrideName]?: React.ComponentType<ModalContainerProps>;
+  [popoverOverrideName]?: React.ComponentType<PopoverProps>;
+  [selectOverrideName]?: React.ComponentType<SelectProps>;
+  [snackbarOverrideName]?: React.ComponentType<SnackbarProps>;
+  [tagOverrideName]?: React.ComponentType<TagProps>;
+  [tooltipOverrideName]?: React.ComponentType<TooltipProps>;
+  [headingOverrideName]?: React.ComponentType<HeadingProps>;
+  [textOverrideName]?: React.ComponentType<TextProps>;
+  [alertOverrideName]?: React.ComponentType<AlertProps>;
+  [menuOverrideName]?: React.ComponentType<MenuProps>;
+  [modalOverrideName]?: React.ComponentType<ModalProps>;
+  [treeOverrideName]?: React.ComponentType<TreeProps>;
+  [contextMenuOverrideName]?: React.ComponentType<ContextMenuProps>;
+}
+
 export interface Theme {
   palette: ThemePalette;
   typography: ThemeTypography;
+  overrides: ThemeOverrides;
 }
 
 export const createTheme = (): Theme => {
@@ -118,7 +155,7 @@ export const createTheme = (): Theme => {
       success: '#35a537',
       danger: '#e2353d',
       warning: '#e2c81c',
-      background: 'white',
+      cardBackground: 'white',
       code: {
         window: {
           background: '#222222',
@@ -283,7 +320,8 @@ export const createTheme = (): Theme => {
         fontSize: rootFontSize * 0.75,
         lineHeight: 1.5
       }
-    }
+    },
+    overrides: {}
   };
 };
 
@@ -318,6 +356,10 @@ type ThemeProviderProps = IThemeProviderViewModel;
 
 export const useTheme = () => {
   return useContext(ThemeContext);
+};
+
+export const useOverride = <T extends keyof ThemeOverrides>(componentKey: T): ThemeOverrides[T] => {
+  return useContext(ThemeContext).overrides[componentKey];
 };
 
 export const ThemeProvider: React.FC<ThemeProviderProps> = props => {

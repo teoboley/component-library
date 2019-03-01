@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { CSSProperties } from 'react';
 import { css, cx } from 'emotion';
-import { useTheme } from '../../../../lib/theme';
+import { useOverride, useTheme } from '../../../../lib/theme';
 
 export enum EHeadingType {
   HERO,
@@ -20,9 +20,16 @@ interface IHeadingViewModel {
   className?: string;
 }
 
-type HeadingProps = IHeadingViewModel;
+export type HeadingProps = IHeadingViewModel;
+
+export const headingOverrideName = 'heading';
 
 const Heading: React.FC<HeadingProps> = props => {
+  const Override = useOverride(headingOverrideName);
+  if (Override) {
+    return <Override {...props}/>;
+  }
+
   const theme = useTheme();
   const baseCss = css({
     marginTop: 0,

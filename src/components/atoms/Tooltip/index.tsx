@@ -3,7 +3,7 @@ import { CSSProperties, useRef, useState } from 'react';
 
 import Popover, { TooltipPlacement } from '../Popover';
 import { css, cx } from 'emotion';
-import { getBWContrastingColor, useTheme } from '../../../lib/theme';
+import { getBWContrastingColor, useOverride, useTheme } from '../../../lib/theme';
 import { ToggleAnimation } from '../../../lib/animation';
 
 type ChildFunction = ((
@@ -33,7 +33,14 @@ type TooltipState = {
   anchorEl: any | null;
 };
 
+export const tooltipOverrideName = 'tooltip';
+
 const Tooltip: React.FC<TooltipProps> = props => {
+  const Override = useOverride(tooltipOverrideName);
+  if (Override) {
+    return <Override {...props}/>;
+  }
+
   const childContainer = useRef<HTMLSpanElement>(null);
   const [state, setState] = useState<TooltipState>({ anchorEl: null });
 

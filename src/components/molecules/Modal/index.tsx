@@ -7,6 +7,7 @@ import Card from '../../atoms/Card';
 import Button from '../../atoms/Button';
 import Heading, { EHeadingType } from '../../atoms/Typography/Heading';
 import { DisplayTextAnimation } from '../../../lib/animation';
+import { useOverride } from '../../../lib/theme';
 
 interface IModalViewModel {
   isOpen: boolean;
@@ -19,9 +20,16 @@ interface IModalActions {
   onClose?: () => void;
 }
 
-type ModalProps = IModalViewModel & IModalActions;
+export type ModalProps = IModalViewModel & IModalActions;
+
+export const modalOverrideName = 'modal';
 
 const Modal: React.FC<ModalProps> = props => {
+  const Override = useOverride(modalOverrideName);
+  if (Override) {
+    return <Override {...props}/>;
+  }
+
   const HeadingAnimation = DisplayTextAnimation;
 
   return (

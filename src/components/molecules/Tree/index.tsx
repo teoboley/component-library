@@ -10,6 +10,7 @@ import CloseIcon from '@material-ui/icons/Close';
 import { useMeasure, usePrevious } from '../../../lib/hooks';
 import Text, { ETextType } from '../../atoms/Typography/Text';
 import { ButtonBase, EButtonType } from '../../atoms/Button';
+import { useOverride } from '../../../lib/theme';
 
 interface ITreeViewModel {
   name: React.ReactChild;
@@ -19,11 +20,19 @@ interface ITreeViewModel {
   className?: string;
 }
 
-type TreeProps = ITreeViewModel;
+export type TreeProps = ITreeViewModel;
+
+export const treeOverrideName = 'tree';
 
 export const Tree: React.NamedExoticComponent<TreeProps> = React.memo(
-  ({ children, name, style, open = false, className }) => {
-    const [isOpen, setOpen] = useState(open);
+  props => {
+    // this might not work due to react.memo
+    const Override = useOverride(treeOverrideName);
+    if (Override) {
+      return <Override {...props}/>;
+    }
+
+    const [isOpen, setOpen] = useState(props.open);
     const previous = usePrevious(isOpen);
     const [bind, { height: viewHeight }] = useMeasure<HTMLDivElement>();
 
@@ -37,7 +46,7 @@ export const Tree: React.NamedExoticComponent<TreeProps> = React.memo(
       }
     } as any) as { height: number; opacity: number; transform: string };
 
-    const Icon = children ? (isOpen ? MinimizeIcon : MaximizeIcon) : CloseIcon;
+    const Icon = props.children ? (isOpen ? MinimizeIcon : MaximizeIcon) : CloseIcon;
 
     return (
       <div
@@ -46,10 +55,10 @@ export const Tree: React.NamedExoticComponent<TreeProps> = React.memo(
           textOverflow: 'ellipsis',
           whiteSpace: 'nowrap',
           verticalAlign: 'middle'
-        }), className)}
-        style={style}
+        }), props.className)}
+        style={props.style}
       >
-        <ButtonBase type={EButtonType.Highlight} className={css({ position: 'relative', padding: 0, top: -2, marginRight: 10 })} disabled={!children} onClick={() => void setOpen(!isOpen)}><Icon
+        <ButtonBase type={EButtonType.Highlight} className={css({ position: 'relative', padding: 0, top: -2, marginRight: 10 })} disabled={!props.children} onClick={() => void setOpen(!isOpen)}><Icon
           style={{
             width: '1em',
             height: '1em',
@@ -83,7 +92,7 @@ export const Tree: React.NamedExoticComponent<TreeProps> = React.memo(
             })}
           />*/}
           <animated.div style={{ transform }} {...bind}>
-            {children}
+            {props.children}
           </animated.div>
         </animated.div>
       </div>

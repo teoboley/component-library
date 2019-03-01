@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { css, cx } from 'emotion';
-import { useTheme } from '../../../lib/theme';
+import { useOverride, useTheme } from '../../../lib/theme';
 
 interface ICardViewModel {
   color?: string;
@@ -8,7 +8,7 @@ interface ICardViewModel {
   className?: string;
 }
 
-type CardProps = ICardViewModel;
+export type CardProps = ICardViewModel;
 
 const baseStyles = css({
   display: 'inline-block',
@@ -17,10 +17,17 @@ const baseStyles = css({
   borderRadius: 5
 });
 
+export const cardOverrideName = 'card';
+
 const Card: React.FC<CardProps> = props => {
+  const Override = useOverride(cardOverrideName);
+  if (Override) {
+    return <Override {...props}/>;
+  }
+
   const theme = useTheme();
   const styles = css({
-    backgroundColor: props.color && theme.palette.getColor(props.color) || theme.palette.background
+    backgroundColor: props.color && theme.palette.getColor(props.color) || theme.palette.cardBackground
   });
 
   return (

@@ -3,6 +3,8 @@ import * as React from 'react';
 import Menu from '../../molecules/Menu';
 import Button from '../../atoms/Button';
 import { css } from 'emotion';
+import { useState } from 'react';
+import { useOverride } from '../../../lib/theme';
 
 interface IContextMenuControllerActiveState {
   anchorEl: HTMLElement;
@@ -31,52 +33,34 @@ interface IContextMenuControllerViewModel {
 
 type ContextMenuControllerProps = IContextMenuControllerViewModel;
 
-interface IContextMenuControllerState {
-  active: IContextMenuControllerActiveState | null;
-}
+export const ContextMenuController: React.FC<
+  ContextMenuControllerProps
+> = props => {
+  const [active, setActive] = useState<IContextMenuControllerActiveState | null>(null);
 
-export class ContextMenuController extends React.Component<
-  ContextMenuControllerProps,
-  IContextMenuControllerState
-> {
-  readonly state = {
-    active: null
+  const handleOpen = (element: HTMLElement, mousePosition?: { x: number; y: number }) => {
+    setActive({ anchorEl: element, mousePosition: mousePosition || null });
   };
 
-  constructor(props: ContextMenuControllerProps) {
-    super(props);
-
-    this.handleOpen = this.handleOpen.bind(this);
-    this.handleClose = this.handleClose.bind(this);
-  }
-
-  handleOpen(element: HTMLElement, mousePosition?: { x: number; y: number }) {
-    this.setState({ active: { anchorEl: element, mousePosition: mousePosition || null } });
-  }
-
-  handleClose() {
-    this.setState({ active: null });
-  }
-
-  render() {
-    const { active } = this.state;
+  const handleClose = () => {
+    setActive(null);
+  };
 
     return (
       <>
-        {this.props.children({
-          open: this.handleOpen,
+        {props.children({
+          open: handleOpen,
           isOpen: Boolean(active),
-          close: this.handleClose
+          close: handleClose
         })}
-        {this.props.menuComponent({
-          activeState: this.state.active,
+        {props.menuComponent({
+          activeState: active,
           isOpen: Boolean(active),
-          close: this.handleClose
+          close: handleClose
         })}
       </>
     );
-  }
-}
+};
 
 interface IContextMenuViewModel {
   options: Array<{ option: React.ReactNode; callback: () => void }>;
@@ -84,15 +68,26 @@ interface IContextMenuViewModel {
   className?: string;
 }
 
-type ContextMenuProps = IContextMenuViewModel;
+export type ContextMenuProps = IContextMenuViewModel;
+
+export const contextMenuOverrideName = 'contextMenu';
 
 const ContextMenu: React.FC<ContextMenuProps> = props => {
+  const Override = useOverride(contextMenuOverrideName);
+  if (Override) {
+    return <Override {...props}/>;
+  }
+
   return (
     <ContextMenuController
       menuComponent={({ isOpen, activeState, close }) => (
         <Menu
           anchorEl={activeState && activeState.anchorEl}
-          onClose={close}
+          onClose={() => {
+            console.log("onClose");
+            console.log(["isOpen", isOpen]);
+            close();
+          }}
           anchorReference={'anchorEl'}
           placement={{ vertical: 'center', horizontal: 'left' }}
           {...activeState &&
@@ -122,15 +117,15 @@ const ContextMenu: React.FC<ContextMenuProps> = props => {
       )}
     >
       {({ open }) => (
-        <span
+        <div
           onContextMenu={e => {
+            open(e.currentTarget, { x: e.clientX, y: e.clientY });
             e.preventDefault();
             e.stopPropagation();
-            open(e.currentTarget, { x: e.clientX, y: e.clientY });
           }}
         >
           {props.children}
-        </span>
+        </div>
       )}
     </ContextMenuController>
   );
