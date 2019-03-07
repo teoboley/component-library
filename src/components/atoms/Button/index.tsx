@@ -51,6 +51,8 @@ export const ButtonBase: React.FC<ButtonBaseProps> = props => {
 
   const theme = useTheme();
 
+  console.log("Theme: ", theme);
+
   const baseStyles = css({
     backgroundColor: 'transparent',
     borderRadius: 3,
@@ -69,6 +71,8 @@ export const ButtonBase: React.FC<ButtonBaseProps> = props => {
   const color = props.disabled
     ? theme.palette.disabled
     : (props.color && theme.palette.getColor(props.color)) || theme.palette.primary;
+
+  console.log("Color: " + color);
 
   const secondaryColor = props.disabled
     ? theme.palette.disabled

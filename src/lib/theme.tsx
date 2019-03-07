@@ -1,7 +1,8 @@
 import * as React from 'react';
+import { CSSProperties, useContext } from 'react';
+import * as deepmerge from "deepmerge";
 
 import Global from './global';
-import { CSSProperties, useContext } from 'react';
 import * as Color from 'color';
 import { buttonBaseOverrideName, ButtonBaseProps, buttonOverrideName, ButtonProps } from '../components/atoms/Button';
 import { cardOverrideName, CardProps } from '../components/atoms/Card';
@@ -19,6 +20,7 @@ import { menuOverrideName, MenuProps } from '../components/molecules/Menu';
 import { modalOverrideName, ModalProps } from '../components/molecules/Modal';
 import { treeOverrideName, TreeProps } from '../components/molecules/Tree';
 import { contextMenuOverrideName, ContextMenuProps } from '../components/organisms/ContextMenu';
+import { DeepPartial } from 'redux';
 
 interface ThemeCodePalette {
   window: {
@@ -92,6 +94,7 @@ type ThemeTypographyStyle = Required<Pick<CSSProperties, 'fontFamily' | 'fontSiz
   >;
 
 interface ThemeTypography {
+  color: CSSProperties['color'];
   fontFamily: CSSProperties['fontFamily'];
   fontSize: CSSProperties['fontSize'];
 
@@ -139,18 +142,17 @@ export interface Theme {
   overrides: ThemeOverrides;
 }
 
-export const createTheme = (): Theme => {
-  const rootFontSize = 16;
-  const headerFontFamily = '"Avenir Next", "Segoe UI", Helvetica, Arial, sans-serif';
-  const textFontFamily = '"Source Sans Pro", Helvetica, Arial, sans-serif';
+export const createTheme = (themeInput?: DeepPartial<Theme>): Theme => {
+  const rootFontSize = (themeInput && themeInput.typography && themeInput.typography.fontSize) || '16px';
+  const headerFontFamily = (themeInput && themeInput.typography && themeInput.typography.fontFamily) || '"Avenir Next", "Segoe UI", Helvetica, Arial, sans-serif';
+  const textFontFamily = (themeInput && themeInput.typography && themeInput.typography.fontFamily) || '"Source Sans Pro", Helvetica, Arial, sans-serif';
 
-  const primaryColor = '#005AE5';
-  const secondaryColor = '#222222';
+  const textColor = (themeInput && themeInput.typography && themeInput.typography.color) || 'black';
 
-  return {
+  const output = (deepmerge({
     palette: {
-      primary: primaryColor,
-      secondary: secondaryColor,
+      primary: '#005AE5',
+      secondary: '#222222',
       disabled: 'darkgrey',
       success: '#35a537',
       danger: '#e2353d',
@@ -201,128 +203,133 @@ export const createTheme = (): Theme => {
         }
       },
       getColor(codeOrColor: string) {
-        let keyIndex = Object.keys(this).indexOf(codeOrColor);
+        let keyIndex = Object.keys(output.palette).indexOf(codeOrColor);
 
         if (keyIndex !== -1) {
-          return this[Object.keys(this)[keyIndex]];
+          return output.palette[Object.keys(output.palette)[keyIndex]];
         } else {
           return codeOrColor;
         }
       }
     },
     typography: {
+      color: textColor,
       fontFamily: textFontFamily,
       fontSize: rootFontSize,
       hero: {
-        color: 'black',
+        color: textColor,
         fontFamily: headerFontFamily,
-        fontSize: rootFontSize * 8,
+        fontSize: `calc(${rootFontSize} * 8)`,
         fontWeight: 700,
         lineHeight: 0.75
       },
       h1: {
-        color: 'black',
+        color: textColor,
         fontFamily: headerFontFamily,
-        fontSize: rootFontSize * 3.75,
+        fontSize: `calc(${rootFontSize} * 3.75)`,
         fontWeight: 700,
         lineHeight: 1
       },
       h2: {
-        color: 'black',
+        color: textColor,
         fontFamily: headerFontFamily,
-        fontSize: rootFontSize * 3,
+        fontSize: `calc(${rootFontSize} * 3)`,
         fontWeight: 700,
         lineHeight: 1.04
       },
       h3: {
-        color: 'black',
+        color: textColor,
         fontFamily: headerFontFamily,
-        fontSize: rootFontSize * 2.125,
+        fontSize: `calc(${rootFontSize} * 2.125)`,
         fontWeight: 700,
         lineHeight: 1.17
       },
       h4: {
-        color: 'black',
+        color: textColor,
         fontFamily: headerFontFamily,
-        fontSize: rootFontSize * 1.5,
+        fontSize: `calc(${rootFontSize} * 1.5)`,
         fontWeight: 700,
         lineHeight: 1.33
       },
       h5: {
-        color: 'black',
+        color: textColor,
         fontFamily: headerFontFamily,
-        fontSize: rootFontSize * 1.25,
+        fontSize: `calc(${rootFontSize} * 1.25)`,
         fontWeight: 700,
         lineHeight: 1.6
       },
       h6: {
-        color: 'black',
+        color: textColor,
         fontFamily: headerFontFamily,
         fontSize: rootFontSize,
         fontWeight: 700
       },
       button: {
-        color: 'black',
+        color: textColor,
         fontFamily: textFontFamily,
-        fontSize: rootFontSize * 0.875,
+        fontSize: `calc(${rootFontSize} * 0.875)`,
         fontWeight: 600,
         textTransform: 'uppercase',
         letterSpacing: 2
       },
       link: {
-        color: 'black',
+        color: textColor,
         fontFamily: textFontFamily,
         fontSize: rootFontSize,
         fontWeight: 400
       },
       body: {
-        color: 'black',
+        color: textColor,
         fontFamily: textFontFamily,
-        fontSize: rootFontSize * 0.875,
+        fontSize: `calc(${rootFontSize} * 0.875)`,
         fontWeight: 400,
         lineHeight: 1.35
       },
       caption: {
         color: 'rgba(0, 0, 0, 0.5)',
         fontFamily: textFontFamily,
-        fontSize: rootFontSize * 0.875,
+        fontSize: `calc(${rootFontSize} * 0.875)`,
         fontWeight: 400
       },
       label: {
         color: 'rgba(0, 0, 0, 0.5)',
         fontFamily: textFontFamily,
-        fontSize: rootFontSize * 0.875,
+        fontSize: `calc(${rootFontSize} * 0.875)`,
         fontWeight: 400
       },
       tooltip: {
-        color: 'black',
+        color: textColor,
         fontFamily: textFontFamily,
-        fontSize: rootFontSize * 0.875,
+        fontSize: `calc(${rootFontSize} * 0.875)`,
         fontWeight: 400,
         lineHeight: 1.35
       },
       formField: {
-        color: 'black',
+        color: textColor,
         fontFamily: textFontFamily,
-        fontSize: rootFontSize * 0.875,
+        fontSize: `calc(${rootFontSize} * 0.875)`,
         fontWeight: 400,
         lineHeight: 1.35
       },
       codeBlock: {
         fontFamily:
           'Consolas, Menlo, Monaco, "Lucida Console", "Liberation Mono", "DejaVu Sans Mono", "Bitstream Vera Sans Mono", "Courier New", monospace, serif',
-        fontSize: rootFontSize * 0.875,
+        fontSize: `calc(${rootFontSize} * 0.875)`,
         lineHeight: 1.5
       },
       codeLine: {
         fontFamily:
           "Consolas, Menlo, Monaco, 'Lucida Console', 'Liberation Mono', 'DejaVu Sans Mono', 'Bitstream Vera Sans Mono', 'Courier New', monospace, serif",
-        fontSize: rootFontSize * 0.75,
+        fontSize: `calc(${rootFontSize} * 0.75)`,
         lineHeight: 1.5
       }
     },
     overrides: {}
-  };
+  }, themeInput as any || {}) as any) as Theme;
+
+  console.log(output);
+
+  return output;
 };
 
 export const getBWContrastingColor = (color: string) => {

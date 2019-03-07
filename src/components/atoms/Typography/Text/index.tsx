@@ -9,7 +9,7 @@ export enum ETextType {
 }
 
 interface ITextViewModel {
-  type: ETextType;
+  type?: ETextType;
 
   style?: React.CSSProperties;
   className?: string;
@@ -28,15 +28,17 @@ const Text: React.FC<TextProps> = props => {
   const theme = useTheme();
 
   const baseCss = css({
-    ...theme.typography[props.type],
+    ...props.type && theme.typography[props.type],
     marginTop: 0,
     marginBottom: '0.35em'
   });
 
+  const ElementType = props.type && 'p' || 'span';
+
   return (
-    <span style={props.style} className={cx(baseCss, props.className)}>
+    <ElementType style={props.style} className={cx(baseCss, props.className)}>
       {props.children}
-    </span>
+    </ElementType>
   );
 };
 
