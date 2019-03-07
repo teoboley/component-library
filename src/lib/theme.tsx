@@ -142,12 +142,19 @@ export interface Theme {
   overrides: ThemeOverrides;
 }
 
+type Diff<T, U> = T extends U ? never : T;  // Remove types from T that are assignable to U
+type NonNullable<T> = Diff<T, null | undefined>;
+
 export const createTheme = (themeInput?: DeepPartial<Theme>): Theme => {
   const rootFontSize = (themeInput && themeInput.typography && themeInput.typography.fontSize) || '16px';
   const headerFontFamily = (themeInput && themeInput.typography && themeInput.typography.fontFamily) || '"Avenir Next", "Segoe UI", Helvetica, Arial, sans-serif';
   const textFontFamily = (themeInput && themeInput.typography && themeInput.typography.fontFamily) || '"Source Sans Pro", Helvetica, Arial, sans-serif';
 
   const textColor = (themeInput && themeInput.typography && themeInput.typography.color) || 'black';
+
+  const cascade = <T extends any, Z extends any>(obj: T | null, prev: string[], accessor: (el: any) => Z): Z | null => {
+    return prev.reverse().reduce((acc, currIndex) => acc || (obj && obj[currIndex] && accessor(obj[currIndex])), null);
+  };
 
   const output = (deepmerge({
     palette: {
@@ -224,43 +231,43 @@ export const createTheme = (themeInput?: DeepPartial<Theme>): Theme => {
         lineHeight: 0.75
       },
       h1: {
-        color: textColor,
-        fontFamily: headerFontFamily,
+        color: cascade(themeInput && themeInput.typography,['hero'], type => type.color) || textColor,
+        fontFamily: cascade(themeInput && themeInput.typography,['hero'], type => type.fontFamily) || headerFontFamily,
         fontSize: `calc(${rootFontSize} * 3.75)`,
         fontWeight: 700,
         lineHeight: 1
       },
       h2: {
-        color: textColor,
-        fontFamily: headerFontFamily,
+        color: cascade(themeInput && themeInput.typography,['hero', 'h1'], type => type.color) || textColor,
+        fontFamily: cascade(themeInput && themeInput.typography,['hero', 'h1'], type => type.fontFamily) || headerFontFamily,
         fontSize: `calc(${rootFontSize} * 3)`,
         fontWeight: 700,
         lineHeight: 1.04
       },
       h3: {
-        color: textColor,
-        fontFamily: headerFontFamily,
+        color: cascade(themeInput && themeInput.typography,['hero', 'h1', 'h2'], type => type.color) || textColor,
+        fontFamily: cascade(themeInput && themeInput.typography,['hero', 'h1', 'h2'], type => type.fontFamily) || headerFontFamily,
         fontSize: `calc(${rootFontSize} * 2.125)`,
         fontWeight: 700,
         lineHeight: 1.17
       },
       h4: {
-        color: textColor,
-        fontFamily: headerFontFamily,
+        color: cascade(themeInput && themeInput.typography,['hero', 'h1', 'h2', 'h3'], type => type.color) || textColor,
+        fontFamily: cascade(themeInput && themeInput.typography,['hero', 'h1', 'h2', 'h3'], type => type.fontFamily) || headerFontFamily,
         fontSize: `calc(${rootFontSize} * 1.5)`,
         fontWeight: 700,
         lineHeight: 1.33
       },
       h5: {
-        color: textColor,
-        fontFamily: headerFontFamily,
+        color: cascade(themeInput && themeInput.typography,['hero', 'h1', 'h2', 'h3', 'h4'], type => type.color) || textColor,
+        fontFamily: cascade(themeInput && themeInput.typography,['hero', 'h1', 'h2', 'h3', 'h4'], type => type.fontFamily) || headerFontFamily,
         fontSize: `calc(${rootFontSize} * 1.25)`,
         fontWeight: 700,
         lineHeight: 1.6
       },
       h6: {
-        color: textColor,
-        fontFamily: headerFontFamily,
+        color: cascade(themeInput && themeInput.typography,['hero', 'h1', 'h2', 'h3', 'h4', 'h5'], type => type.color) || textColor,
+        fontFamily: cascade(themeInput && themeInput.typography,['hero', 'h1', 'h2', 'h3', 'h4', 'h5'], type => type.fontFamily) || headerFontFamily,
         fontSize: rootFontSize,
         fontWeight: 700
       },
