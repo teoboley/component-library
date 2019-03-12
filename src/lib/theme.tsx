@@ -234,42 +234,42 @@ export const createTheme = (themeInput?: DeepPartial<Theme>): Theme => {
         color: cascade(themeInput && themeInput.typography,['hero'], type => type.color) || textColor,
         fontFamily: cascade(themeInput && themeInput.typography,['hero'], type => type.fontFamily) || headerFontFamily,
         fontSize: `calc(${rootFontSize} * 3.75)`,
-        fontWeight: 700,
-        lineHeight: 1
+        fontWeight: cascade(themeInput && themeInput.typography,['hero'], type => type.fontWeight) || 700,
+        lineHeight: 1,
       },
       h2: {
         color: cascade(themeInput && themeInput.typography,['hero', 'h1'], type => type.color) || textColor,
         fontFamily: cascade(themeInput && themeInput.typography,['hero', 'h1'], type => type.fontFamily) || headerFontFamily,
         fontSize: `calc(${rootFontSize} * 3)`,
-        fontWeight: 700,
+        fontWeight: cascade(themeInput && themeInput.typography,['hero', 'h1'], type => type.fontWeight) || 700,
         lineHeight: 1.04
       },
       h3: {
         color: cascade(themeInput && themeInput.typography,['hero', 'h1', 'h2'], type => type.color) || textColor,
         fontFamily: cascade(themeInput && themeInput.typography,['hero', 'h1', 'h2'], type => type.fontFamily) || headerFontFamily,
         fontSize: `calc(${rootFontSize} * 2.125)`,
-        fontWeight: 700,
+        fontWeight: cascade(themeInput && themeInput.typography,['hero', 'h1', 'h2'], type => type.fontWeight) || 700,
         lineHeight: 1.17
       },
       h4: {
         color: cascade(themeInput && themeInput.typography,['hero', 'h1', 'h2', 'h3'], type => type.color) || textColor,
         fontFamily: cascade(themeInput && themeInput.typography,['hero', 'h1', 'h2', 'h3'], type => type.fontFamily) || headerFontFamily,
         fontSize: `calc(${rootFontSize} * 1.5)`,
-        fontWeight: 700,
+        fontWeight: cascade(themeInput && themeInput.typography,['hero', 'h1', 'h2', 'h3'], type => type.fontWeight) || 700,
         lineHeight: 1.33
       },
       h5: {
         color: cascade(themeInput && themeInput.typography,['hero', 'h1', 'h2', 'h3', 'h4'], type => type.color) || textColor,
         fontFamily: cascade(themeInput && themeInput.typography,['hero', 'h1', 'h2', 'h3', 'h4'], type => type.fontFamily) || headerFontFamily,
         fontSize: `calc(${rootFontSize} * 1.25)`,
-        fontWeight: 700,
+        fontWeight: cascade(themeInput && themeInput.typography,['hero', 'h1', 'h2', 'h3', 'h4'], type => type.fontWeight) || 700,
         lineHeight: 1.6
       },
       h6: {
         color: cascade(themeInput && themeInput.typography,['hero', 'h1', 'h2', 'h3', 'h4', 'h5'], type => type.color) || textColor,
         fontFamily: cascade(themeInput && themeInput.typography,['hero', 'h1', 'h2', 'h3', 'h4', 'h5'], type => type.fontFamily) || headerFontFamily,
         fontSize: rootFontSize,
-        fontWeight: 700
+        fontWeight: cascade(themeInput && themeInput.typography,['hero', 'h1', 'h2', 'h3', 'h4', 'h5'], type => type.fontWeight) || 700
       },
       button: {
         color: textColor,
@@ -333,8 +333,6 @@ export const createTheme = (themeInput?: DeepPartial<Theme>): Theme => {
     },
     overrides: {}
   }, themeInput as any || {}) as any) as Theme;
-
-  console.log(output);
 
   return output;
 };
