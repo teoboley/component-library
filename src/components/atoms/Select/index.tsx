@@ -7,39 +7,25 @@ import { Spring } from 'react-spring/renderprops';
 import Card from '../Card';
 import { css } from 'emotion';
 
-const options = [
-  {
-    value: 'ocean',
-    label: (
-      <Tooltip content={'Hi'}>
-        <span>Ocean</span>
-      </Tooltip>
-    )
-  },
-  { value: 'blue', label: 'Blue' },
-  { value: 'purple', label: 'Purple' },
-  { value: 'red', label: 'Red' },
-  { value: 'orange', label: 'Orange' },
-  { value: 'yellow', label: 'Yellow' },
-  { value: 'green', label: 'Green' },
-  { value: 'forest', label: 'Forest' },
-  { value: 'slate', label: 'Slate' },
-  { value: 'silver', label: 'Silver' }
-];
+interface ISelectOption<V> {
+  value: V;
+  label: React.ReactChild;
+}
 
-interface ISelectViewModel {
+interface ISelectViewModel<V> {
   label?: string;
-  value: any;
+  value: V | null;
+  options: ISelectOption<V>[];
 
   style?: React.CSSProperties;
   className?: string;
 }
 
-interface ISelectActions {
-  onSelect?: (value: any) => void;
+interface ISelectActions<V> {
+  onSelect?: (value: V | null) => void;
 }
 
-export type SelectProps = ISelectViewModel & ISelectActions;
+export type SelectProps<V = {}> = ISelectViewModel<V> & ISelectActions<V>;
 
 const menuHeaderStyle = {
   padding: '8px 12px'
@@ -74,7 +60,7 @@ const Select: React.FC<SelectProps> = props => {
 
   return (
     <ReactSelect
-      options={options}
+      options={props.options}
       styles={{
         control: styles => ({ ...styles, backgroundColor: 'white', cursor: 'pointer' }),
         option: (styles, { data, isDisabled, isFocused, isSelected }) => ({
@@ -109,6 +95,9 @@ const Select: React.FC<SelectProps> = props => {
         })
       }}
       components={{ Menu }}
+
+      onChange={e => props.onSelect && props.onSelect(e && (Array.isArray(e) ? e[0].value : e.value) || null)}
+
       className={props.className}
     />
   );

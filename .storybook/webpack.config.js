@@ -1,7 +1,7 @@
 const webpack = require("webpack");
 const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
 
-module.exports = (baseConfig, env, config) => {
+module.exports = ({ config, mode }) => {
   addTypescriptSupport(config);
   replaceLoaders(config, [{
     test: /\.svg$/,
@@ -15,10 +15,17 @@ module.exports = (baseConfig, env, config) => {
 function addTypescriptSupport(config) {
     config.module.rules.push({
         test: /\.(ts|tsx)$/,
-        loader: require.resolve("ts-loader"),
-        options: {
-            transpileOnly: true
-        }
+        use: [
+          {
+            loader: require.resolve("ts-loader"),
+            options: {
+              transpileOnly: true
+            }
+          },
+          {
+            loader: require.resolve('react-docgen-typescript-loader'),
+          }
+        ]
     });
     config.plugins.push(new ForkTsCheckerWebpackPlugin({
         async: false

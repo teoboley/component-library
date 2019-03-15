@@ -1,5 +1,8 @@
 import { configure, addDecorator } from '@storybook/react';
 import { withBackgrounds } from '@storybook/addon-backgrounds';
+import { withInfo } from "@storybook/addon-info";
+
+addDecorator(withInfo);
 
 addDecorator(
   withBackgrounds([

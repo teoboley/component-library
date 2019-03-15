@@ -2,7 +2,7 @@ import * as React from 'react';
 import { css, cx } from 'emotion';
 import { useTheme } from '../../../../lib/theme';
 import { withProps } from 'recompose';
-import { KeyboardEventHandler, useState } from 'react';
+import { ChangeEvent, KeyboardEventHandler, useState } from 'react';
 
 type ValueTransformer<V> = { toString: (val: V) => string; fromString: (s: string) => V };
 
@@ -23,8 +23,9 @@ interface IFormFieldViewModel<V> {
 }
 
 interface IFormFieldActions<V> {
-  onChange?: (value: V | null) => void;
+  onChange?: (value: V | null, e: ChangeEvent<HTMLInputElement>) => void;
   onKeyDown?: KeyboardEventHandler<HTMLInputElement>;
+  onKeyPress?: KeyboardEventHandler<HTMLInputElement>;
   onBlur?: () => void;
   onFocus?: () => void;
 }
@@ -99,11 +100,12 @@ export const FormField: React.FC<FormFieldProps<string | undefined>> = props => 
                 ? props.valueTransformer
                   ? props.valueTransformer.fromString(val)
                   : (val as any)
-                : null
+                : null, e
             );
           }
         }}
         onKeyDown={props.onKeyDown}
+        onKeyPress={props.onKeyPress}
         onFocus={() => {
           setState({
             focused: true
