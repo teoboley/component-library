@@ -6,7 +6,7 @@ import baseTableCSS from './baseStyles';
 import Card from '../../atoms/Card';
 import { Button } from '../../atoms';
 import FormFieldNumber from '../../atoms/FormField/Number';
-import Select from '../../atoms/Select';
+import Select from '../../_incubator/atoms/Select';
 
 interface ITableViewModel<D> {
   data: D[];

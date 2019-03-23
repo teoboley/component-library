@@ -9,7 +9,7 @@ import { cardOverrideName, CardProps } from '../components/atoms/Card';
 import { codeOverrideName, CodeProps } from '../components/atoms/Code';
 import { modalContainerOverrideName, ModalContainerProps } from '../components/atoms/ModalContainer';
 import { popoverOverrideName, PopoverProps } from '../components/atoms/Popover';
-import { selectOverrideName, SelectProps } from '../components/atoms/Select';
+import { selectOverrideName, SelectProps } from '../components/_incubator/atoms/Select';
 import { snackbarOverrideName, SnackbarProps } from '../components/atoms/Snackbar';
 import { tagOverrideName, TagProps } from '../components/atoms/Tag';
 import { tooltipOverrideName, TooltipProps } from '../components/atoms/Tooltip';
@@ -18,8 +18,8 @@ import { textOverrideName, TextProps } from '../components/atoms/Typography/Text
 import { alertOverrideName, AlertProps } from '../components/molecules/Alert';
 import { menuOverrideName, MenuProps } from '../components/molecules/Menu';
 import { modalOverrideName, ModalProps } from '../components/molecules/Modal';
-import { treeOverrideName, TreeProps } from '../components/molecules/Tree';
-import { contextMenuOverrideName, ContextMenuProps } from '../components/organisms/ContextMenu';
+import { treeOverrideName, TreeProps } from '../components/_incubator/molecules/Tree';
+import { contextMenuOverrideName, ContextMenuProps } from '../components/_incubator/organisms/ContextMenu';
 import { DeepPartial } from 'redux';
 
 interface ThemeCodePalette {
@@ -235,7 +235,7 @@ export const createTheme = (themeInput?: DeepPartial<Theme>): Theme => {
         fontFamily: cascade(themeInput && themeInput.typography,['hero'], type => type.fontFamily) || headerFontFamily,
         fontSize: `calc(${rootFontSize} * 3.75)`,
         fontWeight: cascade(themeInput && themeInput.typography,['hero'], type => type.fontWeight) || 700,
-        lineHeight: 1,
+        lineHeight: 1
       },
       h2: {
         color: cascade(themeInput && themeInput.typography,['hero', 'h1'], type => type.color) || textColor,

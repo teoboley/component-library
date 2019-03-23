@@ -1,16 +1,13 @@
-import { configure, addDecorator } from '@storybook/react';
-import { withBackgrounds } from '@storybook/addon-backgrounds';
-import { withInfo } from "@storybook/addon-info";
+import { configure, addDecorator, addParameters } from '@storybook/react';
 
-addDecorator(withInfo);
-
-addDecorator(
-  withBackgrounds([
-    { name: 'lightgrey', value: 'lightgrey', default: true },
-    { name: 'twitter', value: '#00aced' },
-    { name: 'facebook', value: '#3b5998' },
-  ])
-);
+addParameters({
+  options: {
+    theme: {
+      appBg: 'white',
+      appContentBg: '#EEEEEE'
+    },
+  },
+});
 
 // automatically import all files ending in *.stories.js
 const req = require.context('../src', true, /.stories.(js|jsx|ts|tsx)$/);

@@ -7,10 +7,10 @@ import MinimizeIcon from '@material-ui/icons/Remove';
 import MaximizeIcon from '@material-ui/icons/Add';
 import CloseIcon from '@material-ui/icons/Close';
 
-import { useMeasure, usePrevious } from '../../../lib/hooks';
-import Text, { ETextType } from '../../atoms/Typography/Text';
-import { ButtonBase, EButtonType } from '../../atoms/Button';
-import { useOverride } from '../../../lib/theme';
+import { useMeasure, usePrevious } from '../../../../lib/hooks';
+import Text, { ETextType } from '../../../atoms/Typography/Text';
+import { ButtonBase, EButtonType } from '../../../atoms/Button';
+import { useOverride } from '../../../../lib/theme';
 
 interface ITreeViewModel {
   name: React.ReactChild;

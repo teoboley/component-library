@@ -9,6 +9,7 @@ import predefinedThemes from './themes/index';
 
 import 'codemirror/mode/shell/shell';
 import 'codemirror/mode/javascript/javascript';
+import 'codemirror/mode/jsx/jsx';
 import { useState } from 'react';
 
 interface ICodeViewModel {

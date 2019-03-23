@@ -27,13 +27,15 @@ const Text: React.FC<TextProps> = props => {
 
   const theme = useTheme();
 
+  const type = props.type || ETextType.Body;
+
   const baseCss = css({
-    ...props.type && theme.typography[props.type],
+    ...theme.typography[type],
     marginTop: 0,
     marginBottom: '0.35em'
   });
 
-  const ElementType = props.type && 'p' || 'span';
+  const ElementType = type === ETextType.Body ? 'p' : 'span';
 
   return (
     <ElementType style={props.style} className={cx(baseCss, props.className)}>

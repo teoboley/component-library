@@ -1,1 +1,1 @@
-export { default as ContextMenu } from '../organisms/ContextMenu';
+export { default as ContextMenu } from '../_incubator/organisms/ContextMenu';

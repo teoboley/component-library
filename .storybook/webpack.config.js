@@ -21,9 +21,6 @@ function addTypescriptSupport(config) {
             options: {
               transpileOnly: true
             }
-          },
-          {
-            loader: require.resolve('react-docgen-typescript-loader'),
           }
         ]
     });

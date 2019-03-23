@@ -3,7 +3,7 @@ import { storiesOf } from '@storybook/react';
 import { action } from '@storybook/addon-actions';
 
 import Tree from '.';
-import Card from '../../atoms/Card';
+import Card from '../../../atoms/Card';
 
 storiesOf('Tree', module).add('Default', () => {
   return (

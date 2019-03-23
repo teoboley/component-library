@@ -1,10 +1,9 @@
 import * as React from 'react';
 import ReactSelect, { components as ReactSelectComponents } from 'react-select';
-import Color = require('color');
-import { getBWContrastingColor, useOverride, useTheme } from '../../../lib/theme';
-import Tooltip from '../Tooltip';
+import * as Color from 'color';
+import { getBWContrastingColor, useOverride, useTheme } from '../../../../lib/theme';
 import { Spring } from 'react-spring/renderprops';
-import Card from '../Card';
+import Card from '../../../atoms/Card';
 import { css } from 'emotion';
 
 interface ISelectOption<V> {

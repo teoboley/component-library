@@ -2,7 +2,7 @@ import * as React from 'react';
 import { storiesOf } from '@storybook/react';
 
 import Select from './index';
-import Tooltip from '../Tooltip';
+import Tooltip from '../../../atoms/Tooltip';
 
 storiesOf('Select', module).add('Default', () => {
   return (

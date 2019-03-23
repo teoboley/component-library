@@ -12,16 +12,16 @@
     "storybook": "start-storybook -p 6006",
     "build-storybook": "build-storybook",
     "test": "jest",
-    "prettify": "prettier --write 'src/**/*.{tsx,ts,jsx,js}'"
+    "prettify": "prettier --write 'src/**/*.{tsx,ts,jsx,js}'",
+    "docz:dev": "docz dev",
+    "docz:build": "docz build"
   },
   "devDependencies": {
     "@babel/core": "^7.0.0",
-    "@storybook/addon-actions": "^5.0.1",
-    "@storybook/addon-backgrounds": "^5.0.1",
-    "@storybook/addon-info": "^5.0.1",
-    "@storybook/addon-links": "^5.0.1",
-    "@storybook/addons": "^5.0.1",
-    "@storybook/react": "^5.0.1",
+    "@storybook/addon-actions": "^5.0.3",
+    "@storybook/addon-links": "^5.0.3",
+    "@storybook/addons": "^5.0.3",
+    "@storybook/react": "^5.0.3",
     "@types/classnames": "^2.2.6",
     "@types/codemirror": "^0.0.71",
     "@types/color": "^3.0.0",
@@ -42,6 +42,8 @@
     "babel-loader": "^8.0.2",
     "babel-runtime": "^6.26.0",
     "css-loader": "^1.0.0",
+    "docz": "^0.13.7",
+    "docz-theme-default": "^0.13.7",
     "fork-ts-checker-webpack-plugin": "^0.4.9",
     "fs-extra": "^7.0.0",
     "glob": "^7.1.2",
@@ -51,7 +53,6 @@
     "raw-loader": "^0.5.1",
     "react": "^16.8.1",
     "react-apollo": "^2.1.11",
-    "react-docgen-typescript-loader": "^3.0.1",
     "react-dom": "^16.8.1",
     "rimraf": "^2.6.2",
     "ts-jest": "^23.1.4",
@@ -89,6 +90,9 @@
     "react": "^16.8.1",
     "react-apollo": "^2.1.11",
     "react-dom": "^16.8.1"
+  },
+  "resolutions": {
+    "ansi-styles": "^3.2.0"
   },
   "jest": {
     "transform": {

@@ -51,7 +51,7 @@ export const MessageHub: React.FC<{ children: (input: AddMessageFunc) => void; }
     config: { tension: 125, friction: 20, precision: 0.1 }
   });
 
-  useEffect(() => void props.children((msgElement, timeout = 5_000) => setItems(state => [...state, { key: id++, msgElement, timeout: timeout || undefined }])), []);
+  useEffect(() => void props.children((msgElement, timeout = 5000) => setItems(state => [...state, { key: id++, msgElement, timeout: timeout || undefined }])), []);
 
   return (
     <div className={css({
