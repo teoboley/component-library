@@ -97,7 +97,7 @@ export const ButtonBase: React.FC<ButtonBaseProps> = props => {
           filter: 'brightness(100%)'
         },
         cursor: props.disabled ? 'not-allowed' : undefined,
-        transition: 'filter 200ms'
+        // transition: 'filter 200ms'
       });
       break;
     case EButtonType.Overlay:

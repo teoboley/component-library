@@ -25,38 +25,6 @@ const ModalContainer: React.FC<ModalContainerProps> = props => {
   }
 
   return (
-    <>
-      <style>{// language=CSS
-      `
-        .ReactModal__Content > * {
-          opacity: 0;
-          transform: scale(0);
-          transition: transform 300ms 100ms, opacity 300ms;
-        }
-
-        .ReactModal__Content--after-open > * {
-          opacity: 1;
-          transform: scale(1);
-        }
-
-        .ReactModal__Content--before-close > * {
-          opacity: 0;
-          transform: scale(0);
-        }
-
-        .ReactModal__Overlay {
-          background-color: rgba(0, 0, 0, 0);
-          transition: background-color 500ms;
-        }
-
-        .ReactModal__Overlay--after-open {
-          background-color: rgba(0, 0, 0, 0.25);
-        }
-
-        .ReactModal__Overlay--before-close {
-          background-color: rgba(0, 0, 0, 0);
-        }
-      `}</style>
       <Modal
         isOpen={props.isOpen}
         onRequestClose={props.onClose}
@@ -85,10 +53,43 @@ const ModalContainer: React.FC<ModalContainerProps> = props => {
         }}
         className={props.className}
         closeTimeoutMS={1000}
+        portalClassName={css`
+        .ReactModal__Content > * {
+          opacity: 0;
+          transform: scale(0);
+          transition: transform 300ms 100ms, opacity 300ms;
+        }
+
+        .ReactModal__Content--after-open > * {
+          opacity: 1;
+          transform: scale(1);
+        }
+
+        .ReactModal__Content--before-close > * {
+          opacity: 0;
+          transform: scale(0);
+        }
+
+        .ReactModal__Overlay {
+          background-color: rgba(0, 0, 0, 0);
+          transition: background-color 500ms;
+          z-index: 999;
+        }
+
+        .ReactModal__Overlay--after-open {
+          background-color: rgba(0, 0, 0, 0.25);
+        }
+
+        .ReactModal__Overlay--before-close {
+          background-color: rgba(0, 0, 0, 0);
+        }
+      `}
+        bodyOpenClassName={css`
+          overflow: hidden;
+        `}
       >
         <div>{props.children}</div>
       </Modal>
-    </>
   );
 };
 

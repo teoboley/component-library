@@ -20,6 +20,7 @@ interface ICodeViewModel {
 
   controlled?: boolean;
   editable?: boolean;
+  lineNumbersHidden?: boolean;
 
   style?: React.CSSProperties;
   className?: string;
@@ -90,7 +91,7 @@ const Code: React.FC<CodeProps> = props => {
       <CodeMirror
         value={props.controlled ? props.value : state.value}
         options={{
-          lineNumbers: !props.inline && true,
+          lineNumbers: !props.inline && !props.lineNumbersHidden,
           mode: props.mode,
           theme: props.theme || 'custom'
         }}

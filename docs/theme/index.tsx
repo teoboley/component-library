@@ -9,6 +9,7 @@ import { useTheme } from '../../src/lib/theme';
 import { css } from 'emotion';
 import Table from '../../src/components/molecules/Table';
 import Code from '../../src/components/atoms/Code';
+import LoadingSpinner from '../../src/components/atoms/LoadingSpinner';
 
 const Index = () => {
   const theme = useTheme();
@@ -27,7 +28,7 @@ const Index = () => {
               return (
                 <div className={css({ marginBottom: 30 })}>
                   <div className={css({ marginBottom: 20, padding: '30px 50px' })}>{props.component}</div>
-                  <Code mode={'text/typescript-jsx'} value={props.code}/>
+                  <Code mode={'text/typescript-jsx'} value={props.code} lineNumbersHidden/>
                 </div>
               );
             },
@@ -38,7 +39,7 @@ const Index = () => {
             h5: props => (<Heading type={EHeadingType.H5} className={css({ marginTop: 30 })}>{props.children}</Heading>),
             h6: props => (<Heading type={EHeadingType.H6} className={css({ marginTop: 30 })}>{props.children}</Heading>),
             // ul: components.List,
-            // loading: components.Loading,
+            loading: props => <LoadingSpinner />,
             table: props => {
               console.log("TABLE PROPS");
               console.log(props);

@@ -1,7 +1,7 @@
 import path from 'path';
 
 export default {
-  title: 'Crash Test Component Library',
+  title: 'Crash Test Components',
   description: 'A component library for building robust, beautiful user interfaces.',
   src: './src',
   dest: './docs/generated',
