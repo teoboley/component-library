@@ -1,0 +1,48 @@
+---
+name: Tooltip
+menu: Components/Atoms
+---
+
+import { Playground, PropsTable } from 'docz'
+
+import ThreeDRotationIcon from '@material-ui/icons/ThreeDRotation';
+import FormatBold from '@material-ui/icons/FormatBold';
+import FormatAlignLeft from '@material-ui/icons/FormatAlignLeft';
+
+import Tooltip from '.';
+import Button from '../Button';
+
+# Tooltip
+
+## Basic usage
+
+<Playground>
+    <Tooltip
+      content={
+        'Some really long tooltip. This can be multiple sentences, and contain multiple types of content.'
+      }
+      backgroundColor={"#FF4136"}
+      withArrow
+    >
+      <Button color={"#FF4136"}>With Arrow</Button>
+    </Tooltip>
+    <Tooltip content={<ThreeDRotationIcon />} backgroundColor={"#0074D9"} withArrow>
+      <Button color={"#0074D9"}>With Icon</Button>
+    </Tooltip>
+    <Tooltip
+      content={
+        <>
+          <ThreeDRotationIcon />
+          <FormatBold />
+          <FormatAlignLeft />
+        </>
+      }
+      withArrow
+    >
+      <Button>With Multiple Icons</Button>
+    </Tooltip>
+</Playground>
+
+## Props
+
+<PropsTable of={Tooltip} />

@@ -1,5 +1,6 @@
 ---
 name: Card
+menu: Components/Atoms
 ---
 
 import { Playground, PropsTable } from 'docz'
@@ -11,14 +12,10 @@ import { ETextType } from '../Typography/Text';
 
 # Card
 
-## Props
-
-<PropsTable of={Card} />
-
 ## Basic usage
 
 <Playground>
-  <Card style={{ maxWidth: 300, margin: 30 }}>
+  <Card style={{ maxWidth: 300 }}>
       <Heading type={EHeadingType.H3}>New Workspace</Heading>
       <Text type={ETextType.Body}>
         Either choose a folder to place your new notes in, or open a HTTP endpoint that conforms
@@ -26,3 +23,7 @@ import { ETextType } from '../Typography/Text';
       </Text>
     </Card>
 </Playground>
+
+## Props
+
+<PropsTable of={Card} />

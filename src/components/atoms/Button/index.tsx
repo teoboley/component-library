@@ -62,7 +62,6 @@ export const ButtonBase: React.FC<ButtonBaseProps> = props => {
     textAlign: 'left',
     cursor: 'pointer',
     margin: 2,
-    // transition: 'cardBackground-color 200ms, color 200ms, border 200ms, box-shadow 200ms',
     '&:focus': {
       outline: 'none'
     }
@@ -89,7 +88,7 @@ export const ButtonBase: React.FC<ButtonBaseProps> = props => {
           // color: (Color(color).isDark() ? Color(color).lighten(0.5) : Color(color).darken(0.5))
           //   .hsl()
           //   .string(),
-          filter: 'brightness(130%)'
+          filter: 'brightness(175%)'
         },
         '&:active': !props.disabled && {
           // color: (Color(color).isDark() ? Color(color).lighten(0.75) : Color(color).darken(0.75))
@@ -97,7 +96,8 @@ export const ButtonBase: React.FC<ButtonBaseProps> = props => {
           //   .string(),
           filter: 'brightness(100%)'
         },
-        cursor: props.disabled ? 'not-allowed' : undefined
+        cursor: props.disabled ? 'not-allowed' : undefined,
+        transition: 'filter 200ms'
       });
       break;
     case EButtonType.Overlay:
@@ -116,18 +116,22 @@ export const ButtonBase: React.FC<ButtonBaseProps> = props => {
             .hsl()
             .string()
         },
-        cursor: props.disabled ? 'not-allowed' : undefined
+        cursor: props.disabled ? 'not-allowed' : undefined,
+        transition: 'background-color 200ms'
       });
       break;
     case EButtonType.Outline:
       styles = css({
         border: `1.5px solid ${color}`,
         color: color,
+        boxShadow: 'rgba(0, 0, 0, 0.0588235) 0px 1px 1px 0px',
         '&:hover': !props.disabled && {
           backgroundColor: Color(color)
             .alpha(0.1)
             .hsl()
-            .string()
+            .string(),
+          transform: 'translateY(-1px)',
+          boxShadow: 'rgba(0, 0, 0, 0.0980392) 0px 4px 12px 0px'
         },
         '&:active': !props.disabled && {
           color: secondaryColor,
@@ -140,7 +144,8 @@ export const ButtonBase: React.FC<ButtonBaseProps> = props => {
             .hsl()
             .string()
         },
-        cursor: props.disabled ? 'not-allowed' : undefined
+        cursor: props.disabled ? 'not-allowed' : undefined,
+        transition: 'background-color 200ms, box-shadow 200ms, transform 200ms'
       });
       break;
     case EButtonType.Contained:
@@ -148,6 +153,7 @@ export const ButtonBase: React.FC<ButtonBaseProps> = props => {
         backgroundColor: color,
         border: `1px solid ${color}`,
         color: secondaryColor,
+        boxShadow: 'rgba(0, 0, 0, 0.0588235) 0px 1px 1px 0px',
         '&:hover': !props.disabled && {
           backgroundColor: Color(color)
             .mix(Color('white'), 0.25)
@@ -156,7 +162,9 @@ export const ButtonBase: React.FC<ButtonBaseProps> = props => {
           borderColor: Color(color)
             .mix(Color('white'), 0.25)
             .hsl()
-            .string()
+            .string(),
+          transform: 'translateY(-1px)',
+          boxShadow: 'rgba(0, 0, 0, 0.0980392) 0px 4px 12px 0px'
         },
         '&:active': !props.disabled && {
           backgroundColor: Color(color)
@@ -168,7 +176,8 @@ export const ButtonBase: React.FC<ButtonBaseProps> = props => {
             .hsl()
             .string()
         },
-        cursor: props.disabled ? 'not-allowed' : undefined
+        cursor: props.disabled ? 'not-allowed' : undefined,
+        transition: 'background-color 200ms, box-shadow 200ms, transform 200ms'
       });
       break;
   }

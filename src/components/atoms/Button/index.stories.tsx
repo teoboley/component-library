@@ -3,7 +3,7 @@ import { storiesOf } from '@storybook/react';
 import { blue, green, red } from '@material-ui/core/colors';
 
 import Button, { EButtonSize, EButtonType } from '.';
-import { Text } from '../Typography';
+import { Text } from '../Typography/index';
 import { ETextType } from '../Typography/Text';
 
 const renderButtonsWithType = (type: EButtonType) => {

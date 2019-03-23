@@ -1,0 +1,53 @@
+---
+name: Form Fields
+menu: Components/Atoms
+---
+
+import { Playground, PropsTable } from 'docz'
+
+import ThreeDRotationIcon from '@material-ui/icons/ThreeDRotation';
+
+import FormFieldText from './Text';
+import FormFieldNumber from './Number';
+
+# Form Fields
+
+## Basic usage
+
+<Playground>
+  <div style={{ marginBottom: 15 }}>
+    <FormFieldText value={null}  />
+    <FormFieldText value={''}  />
+    <FormFieldText
+      value={'Some value'}
+    />
+    <FormFieldNumber value={0}  />
+    <FormFieldNumber value={5}  />
+  </div>
+  <div style={{ marginBottom: 15 }}>
+    <FormFieldText
+      icon={<ThreeDRotationIcon />}
+      value={null}
+    />
+    <FormFieldText
+      icon={<ThreeDRotationIcon />}
+      value={''}
+    />
+    <FormFieldText
+      icon={<ThreeDRotationIcon />}
+      value={'Some value'}
+    />
+    <FormFieldNumber
+      icon={<ThreeDRotationIcon />}
+      value={0}
+    />
+    <FormFieldNumber
+      icon={<ThreeDRotationIcon />}
+      value={5}
+    />
+  </div>
+</Playground>
+
+## Props
+
+<PropsTable of={FormFieldText} />

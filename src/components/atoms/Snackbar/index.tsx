@@ -95,7 +95,7 @@ export const MessageHub: React.FC<{ children: (input: AddMessageFunc) => void; }
 
 export const MessageContext = React.createContext<AddMessageFunc>(() => {});
 
-export const MessageProvider: React.FC = props => {
+export const MessageProvider: React.FC<{ children: JSX.Element | ((addMessageFunc: AddMessageFunc) => JSX.Element) }> = props => {
   const ref = useRef<AddMessageFunc | null>(null);
   const [state, setState] = useState<{ value: AddMessageFunc | null }>({ value: null });
 
@@ -103,7 +103,7 @@ export const MessageProvider: React.FC = props => {
 
   return <>
     <MessageContext.Provider value={state.value || (() => {})}>
-      {props.children}
+      {isFunction(props.children) ? props.children(ref.current!) : props.children}
     </MessageContext.Provider>
     <MessageHub children={add => {
       ref.current = add;
@@ -189,3 +189,7 @@ export const Snackbar: React.FC<SnackbarProps> = props => {
     </Card>
   );
 };
+
+function isFunction(functionToCheck: any): functionToCheck is Function {
+  return functionToCheck && {}.toString.call(functionToCheck) === '[object Function]';
+}

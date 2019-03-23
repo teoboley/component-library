@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { JSONSchema6, JSONSchema6Definition, JSONSchema6TypeName } from 'json-schema';
 import { Formik } from 'formik';
-import { Heading } from '../../../atoms/Typography';
+import { Heading } from '../../../atoms/Typography/index';
 import { EHeadingType } from '../../../atoms/Typography/Heading';
 import Text, { ETextType } from '../../../atoms/Typography/Text';
 import FormFieldText from '../../../atoms/FormField/Text';

@@ -1,0 +1,252 @@
+---
+name: Table
+menu: Components/Molecules
+---
+
+import { Playground, PropsTable } from 'docz'
+
+import Table from '.'
+
+# Table
+
+## Basic usage
+
+<Playground>
+  <Table
+      columns={
+        [
+          {
+            Header: 'First Name',
+            accessor: 'firstName'
+          },
+          {
+            Header: 'Last Name',
+            accessor: 'lastName'
+          },
+          {
+            Header: 'Age',
+            accessor: 'age'
+          }
+        ]
+      }
+
+      enforcePagination
+
+      data={[
+              {
+                firstName: 'Thompson',
+                lastName: 'Eaton',
+                age: 25
+              },
+              {
+                firstName: 'Emily',
+                lastName: 'French',
+                age: 40
+              },
+              {
+                firstName: 'Lorena',
+                lastName: 'Becker',
+                age: 33
+              },
+              {
+                firstName: 'Noemi',
+                lastName: 'Keith',
+                age: 25
+              },
+              {
+                firstName: 'Phyllis',
+                lastName: 'Cooper',
+                age: 27
+              },
+              {
+                firstName: 'Patton',
+                lastName: 'Young',
+                age: 30
+              },
+              {
+                firstName: 'Ina',
+                lastName: 'Moreno',
+                age: 35
+              },
+              {
+                firstName: 'Merritt',
+                lastName: 'Fry',
+                age: 39
+              },
+              {
+                firstName: 'Sharon',
+                lastName: 'Johns',
+                age: 30
+              },
+              {
+                firstName: 'Hansen',
+                lastName: 'Levine',
+                age: 21
+              },
+              {
+                firstName: 'Ayala',
+                lastName: 'Day',
+                age: 23
+              },
+              {
+                firstName: 'Keith',
+                lastName: 'Owen',
+                age: 38
+              },
+              {
+                firstName: 'Haney',
+                lastName: 'Dean',
+                age: 37
+              },
+              {
+                firstName: 'Branch',
+                lastName: 'Ferrell',
+                age: 25
+              },
+              {
+                firstName: 'Carrie',
+                lastName: 'Leblanc',
+                age: 28
+              },
+              {
+                firstName: 'Franks',
+                lastName: 'Donaldson',
+                age: 29
+              },
+              {
+                firstName: 'Giles',
+                lastName: 'Kemp',
+                age: 39
+              },
+              {
+                firstName: 'Winters',
+                lastName: 'Moses',
+                age: 37
+              },
+              {
+                firstName: 'Everett',
+                lastName: 'Maxwell',
+                age: 30
+              },
+              {
+                firstName: 'Morris',
+                lastName: 'Mack',
+                age: 23
+              },
+              {
+                firstName: 'Amanda',
+                lastName: 'Cortez',
+                age: 26
+              },
+              {
+                firstName: 'Amelia',
+                lastName: 'Lang',
+                age: 35
+              },
+              {
+                firstName: 'Norman',
+                lastName: 'Schneider',
+                age: 39
+              },
+              {
+                firstName: 'Hazel',
+                lastName: 'Colon',
+                age: 26
+              },
+              {
+                firstName: 'Chase',
+                lastName: 'Mckenzie',
+                age: 40
+              },
+              {
+                firstName: 'Bender',
+                lastName: 'Wright',
+                age: 20
+              },
+              {
+                firstName: 'Minerva',
+                lastName: 'Williams',
+                age: 37
+              },
+              {
+                firstName: 'Tania',
+                lastName: 'Wade',
+                age: 32
+              },
+              {
+                firstName: 'Alta',
+                lastName: 'Middleton',
+                age: 20
+              },
+              {
+                firstName: 'Oneil',
+                lastName: 'Dillard',
+                age: 30
+              },
+              {
+                firstName: 'Virginia',
+                lastName: 'Hogan',
+                age: 39
+              },
+              {
+                firstName: 'Fulton',
+                lastName: 'Battle',
+                age: 27
+              },
+              {
+                firstName: 'Allyson',
+                lastName: 'Santos',
+                age: 21
+              },
+              {
+                firstName: 'Erickson',
+                lastName: 'Yang',
+                age: 37
+              },
+              {
+                firstName: 'Mae',
+                lastName: 'Stuart',
+                age: 27
+              },
+              {
+                firstName: 'Lawson',
+                lastName: 'Riggs',
+                age: 22
+              },
+              {
+                firstName: 'Dorothy',
+                lastName: 'Velazquez',
+                age: 25
+              },
+              {
+                firstName: 'Suzette',
+                lastName: 'Caldwell',
+                age: 24
+              },
+              {
+                firstName: 'Keller',
+                lastName: 'Mcleod',
+                age: 25
+              },
+              {
+                firstName: 'Ewing',
+                lastName: 'Merritt',
+                age: 38
+              },
+              {
+                firstName: 'Keri',
+                lastName: 'Foreman',
+                age: 34
+              },
+              {
+                firstName: 'Pace',
+                lastName: 'Nicholson',
+                age: 31
+              }
+            ]}
+        />
+</Playground>
+
+## Props
+
+<PropsTable of={Table} />

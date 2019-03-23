@@ -1,0 +1,48 @@
+---
+name: Alert
+menu: Components/Molecules
+---
+
+import { Playground, PropsTable } from 'docz'
+import { css } from 'emotion'
+
+import Alert from '.'
+
+# Alert
+
+## Basic usage
+
+<Playground>
+    <div className={css({ marginBottom: 20 })}>
+        <Alert open color={'primary'}>
+          Primary
+        </Alert>
+        <Alert open color={'secondary'}>
+          Secondary
+        </Alert>
+        <Alert open color={'success'}>
+          Success
+        </Alert>
+        <Alert open color={'danger'}>
+          Danger
+        </Alert>
+        <Alert open color={'warning'}>
+          Warning
+        </Alert>
+    </div>
+    <div>
+        <Alert open color={'#ff0000'}>
+          Red
+        </Alert>
+        <Alert open color={'#0000ff'}>
+          Blue
+        </Alert>
+        <Alert open color={'#00ff00'}>
+          Green
+        </Alert>
+    </div>
+</Playground>
+
+## Props
+
+<PropsTable of={Alert} />

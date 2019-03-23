@@ -1,0 +1,27 @@
+---
+name: Modal
+menu: Components/Molecules
+---
+
+import { Playground, PropsTable } from 'docz'
+
+import Modal from '.'
+import Text, { ETextType } from '../../atoms/Typography/Text';
+import Sandbox from '../../atoms/Sandbox';
+
+# Modal
+
+## Basic usage
+
+<Playground>
+    <Sandbox>
+        <Modal isOpen={true}>
+          <Text type={ETextType.Body}>This is a modal with body text.</Text>
+          <Text type={ETextType.Body}>It was once my friend.</Text>
+        </Modal>
+    </Sandbox>
+</Playground>
+
+## Props
+
+<PropsTable of={Modal} />

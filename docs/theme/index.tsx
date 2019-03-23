@@ -25,18 +25,18 @@ const Index = () => {
               console.log(props);
 
               return (
-                <div>
-                  <div className={css({ marginBottom: 20 })}>{props.component}</div>
+                <div className={css({ marginBottom: 30 })}>
+                  <div className={css({ marginBottom: 20, padding: '30px 50px' })}>{props.component}</div>
                   <Code mode={'text/typescript-jsx'} value={props.code}/>
                 </div>
               );
             },
             h1: props => (<Heading type={EHeadingType.H1} className={css({ color: theme.palette.primary })}>{props.children}</Heading>),
-            h2: props => (<Heading type={EHeadingType.H2}>{props.children}</Heading>),
-            h3: props => (<Heading type={EHeadingType.H3}>{props.children}</Heading>),
-            h4: props => (<Heading type={EHeadingType.H4}>{props.children}</Heading>),
-            h5: props => (<Heading type={EHeadingType.H5}>{props.children}</Heading>),
-            h6: props => (<Heading type={EHeadingType.H6}>{props.children}</Heading>),
+            h2: props => (<Heading type={EHeadingType.H2} className={css({ marginTop: 30 })}>{props.children}</Heading>),
+            h3: props => (<Heading type={EHeadingType.H3} className={css({ marginTop: 30 })}>{props.children}</Heading>),
+            h4: props => (<Heading type={EHeadingType.H4} className={css({ marginTop: 30 })}>{props.children}</Heading>),
+            h5: props => (<Heading type={EHeadingType.H5} className={css({ marginTop: 30 })}>{props.children}</Heading>),
+            h6: props => (<Heading type={EHeadingType.H6} className={css({ marginTop: 30 })}>{props.children}</Heading>),
             // ul: components.List,
             // loading: components.Loading,
             table: props => {
@@ -57,7 +57,7 @@ const Index = () => {
               return <Table data={data} columns={columns.map((columnName: string) => ({
                 Header: columnName,
                 accessor: columnName
-              }))} className={css({ marginTop: 10, marginBottom: 30 })}/>;
+              }))} className={css({ marginTop: 10 })}/>;
             },
             pre: props => <div>PRE</div>,
             inlineCode: props => <div>INLINE CODE</div>,

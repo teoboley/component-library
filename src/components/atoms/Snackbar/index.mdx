@@ -1,0 +1,44 @@
+---
+name: Snackbar
+menu: Components/Atoms
+---
+
+import { Playground, PropsTable } from 'docz'
+
+import { Snackbar, MessageProvider, useMessage } from '.';
+import Button, { EButtonType } from '../Button';
+
+# Snackbar
+
+## Basic usage
+
+<Playground>
+    <MessageProvider>
+    { showMessage => (
+        <Button
+          type={EButtonType.Contained}
+          onClick={() =>
+            showMessage(
+              onClose => (
+                <Snackbar
+                  heading={'Snackbar Heading'}
+                  description={'Some description'}
+                  dismissable
+                  onClose={onClose}
+                >
+                  <Button type={EButtonType.Outline} onClick={onClose}>Bye</Button>
+                  <Button type={EButtonType.Contained}>Aight</Button>
+                </Snackbar>
+              )
+            )
+          }
+        >
+          Add Snackbar
+        </Button>
+        )}
+    </MessageProvider>
+</Playground>
+
+## Props
+
+<PropsTable of={Snackbar} />

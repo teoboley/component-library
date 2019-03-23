@@ -1,5 +1,6 @@
 ---
 name: Button
+menu: Components/Atoms
 ---
 
 import { Playground, PropsTable } from 'docz'
@@ -8,13 +9,15 @@ import Button, { EButtonType } from '.'
 
 # Button
 
-## Props
-
-<PropsTable of={Button} />
-
 ## Basic usage
 
 <Playground>
-  <Button>Click me</Button>
+  <Button type={EButtonType.Highlight}>Click me</Button>
+  <Button type={EButtonType.Overlay}>Click me</Button>
+  <Button type={EButtonType.Outline}>Click me</Button>
   <Button type={EButtonType.Contained}>Click me</Button>
 </Playground>
+
+## Props
+
+<PropsTable of={Button} />

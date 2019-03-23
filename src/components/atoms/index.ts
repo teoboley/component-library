@@ -6,4 +6,4 @@ export { default as Tag } from './Tag';
 export { default as TextInputBar } from '../_incubator/atoms/TextInputBar';
 export { default as Tooltip } from './Tooltip';
 export { default as Select } from '../_incubator/atoms/Select';
-export * from './Typography';
+export * from './Typography/index';

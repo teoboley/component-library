@@ -1,0 +1,35 @@
+---
+name: Typography
+menu: Components/Atoms
+---
+
+import { Playground, PropsTable } from 'docz'
+
+import { Heading, Text } from '.';
+import { EHeadingType } from './Heading';
+import { ETextType } from './Text';
+
+# Typography
+
+## Basic usage
+
+<Playground>
+    <Heading type={EHeadingType.HERO}>Hero</Heading>
+    <Heading type={EHeadingType.H1}>Heading 1</Heading>
+    <Heading type={EHeadingType.H2}>Heading 2</Heading>
+    <Heading type={EHeadingType.H3}>Heading 3</Heading>
+    <Heading type={EHeadingType.H4}>Heading 4</Heading>
+    <Heading type={EHeadingType.H5}>Heading 5</Heading>
+    <Heading type={EHeadingType.H6}>Heading 6</Heading>
+    <Text type={ETextType.Body}>Body</Text>
+    <Text type={ETextType.Caption}>Caption</Text>
+    <Text type={ETextType.Label}>Label</Text>
+</Playground>
+
+## Props
+
+#### Heading
+<PropsTable of={Heading} />
+
+#### Text
+<PropsTable of={Text} />

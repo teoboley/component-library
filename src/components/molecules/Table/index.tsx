@@ -21,7 +21,7 @@ interface ITableViewModel<D> {
 
 interface ITableActions {}
 
-type TableProps<D = {}> = ITableViewModel<D> & ITableActions;
+type TableProps<D extends any = any> = ITableViewModel<D> & ITableActions;
 
 const Table: React.FC<TableProps> = props => {
   const theme = useTheme();
