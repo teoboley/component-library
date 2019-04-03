@@ -6,6 +6,8 @@ import { EHeadingType } from '../../../atoms/Typography/Heading';
 import Text, { ETextType } from '../../../atoms/Typography/Text';
 import FormFieldText from '../../../atoms/FormField/Text';
 import FormFieldNumber from '../../../atoms/FormField/Number';
+import FormFieldCheckbox from '../../../atoms/FormField/Checkbox';
+import { css } from 'emotion';
 
 // FIXME: handle enums
 type BaseSchemaDataType<T extends JSONSchema6, A> =
@@ -76,19 +78,22 @@ const FormComponent: React.FC<{ schema: JSONSchema6Definition }> = props => {
     switch(schema.type as JSONSchema6TypeName) {
       case 'object':
         return <div>
-          {schema.title && <Heading type={EHeadingType.H4}>{schema.title}</Heading>}
-          {schema.description && <Text type={ETextType.Label}>{schema.description}</Text>}
+          <div className={css({ marginBottom: 30 })}>
+            {schema.title && <Heading type={EHeadingType.H4}>{schema.title}</Heading>}
+            {schema.description && <Text type={ETextType.Label}>{schema.description}</Text>}
+          </div>
           {schema.properties && Object.keys(schema.properties).map(propertyName => {
             return <FormComponent key={propertyName} schema={schema.properties![propertyName]}/>;
           })}
         </div>;
       case 'string':
-        return <FormFieldText value={null} placeholder={schema.title} />;
+        return <FormFieldText value={null} label={schema.title} />;
       case 'number':
-        return <FormFieldNumber value={null} placeholder={schema.title} />;
+        return <FormFieldNumber value={null} label={schema.title} />;
       case 'integer':
-        return <FormFieldNumber value={null} placeholder={schema.title} />;
+        return <FormFieldNumber value={null} label={schema.title} />;
       case 'boolean':
+        return <FormFieldCheckbox checked={false} label={schema.title}/>;
       case 'array':
       case 'null':
       case 'any':

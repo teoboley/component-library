@@ -4,12 +4,12 @@ import { css, cx } from 'emotion';
 import { useTransition, animated } from 'react-spring';
 
 import CloseIcon from '@material-ui/icons/Close';
-import Card from '../Card';
-import Heading, { EHeadingType } from '../Typography/Heading';
-import Text, { ETextType } from '../Typography/Text';
-import Button, { EButtonType } from '../Button';
+import Card from '../../../atoms/Card';
+import Heading, { EHeadingType } from '../../../atoms/Typography/Heading';
+import Text, { ETextType } from '../../../atoms/Typography/Text';
+import Button, { EButtonType } from '../../../atoms/Button';
 import { useRef } from 'react';
-import { useOverride } from '../../../lib/theme';
+import { useOverride } from '../../../../lib/theme';
 
 
 let id = 0;
@@ -22,9 +22,22 @@ interface IMessage {
   timeout?: number;
 }
 
-export type AddMessageFunc = (msgElement: MessageElement, timeout?: number | null) => void;
+export enum EMessageLocation {
+  TopLeft = 'TopLeft',
+  TopCenter = 'TopCenter',
+  TopRight = 'TopRight',
+  BottomLeft = 'BottomLeft',
+  BottomCenter = 'BottomCenter',
+  BottomRight = 'BottomRight'
+}
 
-export const MessageHub: React.FC<{ children: (input: AddMessageFunc) => void; }> = props => {
+export type AddMessageFunc = (msgElement: MessageElement, location?: EMessageLocation, timeout?: number | null) => void;
+
+export const messageHubOverrideName = 'messageHub';
+
+export type MessageHubProps = { children: (input: AddMessageFunc) => void; };
+
+const useMessageList = () => {
   const [refMap] = useState<WeakMap<IMessage, HTMLElement>>(() => new WeakMap());
   const [dismissMap] = useState<WeakMap<IMessage, () => void>>(() => new WeakMap());
   const [items, setItems] = useState<Array<IMessage>>([]);
@@ -51,21 +64,33 @@ export const MessageHub: React.FC<{ children: (input: AddMessageFunc) => void; }
     config: { tension: 125, friction: 20, precision: 0.1 }
   });
 
-  useEffect(() => void props.children((msgElement, timeout = 5000) => setItems(state => [...state, { key: id++, msgElement, timeout: timeout || undefined }])), []);
+  return {
+    refMap,
+    dismissMap,
+    setItems,
+    transitions
+  };
+};
 
-  return (
-    <div className={css({
-      position: "fixed",
-      zIndex: 1000,
-      width: "0 auto",
-      top: 'unset',
-      bottom: '30px',
-      margin: '0 auto',
-      left: 30,
-      right: 30,
+
+export const MessageHub: React.FC<MessageHubProps> = props => {
+  const Override = useOverride(messageHubOverrideName);
+  if (Override) {
+    return <Override {...props}/>;
+  }
+
+  const { refMap, dismissMap, setItems, transitions } = useMessageList();
+
+  useEffect(() => void props.children((msgElement, location = EMessageLocation.BottomRight, timeout = 5000) => {
+    // TODO: add to specific item list based on location
+    return setItems(state => [...state, { key: id++, msgElement, timeout: timeout || undefined }]);
+  }), []);
+
+  const MessageSection: React.FC = props => {
+    return (
+      <div className={css({
       display: 'flex',
       flexDirection: 'column',
-      pointerEvents: 'none',
       alignItems: `flex-end`,
       '@media (max-width: 680px)': {
         alignItems: 'center'
@@ -89,6 +114,30 @@ export const MessageHub: React.FC<{ children: (input: AddMessageFunc) => void; }
           </animated.div>
         );
       })}
+    </div>
+    );
+  };
+
+  return (
+    <div className={css({
+      backgroundColor: 'rgba(255, 0, 0, 0.2)',
+      position: "fixed",
+      zIndex: 1000,
+      // width: "0 auto",
+      // top: 'unset',
+      top: 30,
+      bottom: 30,
+      left: 30,
+      right: 30,
+
+      pointerEvents: 'none',
+    })}>
+      <div className={css({ width: '33%', height: '50%', display: 'inline-block' })}><MessageSection /></div>
+      <div className={css({ width: '33%', height: '50%', display: 'inline-block' })}><MessageSection /></div>
+      <div className={css({ width: '33%', height: '50%', display: 'inline-block' })}><MessageSection /></div>
+      <div className={css({ width: '33%', height: '50%', display: 'inline-block' })}><MessageSection /></div>
+      <div className={css({ width: '33%', height: '50%', display: 'inline-block' })}><MessageSection /></div>
+      <div className={css({ width: '33%', height: '50%', display: 'inline-block' })}><MessageSection /></div>
     </div>
   )
 };

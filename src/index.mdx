@@ -3,18 +3,21 @@ name: Getting Started
 route: /
 ---
 
-# Getting Started
+import { css } from "emotion";
+import Heading, { EHeadingType } from './components/atoms/Typography/Heading';
+import { ThemeConsumer } from './lib/theme';
+
+<ThemeConsumer>{theme => (<div className={css({ marginBottom: 100 })}>
+<Heading type={EHeadingType.H1} className={css({ marginBottom: 30 })}>Crash Test</Heading>
+<Heading type={EHeadingType.HERO} className={css({ color: theme.palette.primary, marginTop: -10 })}>Components</Heading>
+</div>)}</ThemeConsumer>
 
 Design systems enable teams to build better products faster by making design reusable—reusability makes scale possible. This is the heart and primary value of design systems. A design system is a collection of reusable components, guided by clear standards, that can be assembled together to build any number of applications.
 
 Regardless of the technologies and tools behind them, a successful design system follows these guiding principles:
 
 - **It’s consistent**. The way components are built and managed follows a predictable pattern.
-- **It’s self-contained**. Your design system is treated as a standalone dependency.
-- **It’s reusable**. You’ve built components so they can be reused in many contexts.
-- **It’s accessible**. Applications built with your design system are usable by as many people as possible, no matter how they access the web.
-- **It’s robust**. No matter the product or platform to which your design system is applied, it should perform with grace and minimal bugs.
-
-## Consistency
-
-Your first, most important task when starting out is to define the rules of your system, document them, and ensure that everyone follows them. When you have clearly documented code standards and best practices in place, designers and developers from across your organization can easily use and, more importantly, contribute to your design system.
+- **It’s self-contained**. This design system is treated as a standalone dependency.
+- **It’s reusable**. These components are built so they can be reused in many contexts.
+- **It’s accessible**. Applications built with this design system are usable by as many people as possible, no matter how they access the web.
+- **It’s robust**. No matter the product or platform to which this design system is applied, it performs with grace and minimal bugs.

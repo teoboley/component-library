@@ -3,6 +3,7 @@ import { css, cx } from 'emotion';
 import { useTheme } from '../../../../lib/theme';
 import { withProps } from 'recompose';
 import { ChangeEvent, KeyboardEventHandler, useState } from 'react';
+import Text, { ETextType } from '../../Typography/Text';
 
 type ValueTransformer<V> = { toString: (val: V) => string; fromString: (s: string) => V };
 
@@ -10,6 +11,7 @@ interface IFormFieldViewModel<V> {
   value: V | null;
 
   icon?: JSX.Element;
+  label?: string;
   placeholder?: V | string;
 
   activeColor?: string;
@@ -32,13 +34,9 @@ interface IFormFieldActions<V> {
 
 export type FormFieldProps<V> = IFormFieldViewModel<V> & IFormFieldActions<V>;
 
-interface IFormFieldState {
-  focused: boolean;
-}
-
 export const FormField: React.FC<FormFieldProps<string | undefined>> = props => {
   const theme = useTheme();
-  const [state, setState] = useState<IFormFieldState>({ focused: false });
+  const [focused, setFocused] = useState(false);
 
   const activeColor = props.activeColor || theme.palette.primary;
   const inactiveColor = props.inactiveColor || '#8D8D8D';
@@ -59,9 +57,8 @@ export const FormField: React.FC<FormFieldProps<string | undefined>> = props => 
   const inputStyles = css({
     ...theme.typography.formField,
     backgroundColor: 'transparent',
-    width: 120,
+    // width: 120,
     border: 'none',
-    padding: '5px 0px',
     transition: 'border 200ms',
     borderBottom: `2px solid ${props.value ? activeColor : inactiveColor}`,
     color: props.value ? activeColor : inactiveColor,
@@ -77,8 +74,10 @@ export const FormField: React.FC<FormFieldProps<string | undefined>> = props => 
   });
 
   return (
-    <div className={css({ display: 'flex', margin: '0px 2px' })}>
+    <div className={css({ display: 'flex', alignItems: 'flex-end', margin: '10px 2px' })}>
       {props.icon && <label className={iconStyles}>{props.icon}</label>}
+      <div>
+        {props.label && <label className={css({display: 'block'})}><Text type={ETextType.Label} className={css({ fontSize: 12, marginBottom: 0 })}>{props.label}</Text></label>}
       <input
         type={props.type}
         placeholder={props.placeholder}
@@ -107,24 +106,21 @@ export const FormField: React.FC<FormFieldProps<string | undefined>> = props => 
         onKeyDown={props.onKeyDown}
         onKeyPress={props.onKeyPress}
         onFocus={() => {
-          setState({
-            focused: true
-          });
+          setFocused(true);
 
           if (props.onFocus) {
             props.onFocus();
           }
         }}
         onBlur={() => {
-          setState({
-            focused: false
-          });
+          setFocused(false);
 
           if (props.onBlur) {
             props.onBlur();
           }
         }}
       />
+      </div>
     </div>
   );
 };

@@ -4,7 +4,7 @@ import { storiesOf } from '@storybook/react';
 import Form from './index';
 import Card from '../../../atoms/Card';
 
-storiesOf('Form', module).add('Default', () => {
+storiesOf('Form', module).add('Incubator/Default', () => {
   return (
     <Card>
     <Form
@@ -25,6 +25,10 @@ storiesOf('Form', module).add('Default', () => {
           "lastName": {
             "type": "string",
             "title": "Last name"
+          },
+          "isCool": {
+            "type": "boolean",
+            "title": "Is a cool person"
           },
           "age": {
             "type": "integer",

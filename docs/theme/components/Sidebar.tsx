@@ -109,7 +109,7 @@ const Sidebar: React.FC<SidebarProps> = props => {
                   <div className={css({ marginTop: 30 })}>{formatMenuItems(menuItems)}</div>
                 </div>
                 <div>
-                  <ButtonBase type={EButtonType.Overlay}>By Teo Boley</ButtonBase>
+                  <ButtonBase type={EButtonType.Overlay} onClick={() => { window.location.href = 'https://github.com/teoboley' }}>Created by Teo Boley</ButtonBase>
                 </div>
               </div>
             </div>

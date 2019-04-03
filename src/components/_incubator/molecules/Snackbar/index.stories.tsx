@@ -2,7 +2,7 @@ import * as React from 'react';
 import { storiesOf } from '@storybook/react';
 
 import { Snackbar, MessageProvider, useMessage } from '.';
-import Button, { EButtonType } from '../Button';
+import Button, { EButtonType } from '../../../atoms/Button';
 
 export const Test: React.FC<{}> = () => {
   const showMessage = useMessage();

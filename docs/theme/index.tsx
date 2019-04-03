@@ -61,7 +61,7 @@ const Index = () => {
               }))} className={css({ marginTop: 10 })}/>;
             },
             pre: props => <div>PRE</div>,
-            inlineCode: props => <div>INLINE CODE</div>,
+            inlineCode: props => <Code mode={'text'} value={props.children} inline />,
             span: (props: any) => (<Text>{props.children}</Text>),
             p: (props: any) => (<Text type={ETextType.Body}>{props.children}</Text>),
             li: (props: any) => (<li><Text>{props.children}</Text></li>)

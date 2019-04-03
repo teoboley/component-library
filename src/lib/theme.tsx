@@ -10,7 +10,12 @@ import { codeOverrideName, CodeProps } from '../components/atoms/Code';
 import { modalContainerOverrideName, ModalContainerProps } from '../components/atoms/ModalContainer';
 import { popoverOverrideName, PopoverProps } from '../components/atoms/Popover';
 import { selectOverrideName, SelectProps } from '../components/_incubator/atoms/Select';
-import { snackbarOverrideName, SnackbarProps } from '../components/atoms/Snackbar';
+import {
+  messageHubOverrideName,
+  MessageHubProps,
+  snackbarOverrideName,
+  SnackbarProps
+} from '../components/_incubator/molecules/Snackbar';
 import { tagOverrideName, TagProps } from '../components/atoms/Tag';
 import { tooltipOverrideName, TooltipProps } from '../components/atoms/Tooltip';
 import { headingOverrideName, HeadingProps } from '../components/atoms/Typography/Heading';
@@ -124,6 +129,7 @@ interface ThemeOverrides {
   [modalContainerOverrideName]?: React.ComponentType<ModalContainerProps>;
   [popoverOverrideName]?: React.ComponentType<PopoverProps>;
   [selectOverrideName]?: React.ComponentType<SelectProps>;
+  [messageHubOverrideName]?: React.ComponentType<MessageHubProps>;
   [snackbarOverrideName]?: React.ComponentType<SnackbarProps>;
   [tagOverrideName]?: React.ComponentType<TagProps>;
   [tooltipOverrideName]?: React.ComponentType<TooltipProps>;
@@ -228,7 +234,7 @@ export const createTheme = (themeInput?: DeepPartial<Theme>): Theme => {
         fontFamily: headerFontFamily,
         fontSize: `calc(${rootFontSize} * 8)`,
         fontWeight: 700,
-        lineHeight: 0.75
+        lineHeight: 0.9
       },
       h1: {
         color: cascade(themeInput && themeInput.typography,['hero'], type => type.color) || textColor,
@@ -364,7 +370,7 @@ interface IThemeProviderViewModel {
 
 type ThemeProviderProps = IThemeProviderViewModel;
 
-// export const ThemeConsumer = ThemeContext.Consumer;
+export const ThemeConsumer = ThemeContext.Consumer;
 
 export const useTheme = () => {
   return useContext(ThemeContext);
