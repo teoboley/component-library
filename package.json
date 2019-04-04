@@ -1,5 +1,5 @@
 {
-  "name": "@crash-test-design/component-library",
+  "name": "@teoboley/component-library",
   "version": "1.0.12",
   "main": "build/index.js",
   "author": "Teo Boley",

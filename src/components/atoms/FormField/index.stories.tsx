@@ -42,6 +42,7 @@ storiesOf('Form', module).add('Fields', () => {
           onBlur={action('onBlur')}
         />
         <FormFieldText
+          label={'Some Label'}
           icon={<ThreeDRotationIcon />}
           value={'Some value'}
           onChange={action('onChange')}

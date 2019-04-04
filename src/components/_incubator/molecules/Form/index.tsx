@@ -8,6 +8,7 @@ import FormFieldText from '../../../atoms/FormField/Text';
 import FormFieldNumber from '../../../atoms/FormField/Number';
 import FormFieldCheckbox from '../../../atoms/FormField/Checkbox';
 import { css } from 'emotion';
+import FormFieldRadio from '../../../atoms/FormField/Radio';
 
 // FIXME: handle enums
 type BaseSchemaDataType<T extends JSONSchema6, A> =
@@ -93,8 +94,14 @@ const FormComponent: React.FC<{ schema: JSONSchema6Definition }> = props => {
       case 'integer':
         return <FormFieldNumber value={null} label={schema.title} />;
       case 'boolean':
-        return <FormFieldCheckbox checked={false} label={schema.title}/>;
+        return <FormFieldCheckbox checked={true} label={schema.title} className={css({ margin: '20px 0' })}/>;
       case 'array':
+        return <div className={css({ margin: '20px 0' })}>
+          <Text type={ETextType.Label}>{ schema.title }</Text>
+          <div>{ schema.items && (schema.items as JSONSchema6).enum!.map((enumItem, i) =>
+            <FormFieldRadio checked={i === 2} label={enumItem && enumItem.toString() || undefined}/>
+          )}</div>
+        </div>;
       case 'null':
       case 'any':
       default:

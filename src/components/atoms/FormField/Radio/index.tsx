@@ -5,6 +5,8 @@ import { css, cx } from 'emotion';
 import CheckIcon from '@material-ui/icons/Check';
 
 import Text, { ETextType } from '../../Typography/Text';
+import { inactiveColor } from '../shared';
+import { ButtonBase, EButtonType } from '../../Button';
 
 interface IFormFieldRadioViewModel {
   checked: boolean;
@@ -13,6 +15,7 @@ interface IFormFieldRadioViewModel {
   disabled?: boolean;
 
   label?: string;
+  name?: string;
 
   style?: React.CSSProperties;
   className?: string;
@@ -40,6 +43,7 @@ const FormFieldRadio: React.FC<FormFieldRadioProps> = props => {
           checked={props.checked}
           required={props.required}
           disabled={props.disabled}
+          name={props.name}
           className={css({
             position: 'absolute',
             opacity: 0,
@@ -50,36 +54,35 @@ const FormFieldRadio: React.FC<FormFieldRadioProps> = props => {
           })}
           onChange={event => props.onToggle && props.onToggle(event.target.checked)}
         />
-        <span
-          className={css({
-            backgroundColor: props.checked ? theme.palette.primary : props.disabled ? theme.palette.disabled : '#d3d3d3',
-            height: 20,
-            left: 0,
-            position: 'absolute',
-            top: -2,
-            transition: 'background-color 200ms',
-            width: 20,
-            cursor: 'pointer',
-            textAlign: 'center',
-            color: 'white',
-            borderRadius: 20
-          })}
-        >
+        <ButtonBase type={EButtonType.Contained} color={props.checked ? theme.palette.primary : inactiveColor} disabled={props.disabled} className={css({
+          margin: 0, padding: 0,
+          height: 20,
+          left: 0,
+          position: 'absolute',
+          top: -2,
+          width: 20,
+          borderRadius: 20,
+          transform: 'none !important',
+          fontSize: 15,
+
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center'
+        })}>
           <span
             className={css({
               display: 'inline-block',
               backgroundColor: 'white',
-              height: 10,
-              width: 10,
+              height: 8,
+              width: 8,
               borderRadius: 10,
               position: 'relative',
-              top: 1,
               transform: props.checked ? 'scale(1)' : 'scale(0)',
               transition: 'transform 300ms 50ms',
               userSelect: "none"
             })}
           />
-        </span>
+        </ButtonBase>
       </span>
       <Text className={css({
           // "dib mv0 fw7 t-medium black",

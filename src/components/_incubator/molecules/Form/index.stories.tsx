@@ -3,6 +3,7 @@ import { storiesOf } from '@storybook/react';
 
 import Form from './index';
 import Card from '../../../atoms/Card';
+import { css } from 'emotion';
 
 storiesOf('Form', module).add('Incubator/Default', () => {
   return (
@@ -30,6 +31,24 @@ storiesOf('Form', module).add('Incubator/Default', () => {
             "type": "boolean",
             "title": "Is a cool person"
           },
+          "isFresh": {
+            "type": "boolean",
+            "title": "Is a fresh person"
+          },
+          "multipleChoicesList": {
+            "type": "array",
+            "title": "A multiple choices list",
+            "items": {
+              "type": "string",
+              "enum": [
+                "foo",
+                "bar",
+                "fuzz",
+                "qux"
+              ]
+            },
+            "uniqueItems": true
+          },
           "age": {
             "type": "integer",
             "title": "Age"
@@ -50,6 +69,9 @@ storiesOf('Form', module).add('Incubator/Default', () => {
           }
         }
       }}
+      className={css({
+        marginRight: 50
+      })}
     />
     </Card>
   );

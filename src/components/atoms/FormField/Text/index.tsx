@@ -4,6 +4,7 @@ import { useTheme } from '../../../../lib/theme';
 import { withProps } from 'recompose';
 import { ChangeEvent, KeyboardEventHandler, useState } from 'react';
 import Text, { ETextType } from '../../Typography/Text';
+import { inactiveColor as sharedInactiveColor } from '../shared';
 
 type ValueTransformer<V> = { toString: (val: V) => string; fromString: (s: string) => V };
 
@@ -12,6 +13,7 @@ interface IFormFieldViewModel<V> {
 
   icon?: JSX.Element;
   label?: string;
+  name?: string;
   placeholder?: V | string;
 
   activeColor?: string;
@@ -39,7 +41,7 @@ export const FormField: React.FC<FormFieldProps<string | undefined>> = props => 
   const [focused, setFocused] = useState(false);
 
   const activeColor = props.activeColor || theme.palette.primary;
-  const inactiveColor = props.inactiveColor || '#8D8D8D';
+  const inactiveColor = props.inactiveColor || sharedInactiveColor;
 
   const iconStyles = css({
     color: props.value ? activeColor : inactiveColor,
@@ -57,7 +59,8 @@ export const FormField: React.FC<FormFieldProps<string | undefined>> = props => 
   const inputStyles = css({
     ...theme.typography.formField,
     backgroundColor: 'transparent',
-    // width: 120,
+    padding: '2px 0 4px 0',
+    marginTop: -2,
     border: 'none',
     transition: 'border 200ms',
     borderBottom: `2px solid ${props.value ? activeColor : inactiveColor}`,
@@ -77,49 +80,57 @@ export const FormField: React.FC<FormFieldProps<string | undefined>> = props => 
     <div className={css({ display: 'flex', alignItems: 'flex-end', margin: '10px 2px' })}>
       {props.icon && <label className={iconStyles}>{props.icon}</label>}
       <div>
-        {props.label && <label className={css({display: 'block'})}><Text type={ETextType.Label} className={css({ fontSize: 12, marginBottom: 0 })}>{props.label}</Text></label>}
-      <input
-        type={props.type}
-        placeholder={props.placeholder}
-        style={props.style}
-        className={cx(inputStyles, props.className)}
-        value={
-          props.value
-            ? props.valueTransformer
-              ? props.valueTransformer.toString(props.value)
-              : props.value
-            : ''
-        }
-        onChange={e => {
-          const val = e.target.value === '' ? null : e.target.value;
-
-          if (props.onChange) {
-            return props.onChange(
-              val !== null
-                ? props.valueTransformer
-                  ? props.valueTransformer.fromString(val)
-                  : (val as any)
-                : null, e
-            );
+        {props.label && (
+          <label className={css({ display: 'block', marginLeft: 3 })}>
+            <Text type={ETextType.Label} className={css({ fontSize: 12, marginBottom: 0 })}>
+              {props.label}
+            </Text>
+          </label>
+        )}
+        <input
+          type={props.type}
+          placeholder={props.placeholder}
+          name={props.name}
+          style={props.style}
+          className={cx(inputStyles, props.className)}
+          value={
+            props.value
+              ? props.valueTransformer
+                ? props.valueTransformer.toString(props.value)
+                : props.value
+              : ''
           }
-        }}
-        onKeyDown={props.onKeyDown}
-        onKeyPress={props.onKeyPress}
-        onFocus={() => {
-          setFocused(true);
+          onChange={e => {
+            const val = e.target.value === '' ? null : e.target.value;
 
-          if (props.onFocus) {
-            props.onFocus();
-          }
-        }}
-        onBlur={() => {
-          setFocused(false);
+            if (props.onChange) {
+              return props.onChange(
+                val !== null
+                  ? props.valueTransformer
+                    ? props.valueTransformer.fromString(val)
+                    : (val as any)
+                  : null,
+                e
+              );
+            }
+          }}
+          onKeyDown={props.onKeyDown}
+          onKeyPress={props.onKeyPress}
+          onFocus={() => {
+            setFocused(true);
 
-          if (props.onBlur) {
-            props.onBlur();
-          }
-        }}
-      />
+            if (props.onFocus) {
+              props.onFocus();
+            }
+          }}
+          onBlur={() => {
+            setFocused(false);
+
+            if (props.onBlur) {
+              props.onBlur();
+            }
+          }}
+        />
       </div>
     </div>
   );

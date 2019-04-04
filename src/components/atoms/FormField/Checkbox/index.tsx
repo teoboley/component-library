@@ -5,6 +5,8 @@ import { css, cx } from 'emotion';
 import CheckIcon from '@material-ui/icons/Check';
 
 import Text, { ETextType } from '../../Typography/Text';
+import { inactiveColor } from '../shared';
+import { ButtonBase, EButtonType } from '../../Button';
 
 interface IFormFieldCheckboxViewModel {
   checked: boolean;
@@ -13,6 +15,7 @@ interface IFormFieldCheckboxViewModel {
   disabled?: boolean;
 
   label?: string;
+  name?: string;
 
   style?: React.CSSProperties;
   className?: string;
@@ -40,6 +43,7 @@ const FormFieldCheckbox: React.FC<FormFieldCheckboxProps> = props => {
           checked={props.checked}
           required={props.required}
           disabled={props.disabled}
+          name={props.name}
           className={css({
             position: 'absolute',
             opacity: 0,
@@ -50,32 +54,30 @@ const FormFieldCheckbox: React.FC<FormFieldCheckboxProps> = props => {
           })}
           onChange={event => props.onToggle && props.onToggle(event.target.checked)}
         />
-        <span
-          className={css({
-            backgroundColor: props.checked ? theme.palette.primary : props.disabled ? theme.palette.disabled : '#d3d3d3',
-            height: 20,
-            left: 0,
-            position: 'absolute',
-            top: -2,
-            transition: 'background-color 200ms',
-            width: 20,
-            cursor: 'pointer',
-            textAlign: 'center',
-            color: 'white',
-            borderRadius: 2
-          })}
-        >
-          <CheckIcon
-            fontSize={"small"}
-            className={css({
-              position: 'relative',
-              top: 0,
-              transform: props.checked ? 'scale(1)' : 'scale(0)',
-              transition: 'transform 300ms 50ms',
-              userSelect: "none"
-            })}
-          />
-        </span>
+        <ButtonBase type={EButtonType.Contained} color={props.checked ? theme.palette.primary : inactiveColor} disabled={props.disabled} className={css({
+          margin: 0, padding: 0,
+          height: 20,
+          left: 0,
+          position: 'absolute',
+          top: -2,
+          width: 20,
+          borderRadius: 3,
+          transform: 'none !important',
+          fontSize: 15,
+
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center'
+        })}>
+            <CheckIcon
+              fontSize={"inherit"}
+              className={css({
+                transform: props.checked ? 'scale(1)' : 'scale(0)',
+                transition: 'transform 300ms 50ms',
+                userSelect: "none"
+              })}
+            />
+        </ButtonBase>
       </span>
       <Text className={css({
           // "dib mv0 fw7 t-medium black",
