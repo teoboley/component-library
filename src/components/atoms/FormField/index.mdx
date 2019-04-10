@@ -9,6 +9,8 @@ import ThreeDRotationIcon from '@material-ui/icons/ThreeDRotation';
 
 import FormFieldText from './Text';
 import FormFieldNumber from './Number';
+import FormFieldCheckbox from './Checkbox';
+import FormFieldRadio from './Radio';
 
 # Form Fields
 
@@ -16,36 +18,48 @@ import FormFieldNumber from './Number';
 
 <Playground>
   <div style={{ marginBottom: 15 }}>
-    <FormFieldText value={null}  />
-    <FormFieldText value={''}  />
-    <FormFieldText
-      value={'Some value'}
-    />
-    <FormFieldNumber value={0}  />
-    <FormFieldNumber value={5}  />
-  </div>
-  <div style={{ marginBottom: 15 }}>
-    <FormFieldText
-      icon={<ThreeDRotationIcon />}
-      value={null}
-    />
-    <FormFieldText
-      icon={<ThreeDRotationIcon />}
-      value={''}
-    />
-    <FormFieldText
-      icon={<ThreeDRotationIcon />}
-      value={'Some value'}
-    />
-    <FormFieldNumber
-      icon={<ThreeDRotationIcon />}
-      value={0}
-    />
-    <FormFieldNumber
-      icon={<ThreeDRotationIcon />}
-      value={5}
-    />
-  </div>
+      <FormFieldText value={null} />
+      <FormFieldText label={'Some Label'} value={''} />
+      <FormFieldText
+        label={'Some Label'}
+        value={'Some value'}
+      />
+      <FormFieldCheckbox checked={false} label={'A Checkbox'} />
+      <FormFieldCheckbox checked={true} label={'A Checkbox'} />
+      <FormFieldRadio checked={false} label={'A Radio'} />
+      <FormFieldRadio checked={true} label={'A Radio'} />
+      <FormFieldNumber value={0} />
+      <FormFieldNumber value={5} />
+    </div>
+    <div style={{ marginBottom: 15 }}>
+      <FormFieldText
+        icon={<ThreeDRotationIcon />}
+        value={null}
+      />
+      <FormFieldText
+        label={'Some Label'}
+        icon={<ThreeDRotationIcon />}
+        value={''}
+      />
+      <FormFieldText
+        label={'Some Label'}
+        icon={<ThreeDRotationIcon />}
+        value={'Some value'}
+      />
+      <FormFieldCheckbox checked={false} label={'A Checkbox'} />
+      <FormFieldCheckbox checked={true} label={'A Checkbox'} />
+      <FormFieldRadio checked={false} label={'A Radio'} />
+      <FormFieldRadio checked={true} label={'A Radio'} />
+
+      <FormFieldNumber
+        icon={<ThreeDRotationIcon />}
+        value={0}
+      />
+      <FormFieldNumber
+        icon={<ThreeDRotationIcon />}
+        value={5}
+      />
+    </div>
 </Playground>
 
 ## Props

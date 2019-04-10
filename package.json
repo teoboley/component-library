@@ -1,6 +1,6 @@
 {
   "name": "@teoboley/component-library",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "main": "build/index.js",
   "author": "Teo Boley",
   "license": "MIT",

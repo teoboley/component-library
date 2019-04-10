@@ -59,7 +59,7 @@ const Tooltip: React.FC<TooltipProps> = props => {
     (props.backgroundColor
       ? getBWContrastingColor(theme.palette.getColor(props.backgroundColor))
       : 'black');
-  const backgroundColor = props.backgroundColor || 'white';
+  const backgroundColor = props.backgroundColor && theme.palette.getColor(props.backgroundColor) || 'white';
 
   const tooltipStyle = css({
     ...theme.typography.tooltip,
