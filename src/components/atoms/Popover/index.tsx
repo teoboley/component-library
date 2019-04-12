@@ -1,10 +1,24 @@
 import * as React from 'react';
+import * as ReactDOM from 'react-dom';
 import { Popper } from 'react-popper';
 import * as PopperJS from 'popper.js';
-import ClickAwayListener from '@material-ui/core/ClickAwayListener';
 import { css, cx } from 'emotion';
 import { ToggleAnimation } from '../../../lib/animation';
 import { useOverride } from '../../../lib/theme';
+import ClickAwayListener from '../ClickAwayListener';
+
+declare global {
+  interface Window {
+    tooltipElement: HTMLElement | null;
+  }
+}
+
+window.tooltipElement = null;
+
+if (!window.tooltipElement) {
+  window.tooltipElement = document.createElement("div");
+  document.body.appendChild(window.tooltipElement);
+}
 
 export interface TooltipPlacement {
   horizontal?: 'left' | 'center' | 'right';
@@ -96,6 +110,7 @@ const Popover: React.FC<PopoverProps> = props => {
 
   return (
     <div className={css({ display: 'inline-block' })}>
+      {ReactDOM.createPortal(
       <Popper referenceElement={referenceElement} placement={placementConverter(props.placement)}>
         {({ ref, style, placement, arrowProps }) => (
           <div
@@ -108,8 +123,8 @@ const Popover: React.FC<PopoverProps> = props => {
               <ClickAwayListener onClickAway={e => {
                 console.log("CLICK AWAY LISTENER, IS OPEN: " + isOpen);
                 isOpen && props.onClose && props.onClose();
-                e.preventDefault();
-                e.stopPropagation();
+                /*e.preventDefault();
+                e.stopPropagation();*/
               }}>
                 <div>
                   {props.children}
@@ -126,7 +141,9 @@ const Popover: React.FC<PopoverProps> = props => {
             </Animation>
           </div>
         )}
-      </Popper>
+      </Popper>,
+        window.tooltipElement!
+      )}
     </div>
   );
 };

@@ -84,7 +84,7 @@ export const ButtonBase: React.FC<ButtonBaseProps> = props => {
           // color: (Color(color).isDark() ? Color(color).lighten(0.5) : Color(color).darken(0.5))
           //   .hsl()
           //   .string(),
-          filter: 'brightness(175%)'
+          filter: props.color || Color(color).isDark() ? 'brightness(175%)' : 'brightness(57%)'
         },
         '&:active': !props.disabled && {
           // color: (Color(color).isDark() ? Color(color).lighten(0.75) : Color(color).darken(0.75))

@@ -1942,6 +1942,13 @@
   dependencies:
     "@types/react" "*"
 
+"@types/react-event-listener@^0.4.9":
+  version "0.4.9"
+  resolved "https://registry.yarnpkg.com/@types/react-event-listener/-/react-event-listener-0.4.9.tgz#7cd62145e78e80d1d427b061b29655d77248967a"
+  integrity sha512-IGC/0CSoqOBEj4D2RRkMlNMp84eAmzyDcLoeqqye8AtdPbmcfcdbHYeqAP+hK+MWw4o6+zuhysoLYUetmY3SBg==
+  dependencies:
+    "@types/react" "*"
+
 "@types/react-modal@^3.6.0":
   version "3.6.0"
   resolved "https://registry.yarnpkg.com/@types/react-modal/-/react-modal-3.6.0.tgz#57e7c74f2b39b1a90116bdb30aeaac89e5e1866a"
@@ -10810,6 +10817,15 @@ react-event-listener@^0.6.2:
   integrity sha512-21ubz0vpzPL/8YPGkcDs/LFIemxMFPhpXnFKvrm15IA7x/kYzh1Bru3ww/lsZJJ0hCqyhJGjv7Txl/U00Je5SA==
   dependencies:
     "@babel/runtime" "7.0.0-rc.1"
+    prop-types "^15.6.0"
+    warning "^4.0.1"
+
+react-event-listener@^0.6.6:
+  version "0.6.6"
+  resolved "https://registry.yarnpkg.com/react-event-listener/-/react-event-listener-0.6.6.tgz#758f7b991cad9086dd39fd29fad72127e1d8962a"
+  integrity sha512-+hCNqfy7o9wvO6UgjqFmBzARJS7qrNoda0VqzvOuioEpoEXKutiKuv92dSz6kP7rYLmyHPyYNLesi5t/aH1gfw==
+  dependencies:
+    "@babel/runtime" "^7.2.0"
     prop-types "^15.6.0"
     warning "^4.0.1"
 

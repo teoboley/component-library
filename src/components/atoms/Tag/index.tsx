@@ -1,8 +1,8 @@
 import * as React from 'react';
-import { ClickAwayListener } from '@material-ui/core';
 import { css, cx } from 'emotion';
 import { useOverride, useTheme } from '../../../lib/theme';
 import { ButtonBase, EButtonType } from '../Button';
+import ClickAwayListener from '../ClickAwayListener';
 
 export interface ITagViewModel {
   color?: string;
