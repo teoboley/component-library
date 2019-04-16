@@ -39,6 +39,7 @@ interface IPopoverViewModel {
   anchorPosition?: AnchorPosition;
 
   arrowColor?: string;
+  placementEnforced?: boolean;
 
   animationComponent?: ToggleAnimation;
 
@@ -111,7 +112,13 @@ const Popover: React.FC<PopoverProps> = props => {
   return (
     <div className={css({ display: 'inline-block' })}>
       {ReactDOM.createPortal(
-      <Popper referenceElement={referenceElement} placement={placementConverter(props.placement)}>
+      <Popper referenceElement={referenceElement} placement={placementConverter(props.placement)} modifiers={props.placementEnforced && {
+        flip: {
+        enabled: false
+      },
+        preventOverflow: {
+        escapeWithReference: true
+      }} || undefined}>
         {({ ref, style, placement, arrowProps }) => (
           <div
             ref={ref}
@@ -120,14 +127,15 @@ const Popover: React.FC<PopoverProps> = props => {
             data-placement={placement}
           >
             <Animation toggle={isOpen}>
-              <ClickAwayListener onClickAway={e => {
+              <ClickAwayListener onClickAway={isOpen ? (e => {
                 console.log("CLICK AWAY LISTENER, IS OPEN: " + isOpen);
-                isOpen && props.onClose && props.onClose();
+                props.onClose && props.onClose();
                 /*e.preventDefault();
                 e.stopPropagation();*/
-              }}>
+              }) : (() => null)}>
                 <div>
                   {props.children}
+
                   {props.arrowColor && (
                     <div
                       data-placement={placement}

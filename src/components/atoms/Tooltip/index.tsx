@@ -20,6 +20,7 @@ export interface ITooltipViewModel {
   maxWidth?: number;
 
   placement?: TooltipPlacement;
+  placementEnforced?: boolean;
 
   disableHoverListener?: boolean;
 
@@ -77,6 +78,7 @@ const Tooltip: React.FC<TooltipProps> = props => {
         anchorEl={state.anchorEl}
         arrowColor={props.withArrow ? backgroundColor : undefined}
         placement={props.placement || { vertical: 'top' }}
+        placementEnforced={props.placementEnforced}
       >
         <div style={props.style} className={cx(tooltipStyle, props.className)}>
           <DefaultTooltipTextAnimation toggle={Boolean(state.anchorEl)} delay={'100ms'}>
