@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { useState } from 'react';
 import { Controlled as CodeMirror } from 'react-codemirror2';
 import { css, cx } from 'emotion';
 
@@ -10,7 +11,6 @@ import predefinedThemes from './themes/index';
 import 'codemirror/mode/shell/shell';
 import 'codemirror/mode/javascript/javascript';
 import 'codemirror/mode/jsx/jsx';
-import { useState } from 'react';
 
 interface ICodeViewModel {
   value: string;
@@ -41,7 +41,7 @@ export const codeOverrideName = 'code';
 const Code: React.FC<CodeProps> = props => {
   const Override = useOverride(codeOverrideName);
   if (Override) {
-    return <Override {...props}/>;
+    return <Override {...props} />;
   }
 
   const [state, setState] = useState<ICodeState>({ value: props.value });

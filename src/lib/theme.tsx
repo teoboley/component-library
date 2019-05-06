@@ -1,31 +1,30 @@
 import * as React from 'react';
 import { CSSProperties, useContext } from 'react';
-import * as deepmerge from "deepmerge";
+import * as deepmerge from 'deepmerge';
 
-import Global from './global';
 import * as Color from 'color';
-import { buttonBaseOverrideName, ButtonBaseProps, buttonOverrideName, ButtonProps } from '../components/atoms/Button';
+import { DeepPartial } from 'redux';
+import {
+  buttonBaseOverrideName,
+  ButtonBaseProps,
+  buttonOverrideName,
+  ButtonProps
+} from '../components/atoms/Button';
 import { cardOverrideName, CardProps } from '../components/atoms/Card';
 import { codeOverrideName, CodeProps } from '../components/atoms/Code';
-import { modalContainerOverrideName, ModalContainerProps } from '../components/atoms/ModalContainer';
-import { popoverOverrideName, PopoverProps } from '../components/atoms/Popover';
-import { selectOverrideName, SelectProps } from '../components/_incubator/atoms/Select';
 import {
-  messageHubOverrideName,
-  MessageHubProps,
-  snackbarOverrideName,
-  SnackbarProps
-} from '../components/_incubator/molecules/Snackbar';
+  modalContainerOverrideName,
+  ModalContainerProps
+} from '../components/atoms/ModalContainer';
+import { popoverOverrideName, PopoverProps } from '../components/atoms/Popover';
 import { tagOverrideName, TagProps } from '../components/atoms/Tag';
-import { tooltipOverrideName, TooltipProps } from '../components/atoms/Tooltip';
+import { tooltipOverrideName, TooltipProps } from '../components/molecules/Tooltip';
 import { headingOverrideName, HeadingProps } from '../components/atoms/Typography/Heading';
 import { textOverrideName, TextProps } from '../components/atoms/Typography/Text';
 import { alertOverrideName, AlertProps } from '../components/molecules/Alert';
 import { menuOverrideName, MenuProps } from '../components/molecules/Menu';
 import { modalOverrideName, ModalProps } from '../components/molecules/Modal';
-import { treeOverrideName, TreeProps } from '../components/_incubator/molecules/Tree';
-import { contextMenuOverrideName, ContextMenuProps } from '../components/_incubator/organisms/ContextMenu';
-import { DeepPartial } from 'redux';
+import Global from './global';
 
 interface ThemeCodePalette {
   window: {
@@ -128,9 +127,6 @@ interface ThemeOverrides {
   [codeOverrideName]?: React.ComponentType<CodeProps>;
   [modalContainerOverrideName]?: React.ComponentType<ModalContainerProps>;
   [popoverOverrideName]?: React.ComponentType<PopoverProps>;
-  [selectOverrideName]?: React.ComponentType<SelectProps>;
-  [messageHubOverrideName]?: React.ComponentType<MessageHubProps>;
-  [snackbarOverrideName]?: React.ComponentType<SnackbarProps>;
   [tagOverrideName]?: React.ComponentType<TagProps>;
   [tooltipOverrideName]?: React.ComponentType<TooltipProps>;
   [headingOverrideName]?: React.ComponentType<HeadingProps>;
@@ -138,8 +134,6 @@ interface ThemeOverrides {
   [alertOverrideName]?: React.ComponentType<AlertProps>;
   [menuOverrideName]?: React.ComponentType<MenuProps>;
   [modalOverrideName]?: React.ComponentType<ModalProps>;
-  [treeOverrideName]?: React.ComponentType<TreeProps>;
-  [contextMenuOverrideName]?: React.ComponentType<ContextMenuProps>;
 }
 
 export interface Theme {
@@ -148,197 +142,281 @@ export interface Theme {
   overrides: ThemeOverrides;
 }
 
-type Diff<T, U> = T extends U ? never : T;  // Remove types from T that are assignable to U
+type Diff<T, U> = T extends U ? never : T; // Remove types from T that are assignable to U
 type NonNullable<T> = Diff<T, null | undefined>;
 
 export const createTheme = (themeInput?: DeepPartial<Theme>): Theme => {
-  const rootFontSize = (themeInput && themeInput.typography && themeInput.typography.fontSize) || '16px';
-  const headerFontFamily = (themeInput && themeInput.typography && themeInput.typography.fontFamily) || '"Avenir Next", "Segoe UI", Helvetica, Arial, sans-serif';
-  const textFontFamily = (themeInput && themeInput.typography && themeInput.typography.fontFamily) || '"Source Sans Pro", Helvetica, Arial, sans-serif';
+  const rootFontSize =
+    (themeInput && themeInput.typography && themeInput.typography.fontSize) || '16px';
+  const headerFontFamily =
+    (themeInput && themeInput.typography && themeInput.typography.fontFamily) ||
+    '"Avenir Next", "Segoe UI", Helvetica, Arial, sans-serif';
+  const textFontFamily =
+    (themeInput && themeInput.typography && themeInput.typography.fontFamily) ||
+    '"Source Sans Pro", Helvetica, Arial, sans-serif';
 
   const textColor = (themeInput && themeInput.typography && themeInput.typography.color) || 'black';
 
-  const cascade = <T extends any, Z extends any>(obj: T | null, prev: string[], accessor: (el: any) => Z): Z | null => {
-    return prev.reverse().reduce((acc, currIndex) => acc || (obj && obj[currIndex] && accessor(obj[currIndex])), null);
+  const cascade = <T extends any, Z extends any>(
+    obj: T | null,
+    prev: string[],
+    accessor: (el: any) => Z
+  ): Z | null => {
+    return prev
+      .reverse()
+      .reduce((acc, currIndex) => acc || (obj && obj[currIndex] && accessor(obj[currIndex])), null);
   };
 
-  const output = (deepmerge({
-    palette: {
-      primary: '#005AE5',
-      secondary: '#222222',
-      disabled: 'darkgrey',
-      success: '#35a537',
-      danger: '#e2353d',
-      warning: '#e2c81c',
-      cardBackground: 'white',
-      code: {
-        window: {
-          background: '#222222',
-          color: '#A9B7C6'
+  const output = (deepmerge(
+    {
+      palette: {
+        primary: '#005AE5',
+        secondary: '#222222',
+        disabled: 'darkgrey',
+        success: '#35a537',
+        danger: '#e2353d',
+        warning: '#e2c81c',
+        cardBackground: 'white',
+        code: {
+          window: {
+            background: '#222222',
+            color: '#A9B7C6'
+          },
+          meta: '#BBB529',
+          number: '#6897BB',
+          keyword: '#CC7832',
+          def: '#A9B7C6',
+          variable: ['#A9B7C6', '#A9B7C6', '#9876AA'],
+          type: '#AABBCC',
+          property: '#FFC66D',
+          operator: '#A9B7C6',
+          string: ['#6A8759', '#6A8759'],
+          comment: '#61A151',
+          link: '#CC7832',
+          atom: '#CC7832',
+          error: '#BC3F3C',
+          tag: '#629755',
+          attribute: '#6897bb',
+          qualifier: '#6A8759',
+          bracket: '#A9B7C6',
+          builtin: '#FF9E59',
+          special: '#FF9E59',
+          cursor: '#A9B7C6',
+          activeLineBackground: '#323232',
+          guttersBackground: '#292b2d',
+          gutterMarker: '#FFEE80',
+          gutterMarkerSubtle: '#D0D0D0',
+          lineNumber: '#606366',
+          matchingBracket: {
+            background: '#3B514D',
+            color: '#FFEF28'
+          },
+          selectedBackground: '#214283',
+          hintsCustom: {
+            color: '#9C9E9E',
+            background: '#3B3E3F'
+          },
+          hintsCustomActive: {
+            background: '#494D4E',
+            color: '#9C9E9E'
+          }
         },
-        meta: '#BBB529',
-        number: '#6897BB',
-        keyword: '#CC7832',
-        def: '#A9B7C6',
-        variable: ['#A9B7C6', '#A9B7C6', '#9876AA'],
-        type: '#AABBCC',
-        property: '#FFC66D',
-        operator: '#A9B7C6',
-        string: ['#6A8759', '#6A8759'],
-        comment: '#61A151',
-        link: '#CC7832',
-        atom: '#CC7832',
-        error: '#BC3F3C',
-        tag: '#629755',
-        attribute: '#6897bb',
-        qualifier: '#6A8759',
-        bracket: '#A9B7C6',
-        builtin: '#FF9E59',
-        special: '#FF9E59',
-        cursor: '#A9B7C6',
-        activeLineBackground: '#323232',
-        guttersBackground: '#292b2d',
-        gutterMarker: '#FFEE80',
-        gutterMarkerSubtle: '#D0D0D0',
-        lineNumber: '#606366',
-        matchingBracket: {
-          background: '#3B514D',
-          color: '#FFEF28'
-        },
-        selectedBackground: '#214283',
-        hintsCustom: {
-          color: '#9C9E9E',
-          background: '#3B3E3F'
-        },
-        hintsCustomActive: {
-          background: '#494D4E',
-          color: '#9C9E9E'
-        }
-      },
-      getColor(codeOrColor: string) {
-        let keyIndex = Object.keys(output.palette).indexOf(codeOrColor);
+        getColor(codeOrColor: string) {
+          let keyIndex = Object.keys(output.palette).indexOf(codeOrColor);
 
-        if (keyIndex !== -1) {
-          return output.palette[Object.keys(output.palette)[keyIndex]];
-        } else {
-          return codeOrColor;
+          if (keyIndex !== -1) {
+            return output.palette[Object.keys(output.palette)[keyIndex]];
+          } else {
+            return codeOrColor;
+          }
         }
-      }
-    },
-    typography: {
-      color: textColor,
-      fontFamily: textFontFamily,
-      fontSize: rootFontSize,
-      hero: {
-        color: textColor,
-        fontFamily: headerFontFamily,
-        fontSize: `calc(${rootFontSize} * 8)`,
-        fontWeight: 700,
-        lineHeight: 0.9
       },
-      h1: {
-        color: cascade(themeInput && themeInput.typography,['hero'], type => type.color) || textColor,
-        fontFamily: cascade(themeInput && themeInput.typography,['hero'], type => type.fontFamily) || headerFontFamily,
-        fontSize: `calc(${rootFontSize} * 3.75)`,
-        fontWeight: cascade(themeInput && themeInput.typography,['hero'], type => type.fontWeight) || 700,
-        lineHeight: 1
-      },
-      h2: {
-        color: cascade(themeInput && themeInput.typography,['hero', 'h1'], type => type.color) || textColor,
-        fontFamily: cascade(themeInput && themeInput.typography,['hero', 'h1'], type => type.fontFamily) || headerFontFamily,
-        fontSize: `calc(${rootFontSize} * 3)`,
-        fontWeight: cascade(themeInput && themeInput.typography,['hero', 'h1'], type => type.fontWeight) || 700,
-        lineHeight: 1.04
-      },
-      h3: {
-        color: cascade(themeInput && themeInput.typography,['hero', 'h1', 'h2'], type => type.color) || textColor,
-        fontFamily: cascade(themeInput && themeInput.typography,['hero', 'h1', 'h2'], type => type.fontFamily) || headerFontFamily,
-        fontSize: `calc(${rootFontSize} * 2.125)`,
-        fontWeight: cascade(themeInput && themeInput.typography,['hero', 'h1', 'h2'], type => type.fontWeight) || 700,
-        lineHeight: 1.17
-      },
-      h4: {
-        color: cascade(themeInput && themeInput.typography,['hero', 'h1', 'h2', 'h3'], type => type.color) || textColor,
-        fontFamily: cascade(themeInput && themeInput.typography,['hero', 'h1', 'h2', 'h3'], type => type.fontFamily) || headerFontFamily,
-        fontSize: `calc(${rootFontSize} * 1.5)`,
-        fontWeight: cascade(themeInput && themeInput.typography,['hero', 'h1', 'h2', 'h3'], type => type.fontWeight) || 700,
-        lineHeight: 1.33
-      },
-      h5: {
-        color: cascade(themeInput && themeInput.typography,['hero', 'h1', 'h2', 'h3', 'h4'], type => type.color) || textColor,
-        fontFamily: cascade(themeInput && themeInput.typography,['hero', 'h1', 'h2', 'h3', 'h4'], type => type.fontFamily) || headerFontFamily,
-        fontSize: `calc(${rootFontSize} * 1.25)`,
-        fontWeight: cascade(themeInput && themeInput.typography,['hero', 'h1', 'h2', 'h3', 'h4'], type => type.fontWeight) || 700,
-        lineHeight: 1.6
-      },
-      h6: {
-        color: cascade(themeInput && themeInput.typography,['hero', 'h1', 'h2', 'h3', 'h4', 'h5'], type => type.color) || textColor,
-        fontFamily: cascade(themeInput && themeInput.typography,['hero', 'h1', 'h2', 'h3', 'h4', 'h5'], type => type.fontFamily) || headerFontFamily,
-        fontSize: rootFontSize,
-        fontWeight: cascade(themeInput && themeInput.typography,['hero', 'h1', 'h2', 'h3', 'h4', 'h5'], type => type.fontWeight) || 700
-      },
-      button: {
-        color: textColor,
-        fontFamily: textFontFamily,
-        fontSize: `calc(${rootFontSize} * 0.875)`,
-        fontWeight: 600,
-        textTransform: 'uppercase',
-        letterSpacing: 2
-      },
-      link: {
+      typography: {
         color: textColor,
         fontFamily: textFontFamily,
         fontSize: rootFontSize,
-        fontWeight: 400
+        hero: {
+          color: textColor,
+          fontFamily: headerFontFamily,
+          fontSize: `calc(${rootFontSize} * 8)`,
+          fontWeight: 700,
+          lineHeight: 0.9
+        },
+        h1: {
+          color:
+            cascade(themeInput && themeInput.typography, ['hero'], type => type.color) || textColor,
+          fontFamily:
+            cascade(themeInput && themeInput.typography, ['hero'], type => type.fontFamily) ||
+            headerFontFamily,
+          fontSize: `calc(${rootFontSize} * 3.75)`,
+          fontWeight:
+            cascade(themeInput && themeInput.typography, ['hero'], type => type.fontWeight) || 700,
+          lineHeight: 1
+        },
+        h2: {
+          color:
+            cascade(themeInput && themeInput.typography, ['hero', 'h1'], type => type.color) ||
+            textColor,
+          fontFamily:
+            cascade(themeInput && themeInput.typography, ['hero', 'h1'], type => type.fontFamily) ||
+            headerFontFamily,
+          fontSize: `calc(${rootFontSize} * 3)`,
+          fontWeight:
+            cascade(themeInput && themeInput.typography, ['hero', 'h1'], type => type.fontWeight) ||
+            700,
+          lineHeight: 1.04
+        },
+        h3: {
+          color:
+            cascade(
+              themeInput && themeInput.typography,
+              ['hero', 'h1', 'h2'],
+              type => type.color
+            ) || textColor,
+          fontFamily:
+            cascade(
+              themeInput && themeInput.typography,
+              ['hero', 'h1', 'h2'],
+              type => type.fontFamily
+            ) || headerFontFamily,
+          fontSize: `calc(${rootFontSize} * 2.125)`,
+          fontWeight:
+            cascade(
+              themeInput && themeInput.typography,
+              ['hero', 'h1', 'h2'],
+              type => type.fontWeight
+            ) || 700,
+          lineHeight: 1.17
+        },
+        h4: {
+          color:
+            cascade(
+              themeInput && themeInput.typography,
+              ['hero', 'h1', 'h2', 'h3'],
+              type => type.color
+            ) || textColor,
+          fontFamily:
+            cascade(
+              themeInput && themeInput.typography,
+              ['hero', 'h1', 'h2', 'h3'],
+              type => type.fontFamily
+            ) || headerFontFamily,
+          fontSize: `calc(${rootFontSize} * 1.5)`,
+          fontWeight:
+            cascade(
+              themeInput && themeInput.typography,
+              ['hero', 'h1', 'h2', 'h3'],
+              type => type.fontWeight
+            ) || 700,
+          lineHeight: 1.33
+        },
+        h5: {
+          color:
+            cascade(
+              themeInput && themeInput.typography,
+              ['hero', 'h1', 'h2', 'h3', 'h4'],
+              type => type.color
+            ) || textColor,
+          fontFamily:
+            cascade(
+              themeInput && themeInput.typography,
+              ['hero', 'h1', 'h2', 'h3', 'h4'],
+              type => type.fontFamily
+            ) || headerFontFamily,
+          fontSize: `calc(${rootFontSize} * 1.25)`,
+          fontWeight:
+            cascade(
+              themeInput && themeInput.typography,
+              ['hero', 'h1', 'h2', 'h3', 'h4'],
+              type => type.fontWeight
+            ) || 700,
+          lineHeight: 1.6
+        },
+        h6: {
+          color:
+            cascade(
+              themeInput && themeInput.typography,
+              ['hero', 'h1', 'h2', 'h3', 'h4', 'h5'],
+              type => type.color
+            ) || textColor,
+          fontFamily:
+            cascade(
+              themeInput && themeInput.typography,
+              ['hero', 'h1', 'h2', 'h3', 'h4', 'h5'],
+              type => type.fontFamily
+            ) || headerFontFamily,
+          fontSize: rootFontSize,
+          fontWeight:
+            cascade(
+              themeInput && themeInput.typography,
+              ['hero', 'h1', 'h2', 'h3', 'h4', 'h5'],
+              type => type.fontWeight
+            ) || 700
+        },
+        button: {
+          color: textColor,
+          fontFamily: textFontFamily,
+          fontSize: `calc(${rootFontSize} * 0.875)`,
+          fontWeight: 600,
+          textTransform: 'uppercase',
+          letterSpacing: 2
+        },
+        link: {
+          color: textColor,
+          fontFamily: textFontFamily,
+          fontSize: rootFontSize,
+          fontWeight: 400
+        },
+        body: {
+          color: textColor,
+          fontFamily: textFontFamily,
+          fontSize: `calc(${rootFontSize} * 0.875)`,
+          fontWeight: 400,
+          lineHeight: 1.35
+        },
+        caption: {
+          color: 'rgba(0, 0, 0, 0.5)',
+          fontFamily: textFontFamily,
+          fontSize: `calc(${rootFontSize} * 0.875)`,
+          fontWeight: 400
+        },
+        label: {
+          color: 'rgba(0, 0, 0, 0.5)',
+          fontFamily: textFontFamily,
+          fontSize: `calc(${rootFontSize} * 0.875)`,
+          fontWeight: 400
+        },
+        tooltip: {
+          color: textColor,
+          fontFamily: textFontFamily,
+          fontSize: `calc(${rootFontSize} * 0.875)`,
+          fontWeight: 400,
+          lineHeight: 1.35
+        },
+        formField: {
+          color: textColor,
+          fontFamily: textFontFamily,
+          fontSize: `calc(${rootFontSize} * 0.875)`,
+          fontWeight: 400,
+          lineHeight: 1.35
+        },
+        codeBlock: {
+          fontFamily:
+            'Consolas, Menlo, Monaco, "Lucida Console", "Liberation Mono", "DejaVu Sans Mono", "Bitstream Vera Sans Mono", "Courier New", monospace, serif',
+          fontSize: `calc(${rootFontSize} * 0.875)`,
+          lineHeight: 1.5
+        },
+        codeLine: {
+          fontFamily:
+            "Consolas, Menlo, Monaco, 'Lucida Console', 'Liberation Mono', 'DejaVu Sans Mono', 'Bitstream Vera Sans Mono', 'Courier New', monospace, serif",
+          fontSize: `calc(${rootFontSize} * 0.75)`,
+          lineHeight: 1.5
+        }
       },
-      body: {
-        color: textColor,
-        fontFamily: textFontFamily,
-        fontSize: `calc(${rootFontSize} * 0.875)`,
-        fontWeight: 400,
-        lineHeight: 1.35
-      },
-      caption: {
-        color: 'rgba(0, 0, 0, 0.5)',
-        fontFamily: textFontFamily,
-        fontSize: `calc(${rootFontSize} * 0.875)`,
-        fontWeight: 400
-      },
-      label: {
-        color: 'rgba(0, 0, 0, 0.5)',
-        fontFamily: textFontFamily,
-        fontSize: `calc(${rootFontSize} * 0.875)`,
-        fontWeight: 400
-      },
-      tooltip: {
-        color: textColor,
-        fontFamily: textFontFamily,
-        fontSize: `calc(${rootFontSize} * 0.875)`,
-        fontWeight: 400,
-        lineHeight: 1.35
-      },
-      formField: {
-        color: textColor,
-        fontFamily: textFontFamily,
-        fontSize: `calc(${rootFontSize} * 0.875)`,
-        fontWeight: 400,
-        lineHeight: 1.35
-      },
-      codeBlock: {
-        fontFamily:
-          'Consolas, Menlo, Monaco, "Lucida Console", "Liberation Mono", "DejaVu Sans Mono", "Bitstream Vera Sans Mono", "Courier New", monospace, serif',
-        fontSize: `calc(${rootFontSize} * 0.875)`,
-        lineHeight: 1.5
-      },
-      codeLine: {
-        fontFamily:
-          "Consolas, Menlo, Monaco, 'Lucida Console', 'Liberation Mono', 'DejaVu Sans Mono', 'Bitstream Vera Sans Mono', 'Courier New', monospace, serif",
-        fontSize: `calc(${rootFontSize} * 0.75)`,
-        lineHeight: 1.5
-      }
+      overrides: {}
     },
-    overrides: {}
-  }, themeInput as any || {}) as any) as Theme;
+    (themeInput as any) || {}
+  ) as any) as Theme;
 
   return output;
 };

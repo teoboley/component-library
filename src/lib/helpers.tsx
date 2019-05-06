@@ -6,9 +6,7 @@ interface IConditionalWrapperViewModel {
   children: NonNullable<React.ReactNode>;
 }
 
-interface IConditionalWrapperActions {
-
-}
+interface IConditionalWrapperActions {}
 
 type ConditionalWrapperProps = IConditionalWrapperViewModel & IConditionalWrapperActions;
 

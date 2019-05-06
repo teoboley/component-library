@@ -1,10 +1,10 @@
 import * as React from 'react';
 import { storiesOf } from '@storybook/react';
 
-import Card from '.';
 import { Heading, Text } from '../Typography/index';
 import { EHeadingType } from '../Typography/Heading';
 import { ETextType } from '../Typography/Text';
+import Card from '.';
 
 storiesOf('Card', module).add('Default', () => {
   return (

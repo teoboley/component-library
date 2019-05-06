@@ -1,8 +1,7 @@
 import * as React from 'react';
-import { CSSProperties, useRef, useState } from 'react';
-
-import Popover, { TooltipPlacement } from '../Popover';
 import { css, cx } from 'emotion';
+
+import Popover, { TooltipPlacement } from '../../atoms/Popover';
 import { getBWContrastingColor, useOverride, useTheme } from '../../../lib/theme';
 import { ToggleAnimation } from '../../../lib/animation';
 
@@ -24,35 +23,31 @@ export interface ITooltipViewModel {
 
   disableHoverListener?: boolean;
 
-  style?: CSSProperties;
+  style?: React.CSSProperties;
   className?: string;
 }
 
 export type TooltipProps = ITooltipViewModel;
-
-type TooltipState = {
-  anchorEl: any | null;
-};
 
 export const tooltipOverrideName = 'tooltip';
 
 const Tooltip: React.FC<TooltipProps> = props => {
   const Override = useOverride(tooltipOverrideName);
   if (Override) {
-    return <Override {...props}/>;
+    return <Override {...props} />;
   }
 
-  const childContainer = useRef<HTMLSpanElement>(null);
-  const [state, setState] = useState<TooltipState>({ anchorEl: null });
+  const childContainer = React.useRef<HTMLSpanElement>(null);
+  const [anchorEl, setAnchorEl] = React.useState<any | null>(null);
 
   const theme = useTheme();
 
   const handleTooltipClose = () => {
-    setState({ anchorEl: null });
+    setAnchorEl(null);
   };
 
-  const handleTooltipOpen = (anchorEl?: any) => {
-    setState({ anchorEl: anchorEl || null });
+  const handleTooltipOpen = (newAnchorEl: any) => {
+    setAnchorEl(newAnchorEl);
   };
 
   const color =
@@ -60,7 +55,8 @@ const Tooltip: React.FC<TooltipProps> = props => {
     (props.backgroundColor
       ? getBWContrastingColor(theme.palette.getColor(props.backgroundColor))
       : 'black');
-  const backgroundColor = props.backgroundColor && theme.palette.getColor(props.backgroundColor) || 'white';
+  const backgroundColor =
+    (props.backgroundColor && theme.palette.getColor(props.backgroundColor)) || 'white';
 
   const tooltipStyle = css({
     ...theme.typography.tooltip,
@@ -72,22 +68,24 @@ const Tooltip: React.FC<TooltipProps> = props => {
     overflow: 'hidden'
   });
 
+  const childrenIsFunction = {}.toString.call(props.children) === '[object Function]';
+
   return (
-    <>
+    <div className={css({ display: 'inline-block' })} onMouseLeave={() => !childrenIsFunction && anchorEl && !props.disableHoverListener && handleTooltipClose()}>
       <Popover
-        anchorEl={state.anchorEl}
+        anchorEl={anchorEl}
         arrowColor={props.withArrow ? backgroundColor : undefined}
         placement={props.placement || { vertical: 'top' }}
         placementEnforced={props.placementEnforced}
       >
         <div style={props.style} className={cx(tooltipStyle, props.className)}>
-          <DefaultTooltipTextAnimation toggle={Boolean(state.anchorEl)} delay={'100ms'}>
+          <DefaultTooltipTextAnimation toggle={Boolean(anchorEl)} delay={'100ms'}>
             {props.content}
           </DefaultTooltipTextAnimation>
         </div>
       </Popover>
       <span style={{ display: 'inline-block' }}>
-        {{}.toString.call(props.children) === '[object Function]' ? (
+        {childrenIsFunction ? (
           (props.children as ChildFunction)({
             open: handleTooltipOpen,
             close: handleTooltipClose
@@ -99,13 +97,12 @@ const Tooltip: React.FC<TooltipProps> = props => {
             onMouseEnter={() =>
               !props.disableHoverListener && handleTooltipOpen(childContainer.current)
             }
-            onMouseLeave={() => !props.disableHoverListener && handleTooltipClose()}
           >
             {props.children as React.ReactElement<any>}
           </span>
         )}
       </span>
-    </>
+    </div>
   );
 };
 

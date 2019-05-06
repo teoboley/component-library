@@ -22,7 +22,7 @@ export const textOverrideName = 'text';
 const Text: React.FC<TextProps> = props => {
   const Override = useOverride(textOverrideName);
   if (Override) {
-    return <Override {...props}/>;
+    return <Override {...props} />;
   }
 
   const theme = useTheme();

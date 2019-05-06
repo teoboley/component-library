@@ -12,9 +12,7 @@ interface ILoadingSpinnerViewModel {
   className?: string;
 }
 
-interface ILoadingSpinnerActions {
-
-}
+interface ILoadingSpinnerActions {}
 
 type LoadingSpinnerProps = ILoadingSpinnerViewModel & ILoadingSpinnerActions;
 
@@ -22,9 +20,15 @@ const LoadingSpinner: React.FC<LoadingSpinnerProps> = props => {
   const theme = useTheme();
 
   return (
-    <div style={props.style} className={cx(css({ display: 'flex', justifyContent: 'center', alignItems: 'center' }), props.className)}>
+    <div
+      style={props.style}
+      className={cx(
+        css({ display: 'flex', justifyContent: 'center', alignItems: 'center' }),
+        props.className
+      )}
+    >
       <BounceLoader
-        sizeUnit={props.sizeUnit || "px"}
+        sizeUnit={props.sizeUnit || 'px'}
         size={props.size || 40}
         color={props.color ? theme.palette.getColor(props.color) : theme.palette.primary}
         loading={true}

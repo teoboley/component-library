@@ -1,12 +1,15 @@
 import * as React from 'react';
 import { css, cx } from 'emotion';
-import { useTheme } from '../../../../lib/theme';
 import { withProps } from 'recompose';
 import { ChangeEvent, KeyboardEventHandler, useState } from 'react';
+import { useTheme } from '../../../../lib/theme';
 import Text, { ETextType } from '../../Typography/Text';
 import { inactiveColor as sharedInactiveColor } from '../shared';
 
-type ValueTransformer<V> = { toString: (val: V) => string; fromString: (s: string) => V };
+interface IValueTransformer<V> {
+  toString: (val: V) => string;
+  fromString: (s: string) => V;
+}
 
 interface IFormFieldViewModel<V> {
   value: V | null;
@@ -21,7 +24,7 @@ interface IFormFieldViewModel<V> {
 
   type: string;
 
-  valueTransformer?: ValueTransformer<V>;
+  valueTransformer?: IValueTransformer<V>;
   style?: React.CSSProperties;
   className?: string;
 }
@@ -138,7 +141,7 @@ export const FormField: React.FC<FormFieldProps<string | undefined>> = props => 
 
 export function specifyFormType<V extends string | string[] | number | undefined>(
   type: string,
-  valueTransformer?: ValueTransformer<V>
+  valueTransformer?: IValueTransformer<V>
 ): React.ComponentType<Omit<Omit<FormFieldProps<V>, 'type'>, 'valueTransformer'>> {
   return withProps({ type, valueTransformer })(FormField as any) as any;
 }

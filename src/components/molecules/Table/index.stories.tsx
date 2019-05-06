@@ -1552,7 +1552,6 @@ storiesOf('Table', module).add('Default', () => {
           }
         ]*/
         }
-        
         enforcePagination
       />
     </div>

@@ -1,12 +1,13 @@
 import * as React from 'react';
 import ReactTable, { Column } from 'react-table';
 import { css, cx } from 'emotion';
+
 import { useTheme } from '../../../lib/theme';
-import baseTableCSS from './baseStyles';
 import Card from '../../atoms/Card';
 import { Button } from '../../atoms';
 import FormFieldNumber from '../../atoms/FormField/Number';
-import Select from '../../_incubator/atoms/Select';
+import Select from '../../_incubator/molecules/Select';
+import baseTableCSS from './baseStyles';
 
 interface ITableViewModel<D> {
   data: D[];
@@ -84,7 +85,7 @@ const Table: React.FC<TableProps> = props => {
           ...theme.typography.label
         },
 
-        'input': {
+        input: {
           // all: 'unset'
         },
 
@@ -92,7 +93,7 @@ const Table: React.FC<TableProps> = props => {
           margin: 0,
           minWidth: 200
         }
-      },
+      }
     }
   });
 
@@ -103,12 +104,10 @@ const Table: React.FC<TableProps> = props => {
       <ReactTable
         data={props.data}
         columns={props.columns}
-
         pageSize={props.data.length <= defaultPageSize ? props.data.length : undefined}
         defaultPageSize={defaultPageSize}
         showPagination={props.enforcePagination || props.data.length > defaultPageSize}
         filterable={props.filterable}
-
         getPaginationProps={() => ({
           renderPageJump: ({
             onChange,
@@ -137,23 +136,31 @@ const Table: React.FC<TableProps> = props => {
           }: any) => (
             <span className="select-wrap -pageSizeOptions">
               <Select
+                inputValue={pageSize}
                 // aria-label={rowsSelectorText}
                 onSelect={value => onPageSizeChange(Number(value))}
-                value={pageSize}
-                options={pageSizeOptions.map((option: number, i: number) => (
-                  {
-                    label: `${option} ${rowsText}`,
-                    value: option
+                selected={pageSize}
+                options={pageSizeOptions.map((option: number, i: number) => ({
+                  label: `${option} ${rowsText}`,
+                  value: option
                 }))}
               />
             </span>
           )
         })}
         PreviousComponent={buttonProps => {
-          return <Button disabled={buttonProps.disabled} onClick={buttonProps.onClick}>{buttonProps.children}</Button>;
+          return (
+            <Button disabled={buttonProps.disabled} onClick={buttonProps.onClick}>
+              {buttonProps.children}
+            </Button>
+          );
         }}
         NextComponent={buttonProps => {
-          return <Button disabled={buttonProps.disabled} onClick={buttonProps.onClick}>{buttonProps.children}</Button>;
+          return (
+            <Button disabled={buttonProps.disabled} onClick={buttonProps.onClick}>
+              {buttonProps.children}
+            </Button>
+          );
         }}
       />
     </Card>

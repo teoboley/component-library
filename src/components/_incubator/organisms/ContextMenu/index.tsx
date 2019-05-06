@@ -1,8 +1,8 @@
 import * as React from 'react';
+import { css } from 'emotion';
 
 import Menu from '../../../molecules/Menu';
 import Button from '../../../atoms/Button';
-import { css } from 'emotion';
 import { useOverride } from '../../../../lib/theme';
 
 interface IContextMenuControllerActiveState {
@@ -32,9 +32,7 @@ interface IContextMenuControllerViewModel {
 
 type ContextMenuControllerProps = IContextMenuControllerViewModel;
 
-export const ContextMenuController: React.FC<
-  ContextMenuControllerProps
-> = props => {
+export const ContextMenuController: React.FC<ContextMenuControllerProps> = props => {
   const [active, setActive] = React.useState<IContextMenuControllerActiveState | null>(null);
 
   const handleOpen = (element: HTMLElement, mousePosition?: { x: number; y: number }) => {
@@ -45,20 +43,20 @@ export const ContextMenuController: React.FC<
     setActive(null);
   };
 
-    return (
-      <>
-        {props.children({
-          open: handleOpen,
-          isOpen: Boolean(active),
-          close: handleClose
-        })}
-        {props.menuComponent({
-          activeState: active,
-          isOpen: Boolean(active),
-          close: handleClose
-        })}
-      </>
-    );
+  return (
+    <>
+      {props.children({
+        open: handleOpen,
+        isOpen: Boolean(active),
+        close: handleClose
+      })}
+      {props.menuComponent({
+        activeState: active,
+        isOpen: Boolean(active),
+        close: handleClose
+      })}
+    </>
+  );
 };
 
 interface IContextMenuViewModel {
@@ -72,10 +70,11 @@ export type ContextMenuProps = IContextMenuViewModel;
 export const contextMenuOverrideName = 'contextMenu';
 
 const ContextMenu: React.FC<ContextMenuProps> = props => {
-  const Override = useOverride(contextMenuOverrideName);
-  if (Override) {
-    return <Override {...props}/>;
-  }
+  // FIXME: add when moved out of incubating
+  // const Override = useOverride(contextMenuOverrideName);
+  // if (Override) {
+  //   return <Override {...props} />;
+  // }
 
   return (
     <ContextMenuController
@@ -83,8 +82,8 @@ const ContextMenu: React.FC<ContextMenuProps> = props => {
         <Menu
           anchorEl={activeState && activeState.anchorEl}
           onClose={() => {
-            console.log("onClose");
-            console.log(["isOpen", isOpen]);
+            console.log('onClose');
+            console.log(['isOpen', isOpen]);
             close();
           }}
           anchorReference={'anchorEl'}

@@ -22,12 +22,13 @@ export const cardOverrideName = 'card';
 const Card: React.FC<CardProps> = props => {
   const Override = useOverride(cardOverrideName);
   if (Override) {
-    return <Override {...props}/>;
+    return <Override {...props} />;
   }
 
   const theme = useTheme();
   const styles = css({
-    backgroundColor: props.color && theme.palette.getColor(props.color) || theme.palette.cardBackground
+    backgroundColor:
+      (props.color && theme.palette.getColor(props.color)) || theme.palette.cardBackground
   });
 
   return (

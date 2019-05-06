@@ -1,9 +1,8 @@
 import * as React from 'react';
 import { storiesOf } from '@storybook/react';
-import { action } from '@storybook/addon-actions';
 
-import Tree from '.';
 import Card from '../../../atoms/Card';
+import Tree from '.';
 
 storiesOf('Tree', module).add('Default', () => {
   return (
@@ -19,7 +18,9 @@ storiesOf('Tree', module).add('Default', () => {
               <Tree name="Child 3" style={{ color: '#37ceff' }} />
               <Tree name="Custom content">
                 <div style={{ position: 'relative', width: '100%', height: 200, padding: 10 }}>
-                  <div style={{ width: '100%', height: '100%', background: 'black', borderRadius: 5 }} />
+                  <div
+                    style={{ width: '100%', height: '100%', background: 'black', borderRadius: 5 }}
+                  />
                 </div>
               </Tree>
             </Tree>

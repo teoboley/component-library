@@ -3,10 +3,10 @@ import { storiesOf } from '@storybook/react';
 import ThreeDRotationIcon from '@material-ui/icons/ThreeDRotation';
 import FormatBold from '@material-ui/icons/FormatBold';
 import FormatAlignLeft from '@material-ui/icons/FormatAlignLeft';
-import { blue, green, grey, red } from '@material-ui/core/colors';
+import { blue, grey, red } from '@material-ui/core/colors';
 
+import Button from '../../atoms/Button';
 import Tooltip from '.';
-import Button from '../Button';
 
 storiesOf('Tooltip', module)
   .add('With arrow', () => {
@@ -36,6 +36,30 @@ storiesOf('Tooltip', module)
         >
           <Button>With Multiple Icons</Button>
         </Tooltip>
+        <Tooltip
+          content={
+            <div>
+              <p>Some really long tooltip. This can be multiple sentences, and contain multiple types of content.</p>
+              <Button>Do Something</Button>
+            </div>
+          }
+          withArrow
+        >
+          <Button>With Button</Button>
+        </Tooltip>
+        <div>
+          <Tooltip
+            content={
+              <div>
+                <p>Some really long tooltip. This can be multiple sentences, and contain multiple types of content.</p>
+                <Button>Do Something</Button>
+              </div>
+            }
+            withArrow
+          >
+            <div><p>Within a nested div > p tag.</p></div>
+          </Tooltip>
+        </div>
       </div>
     );
   })
@@ -53,9 +77,9 @@ storiesOf('Tooltip', module)
   })
   .add('In nested component', () => {
     class NestedComponent extends React.Component {
-      buttonRef: any | null;
+      private buttonRef: any | null;
 
-      render() {
+      public render() {
         return (
           <div style={{ padding: 50 }}>
             <Tooltip content={'Add'} backgroundColor={grey['200']} disableHoverListener>

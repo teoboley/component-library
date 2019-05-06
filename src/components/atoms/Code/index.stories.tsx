@@ -1,8 +1,8 @@
 import * as React from 'react';
 import { storiesOf } from '@storybook/react';
 
-import CodeBlock from '.';
 import Text, { ETextType } from '../Typography/Text';
+import CodeBlock from '.';
 
 storiesOf('Code Block', module)
   .add('Editable', () => {

@@ -13,7 +13,12 @@ storiesOf('Form', module).add('Fields', () => {
     <div style={{ padding: 50 }}>
       <div style={{ marginBottom: 15 }}>
         <FormFieldText value={null} onChange={action('onChange')} onBlur={action('onBlur')} />
-        <FormFieldText label={'Some Label'} value={''} onChange={action('onChange')} onBlur={action('onBlur')} />
+        <FormFieldText
+          label={'Some Label'}
+          value={''}
+          onChange={action('onChange')}
+          onBlur={action('onBlur')}
+        />
         <FormFieldText
           label={'Some Label'}
           value={'Some value'}

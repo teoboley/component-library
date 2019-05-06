@@ -31,7 +31,7 @@ export const tagOverrideName = 'tag';
 const Tag: React.FC<TagProps> = props => {
   const Override = useOverride(tagOverrideName);
   if (Override) {
-    return <Override {...props}/>;
+    return <Override {...props} />;
   }
 
   const theme = useTheme();
@@ -82,6 +82,6 @@ const Tag: React.FC<TagProps> = props => {
       </ButtonBase>
     </ClickAwayListener>
   );
-}
+};
 
 export default Tag;

@@ -1,5 +1,5 @@
-import * as React from "react";
-import * as ReactDOM from "react-dom";
+import * as React from 'react';
+import * as ReactDOM from 'react-dom';
 
 interface ISandboxViewModel {
   style?: React.CSSProperties;
@@ -34,7 +34,7 @@ class Sandbox extends React.Component<SandboxProps, SandboxState> {
 
   componentDidMount() {
     if (this.node) {
-      this.node.addEventListener("load", this.handleLoad);
+      this.node.addEventListener('load', this.handleLoad);
     }
   }
 
@@ -47,12 +47,12 @@ class Sandbox extends React.Component<SandboxProps, SandboxState> {
   componentWillUnmount() {
     if (this.node) {
       if (!this.props.heightFromContent && this.node.parentElement) {
-        window.removeEventListener("resize", this.handleResize);
+        window.removeEventListener('resize', this.handleResize);
       } else if (this.node.contentWindow) {
         this.node.contentWindow.removeEventListener('resize', this.handleResize);
       }
 
-      this.node.removeEventListener("load", this.handleLoad);
+      this.node.removeEventListener('load', this.handleLoad);
     }
   }
 
@@ -61,7 +61,7 @@ class Sandbox extends React.Component<SandboxProps, SandboxState> {
       this.iframeRoot = this.node.contentDocument ? this.node.contentDocument.body : null;
 
       if (!this.props.heightFromContent && this.node.parentElement) {
-        window.addEventListener("resize", this.handleResize);
+        window.addEventListener('resize', this.handleResize);
       } else if (this.node.contentWindow) {
         this.node.contentWindow.addEventListener('resize', this.handleResize);
       }
@@ -73,7 +73,7 @@ class Sandbox extends React.Component<SandboxProps, SandboxState> {
       this.handleResize();
       this.forceUpdate();
     }
-  };
+  }
 
   handleResize() {
     if (this.node) {
@@ -85,16 +85,21 @@ class Sandbox extends React.Component<SandboxProps, SandboxState> {
         if (contentHeight !== this.state.height) this.setState({ height: contentHeight });
       }
     }
-  };
+  }
 
   render() {
     return (
-      <iframe srcDoc={`<!DOCTYPE html>`} ref={node => (this.node = node)} style={{
-        border: "none",
-        height: this.state.height,
-        ...this.props.style
-      }} className={this.props.className}>
-        {this.iframeRoot && ReactDOM.createPortal(this.props.children, this.iframeRoot, "frame")}
+      <iframe
+        srcDoc={`<!DOCTYPE html>`}
+        ref={node => (this.node = node)}
+        style={{
+          border: 'none',
+          height: this.state.height,
+          ...this.props.style
+        }}
+        className={this.props.className}
+      >
+        {this.iframeRoot && ReactDOM.createPortal(this.props.children, this.iframeRoot, 'frame')}
       </iframe>
     );
   }

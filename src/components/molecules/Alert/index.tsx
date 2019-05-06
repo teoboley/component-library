@@ -29,7 +29,7 @@ export const alertOverrideName = 'alert';
 const Alert: React.FC<AlertProps> = props => {
   const Override = useOverride(alertOverrideName);
   if (Override) {
-    return <Override {...props}/>;
+    return <Override {...props} />;
   }
 
   const theme = useTheme();

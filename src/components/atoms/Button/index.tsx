@@ -1,8 +1,8 @@
 import * as React from 'react';
-import { MouseEventHandler } from 'react';
-import { getBWContrastingColor, useOverride, useTheme } from '../../../lib/theme';
 import { css, cx } from 'emotion';
 import * as Color from 'color';
+
+import { getBWContrastingColor, useOverride, useTheme } from '../../../lib/theme';
 
 export enum EButtonType {
   Overlay = 'overlay',
@@ -31,8 +31,8 @@ interface IButtonBaseViewModel {
 }
 
 interface IButtonBaseActions {
-  onClick?: MouseEventHandler<HTMLButtonElement>;
-  onContextMenu?: MouseEventHandler<HTMLButtonElement>;
+  onClick?: React.MouseEventHandler<HTMLButtonElement>;
+  onContextMenu?: React.MouseEventHandler<HTMLButtonElement>;
 }
 
 export type ButtonBaseProps = IButtonBaseViewModel & IButtonBaseActions;
@@ -42,7 +42,7 @@ export const buttonBaseOverrideName = 'buttonBase';
 export const ButtonBase: React.FC<ButtonBaseProps> = props => {
   const Override = useOverride(buttonBaseOverrideName);
   if (Override) {
-    return <Override {...props}/>;
+    return <Override {...props} />;
   }
 
   const { onClick, children, style, className, ...otherProps } = props;
@@ -55,7 +55,12 @@ export const ButtonBase: React.FC<ButtonBaseProps> = props => {
     backgroundColor: 'transparent',
     borderRadius: 3,
     border: 'none',
-    padding: size === EButtonSize.Medium ? '10px 14px' : size === EButtonSize.Small ? '5px 7px' : '15px 21px',
+    padding:
+      size === EButtonSize.Medium
+        ? '10px 14px'
+        : size === EButtonSize.Small
+        ? '5px 7px'
+        : '15px 21px',
     display: 'inline-block',
     textAlign: 'left',
     cursor: 'pointer',
@@ -79,7 +84,7 @@ export const ButtonBase: React.FC<ButtonBaseProps> = props => {
     case EButtonType.Highlight:
       styles = css({
         border: `1px solid transparent`,
-        color: color,
+        color,
         '&:hover': !props.disabled && {
           // color: (Color(color).isDark() ? Color(color).lighten(0.5) : Color(color).darken(0.5))
           //   .hsl()
@@ -92,14 +97,14 @@ export const ButtonBase: React.FC<ButtonBaseProps> = props => {
           //   .string(),
           filter: 'brightness(100%)'
         },
-        cursor: props.disabled ? 'not-allowed' : undefined,
+        cursor: props.disabled ? 'not-allowed' : undefined
         // transition: 'filter 200ms'
       });
       break;
     case EButtonType.Overlay:
       styles = css({
         border: `1px solid transparent`,
-        color: color,
+        color,
         '&:hover': !props.disabled && {
           backgroundColor: Color(color)
             .alpha(0.1)
@@ -119,7 +124,7 @@ export const ButtonBase: React.FC<ButtonBaseProps> = props => {
     case EButtonType.Outline:
       styles = css({
         border: `1.5px solid ${color}`,
-        color: color,
+        color,
         boxShadow: 'rgba(0, 0, 0, 0.0588235) 0px 1px 1px 0px',
         '&:hover': !props.disabled && {
           backgroundColor: Color(color)
@@ -190,9 +195,7 @@ export const ButtonBase: React.FC<ButtonBaseProps> = props => {
   );
 };
 
-interface IButtonViewModel extends IButtonBaseViewModel {
-
-}
+interface IButtonViewModel extends IButtonBaseViewModel {}
 
 interface IButtonActions extends IButtonBaseActions {}
 
@@ -203,7 +206,7 @@ export const buttonOverrideName = 'button';
 const Button: React.FC<ButtonProps> = props => {
   const Override = useOverride(buttonOverrideName);
   if (Override) {
-    return <Override {...props}/>;
+    return <Override {...props} />;
   }
 
   const { children, style, className, ...otherProps } = props;

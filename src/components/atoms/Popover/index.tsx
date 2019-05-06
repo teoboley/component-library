@@ -16,7 +16,7 @@ declare global {
 window.tooltipElement = null;
 
 if (!window.tooltipElement) {
-  window.tooltipElement = document.createElement("div");
+  window.tooltipElement = document.createElement('div');
   document.body.appendChild(window.tooltipElement);
 }
 
@@ -58,7 +58,7 @@ export const popoverOverrideName = 'popover';
 const Popover: React.FC<PopoverProps> = props => {
   const Override = useOverride(popoverOverrideName);
   if (Override) {
-    return <Override {...props}/>;
+    return <Override {...props} />;
   }
 
   let referenceElement: PopperJS.ReferenceObject | undefined = undefined;
@@ -112,44 +112,58 @@ const Popover: React.FC<PopoverProps> = props => {
   return (
     <div className={css({ display: 'inline-block' })}>
       {ReactDOM.createPortal(
-      <Popper referenceElement={referenceElement} placement={placementConverter(props.placement)} modifiers={props.placementEnforced && {
-        flip: {
-        enabled: false
-      },
-        preventOverflow: {
-        escapeWithReference: true
-      }} || undefined}>
-        {({ ref, style, placement, arrowProps }) => (
-          <div
-            ref={ref}
-            style={style}
-            className={cx(contentStyle, css({ pointerEvents: isOpen ? 'auto' : 'none' }))}
-            data-placement={placement}
-          >
-            <Animation toggle={isOpen}>
-              <ClickAwayListener onClickAway={isOpen ? (e => {
-                console.log("CLICK AWAY LISTENER, IS OPEN: " + isOpen);
-                props.onClose && props.onClose();
-                /*e.preventDefault();
+        <Popper
+          referenceElement={referenceElement}
+          placement={placementConverter(props.placement)}
+          modifiers={
+            (props.placementEnforced && {
+              flip: {
+                enabled: false
+              },
+              preventOverflow: {
+                escapeWithReference: true
+              }
+            }) ||
+            undefined
+          }
+        >
+          {({ ref, style, placement, arrowProps }) => (
+            <div
+              ref={ref}
+              style={style}
+              className={cx(contentStyle, css({ pointerEvents: isOpen ? 'auto' : 'none' }))}
+              data-placement={placement}
+            >
+              <Animation toggle={isOpen}>
+                <ClickAwayListener
+                  onClickAway={
+                    isOpen
+                      ? e => {
+                          console.log('CLICK AWAY LISTENER, IS OPEN: ' + isOpen);
+                          props.onClose && props.onClose();
+                          /*e.preventDefault();
                 e.stopPropagation();*/
-              }) : (() => null)}>
-                <div>
-                  {props.children}
+                        }
+                      : () => null
+                  }
+                >
+                  <div>
+                    {props.children}
 
-                  {props.arrowColor && (
-                    <div
-                      data-placement={placement}
-                      ref={arrowProps.ref}
-                      style={arrowProps.style}
-                      className={getArrowStyle(props.arrowColor)}
-                    />
-                  )}
-                </div>
-              </ClickAwayListener>
-            </Animation>
-          </div>
-        )}
-      </Popper>,
+                    {props.arrowColor && (
+                      <div
+                        data-placement={placement}
+                        ref={arrowProps.ref}
+                        style={arrowProps.style}
+                        className={getArrowStyle(props.arrowColor)}
+                      />
+                    )}
+                  </div>
+                </ClickAwayListener>
+              </Animation>
+            </div>
+          )}
+        </Popper>,
         window.tooltipElement!
       )}
     </div>

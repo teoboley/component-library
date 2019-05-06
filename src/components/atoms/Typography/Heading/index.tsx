@@ -27,7 +27,7 @@ export const headingOverrideName = 'heading';
 const Heading: React.FC<HeadingProps> = props => {
   const Override = useOverride(headingOverrideName);
   if (Override) {
-    return <Override {...props}/>;
+    return <Override {...props} />;
   }
 
   const theme = useTheme();

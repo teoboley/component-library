@@ -27,7 +27,7 @@ export const modalOverrideName = 'modal';
 const Modal: React.FC<ModalProps> = props => {
   const Override = useOverride(modalOverrideName);
   if (Override) {
-    return <Override {...props}/>;
+    return <Override {...props} />;
   }
 
   const HeadingAnimation = DisplayTextAnimation;

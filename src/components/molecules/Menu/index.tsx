@@ -1,7 +1,7 @@
 import * as React from 'react';
+import { css } from 'emotion';
 import Popover, { TooltipPlacement, AnchorPosition, AnchorReference } from '../../atoms/Popover';
 import Card from '../../atoms/Card';
-import { css } from 'emotion';
 import { useOverride } from '../../../lib/theme';
 
 interface IMenuViewModel {
@@ -25,7 +25,7 @@ export const menuOverrideName = 'menu';
 const Menu: React.FC<MenuProps> = props => {
   const Override = useOverride(menuOverrideName);
   if (Override) {
-    return <Override {...props}/>;
+    return <Override {...props} />;
   }
 
   const { children, ...otherProps } = props;

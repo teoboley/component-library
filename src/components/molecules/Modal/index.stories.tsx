@@ -2,8 +2,8 @@ import * as React from 'react';
 import { storiesOf } from '@storybook/react';
 import { action } from '@storybook/addon-actions';
 
-import Modal from '.';
 import Text, { ETextType } from '../../atoms/Typography/Text';
+import Modal from '.';
 
 storiesOf('Modal', module).add('Default', () => {
   return (

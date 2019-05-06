@@ -6,13 +6,12 @@
   ],
   "linterOptions": {
     "exclude": [
-      "config/**/*.js",
-      "node_modules/**/*.ts"
+      "node_modules/**/*"
     ]
   },
   "rules": {
     "ordered-imports": false,
-    "member-access": false,
+    // "member-access": false,
     "no-console": {
       "severity": "warning"
     },
@@ -20,6 +19,12 @@
     "jsx-boolean-value": false,
     "max-classes-per-file": {
       "severity": "warning"
-    }
+    },
+    "object-literal-sort-keys": [
+      true,
+      "match-declaration-order"
+    ],
+    "no-empty-interface": false,
+    "no-unused-expression": [true, "allow-fast-null-checks"]
   }
 }

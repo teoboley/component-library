@@ -25,7 +25,7 @@ function useForkRef<T>(refA: React.Ref<T>, refB: React.Ref<T>) {
       setRef(refA, refValue);
       setRef(refB, refValue);
     },
-    [refA, refB],
+    [refA, refB]
   );
 }
 
@@ -53,9 +53,14 @@ interface IClickAwayListenerActions {
 
 type ClickAwayListenerProps = IClickAwayListenerViewModel & IClickAwayListenerActions;
 
-
 const ClickAwayListener: React.FC<ClickAwayListenerProps> = props => {
-  const { children, mouseEvent = 'onMouseUp', touchEvent = 'onTouchEnd', onClickAway, ...other } = props;
+  const {
+    children,
+    mouseEvent = 'onMouseUp',
+    touchEvent = 'onTouchEnd',
+    onClickAway,
+    ...other
+  } = props;
   const mountedRef = useMountedRef();
   const movedRef = React.useRef(false);
 
@@ -100,14 +105,14 @@ const ClickAwayListener: React.FC<ClickAwayListenerProps> = props => {
         onClickAway(event);
       }
     },
-    [mountedRef, onClickAway],
+    [mountedRef, onClickAway]
   );
 
   const handleTouchMove = React.useCallback(() => {
     movedRef.current = true;
   }, []);
 
-  const listenerProps: Partial<EventListenerProps> = {};
+  const listenerProps: Partial<EventListenerProps<any>> = {};
   if (mouseEvent !== false) {
     listenerProps[mouseEvent] = handleClickAway;
   }

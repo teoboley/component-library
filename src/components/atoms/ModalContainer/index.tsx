@@ -21,39 +21,39 @@ export const modalContainerOverrideName = 'modalContainer';
 const ModalContainer: React.FC<ModalContainerProps> = props => {
   const Override = useOverride(modalContainerOverrideName);
   if (Override) {
-    return <Override {...props}/>;
+    return <Override {...props} />;
   }
 
   return (
-      <Modal
-        isOpen={props.isOpen}
-        onRequestClose={props.onClose}
-        overlayClassName={css({
-          position: 'fixed',
-          top: 0,
-          right: 0,
-          bottom: 0,
-          left: 0
-        })}
-        style={{
-          content: {
-            top: '50%',
-            left: '50%',
-            right: 'auto',
-            bottom: 'auto',
-            marginRight: '-50%',
-            transform: 'translate(-50%, -50%)',
-            backgroundColor: 'transparent',
-            overflow: 'hidden',
-            padding: 0,
-            border: 'none',
-            borderRadius: 0,
-            ...props.style
-          }
-        }}
-        className={props.className}
-        closeTimeoutMS={1000}
-        portalClassName={css`
+    <Modal
+      isOpen={props.isOpen}
+      onRequestClose={props.onClose}
+      overlayClassName={css({
+        position: 'fixed',
+        top: 0,
+        right: 0,
+        bottom: 0,
+        left: 0
+      })}
+      style={{
+        content: {
+          top: '50%',
+          left: '50%',
+          right: 'auto',
+          bottom: 'auto',
+          marginRight: '-50%',
+          transform: 'translate(-50%, -50%)',
+          backgroundColor: 'transparent',
+          overflow: 'hidden',
+          padding: 0,
+          border: 'none',
+          borderRadius: 0,
+          ...props.style
+        }
+      }}
+      className={props.className}
+      closeTimeoutMS={1000}
+      portalClassName={css`
         .ReactModal__Content > * {
           opacity: 0;
           transform: scale(0);
@@ -84,12 +84,12 @@ const ModalContainer: React.FC<ModalContainerProps> = props => {
           background-color: rgba(0, 0, 0, 0);
         }
       `}
-        bodyOpenClassName={css`
-          overflow: hidden;
-        `}
-      >
-        <div>{props.children}</div>
-      </Modal>
+      bodyOpenClassName={css`
+        overflow: hidden;
+      `}
+    >
+      <div>{props.children}</div>
+    </Modal>
   );
 };
 
