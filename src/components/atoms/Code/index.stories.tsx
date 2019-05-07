@@ -4,7 +4,7 @@ import { storiesOf } from '@storybook/react';
 import Text, { ETextType } from '../Typography/Text';
 import CodeBlock from '.';
 
-storiesOf('Code Block', module)
+storiesOf('Atoms/Code Block', module)
   .add('Editable', () => {
     return (
       <div style={{ padding: 50 }}>

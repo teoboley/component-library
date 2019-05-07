@@ -2,9 +2,10 @@ import * as React from 'react';
 import { storiesOf } from '@storybook/react';
 import { blue, green, red } from '@material-ui/core/colors';
 import { css } from 'emotion';
+
 import Alert from '.';
 
-storiesOf('Alert', module).add('Default', () => {
+storiesOf('Molecules/Alert', module).add('Default', () => {
   return (
     <div style={{ padding: 50 }}>
       <div className={css({ marginBottom: 20 })}>

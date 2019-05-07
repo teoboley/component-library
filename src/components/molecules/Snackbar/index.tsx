@@ -3,10 +3,10 @@ import { css, cx } from 'emotion';
 import { useTransition, animated } from 'react-spring';
 import CloseIcon from '@material-ui/icons/Close';
 
-import Card from '../../../atoms/Card';
-import Heading, { EHeadingType } from '../../../atoms/Typography/Heading';
-import Text, { ETextType } from '../../../atoms/Typography/Text';
-import Button, { EButtonType } from '../../../atoms/Button';
+import Card from '../../atoms/Card';
+import Heading, { EHeadingType } from '../../atoms/Typography/Heading';
+import Text, { ETextType } from '../../atoms/Typography/Text';
+import Button, { EButtonType } from '../../atoms/Button';
 
 let id = 0;
 
@@ -39,14 +39,14 @@ export interface IMessageHubProps {
   children: (input: AddMessageFunc) => void;
 }
 
-const useMessageList = () => {
+export const useMessageList = () => {
   const [refMap] = React.useState<WeakMap<IMessage, HTMLElement>>(() => new WeakMap());
   const [dismissMap] = React.useState<WeakMap<IMessage, () => void>>(() => new WeakMap());
   const [items, setItems] = React.useState<IMessage[]>([]);
 
   const transitions = useTransition(items, item => item.key, {
     from: { opacity: 0, height: 0, marginTop: 0 },
-    enter: (((item: IMessage) => async (next: any) => {
+    enter: ((item: IMessage) => async (next: any) => {
       const timer =
         item.timeout &&
         setTimeout(() => {
@@ -59,7 +59,7 @@ const useMessageList = () => {
       });
 
       await next({ opacity: 1, height: refMap.get(item)!.offsetHeight, marginTop: 5 });
-    }) as any),
+    }) as any,
     leave: {
       opacity: 0,
       height: 0,
@@ -76,6 +76,42 @@ const useMessageList = () => {
   };
 };
 
+const MessageList: React.FC<ReturnType<typeof useMessageList>> = props => {
+  return (
+    <>
+      {props.transitions.map(({ key, item, props: style }) => {
+        const Message = item.msgElement(() => {
+          props.dismissMap.has(item) && props.dismissMap.get(item)!();
+        });
+
+        return (
+          <animated.div
+            key={key}
+            style={style}
+            className={css({
+              boxSizing: 'border-box',
+              position: 'relative',
+              overflow: 'hidden'
+            })}
+          >
+            <div ref={ref => ref && props.refMap.set(item, ref)}>{Message}</div>
+          </animated.div>
+        );
+      })}
+    </>
+  );
+};
+
+const MessageListContainer: React.FC = containerProps => (
+  <div className={css({
+    maxHeight: '75%',
+    overflowY: 'scroll',
+    pointerEvents: 'auto'
+  })}>
+    {containerProps.children}
+  </div>
+);
+
 export const MessageHub: React.FC<IMessageHubProps> = props => {
   // FIXME: add when moved out of incubating
   // const Override = useOverride(messageHubOverrideName);
@@ -83,13 +119,34 @@ export const MessageHub: React.FC<IMessageHubProps> = props => {
   //   return <Override {...props}/>;
   // }
 
-  const { refMap, dismissMap, setItems, transitions } = useMessageList();
+  const topLeftMessageList = useMessageList();
+  const topCenterMessageList = useMessageList();
+  const topRightMessageList = useMessageList();
+  const bottomLeftMessageList = useMessageList();
+  const bottomCenterMessageList = useMessageList();
+  const bottomRightMessageList = useMessageList();
+
+  const getAppropriateMessageList = (location: EMessageLocation) => {
+    switch (location) {
+      case EMessageLocation.TopLeft:
+        return topLeftMessageList;
+      case EMessageLocation.TopCenter:
+        return topCenterMessageList;
+      case EMessageLocation.TopRight:
+        return topRightMessageList;
+      case EMessageLocation.BottomLeft:
+        return bottomLeftMessageList;
+      case EMessageLocation.BottomCenter:
+        return bottomCenterMessageList;
+      case EMessageLocation.BottomRight:
+        return bottomRightMessageList;
+    }
+  };
 
   React.useEffect(
     () =>
       void props.children((msgElement, location = EMessageLocation.BottomRight, timeout = 5000) => {
-        // TODO: add to specific item list based on location
-        return setItems(state => [
+        return getAppropriateMessageList(location).setItems(state => [
           ...state,
           { key: id++, msgElement, timeout: timeout || undefined }
         ]);
@@ -97,75 +154,87 @@ export const MessageHub: React.FC<IMessageHubProps> = props => {
     []
   );
 
-  const MessageSection: React.FC = messageSectionProps => {
-    return (
-      <div
-        className={css({
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: `flex-end`,
-          '@media (max-width: 680px)': {
-            alignItems: 'center'
-          }
-        })}
-      >
-        {transitions.map(({ key, item, props: style }) => {
-          const Message = item.msgElement(() => {
-            dismissMap.has(item) && dismissMap.get(item)!();
-          });
-
-          return (
-            <animated.div
-              key={key}
-              style={style}
-              className={css({
-                boxSizing: 'border-box',
-                position: 'relative',
-                overflow: 'hidden',
-                pointerEvents: 'auto'
-              })}
-            >
-              <div ref={ref => ref && refMap.set(item, ref)}>{Message}</div>
-            </animated.div>
-          );
-        })}
-      </div>
-    );
-  };
-
   return (
     <div
       className={css({
-        backgroundColor: 'rgba(255, 0, 0, 0.2)',
         position: 'fixed',
         zIndex: 1000,
-        // width: "0 auto",
-        // top: 'unset',
         top: 30,
         bottom: 30,
         left: 30,
         right: 30,
+        pointerEvents: 'none',
 
-        pointerEvents: 'none'
+        '> div': {
+          display: 'flex',
+          flexDirection: 'column',
+          position: 'absolute',
+          top: 0,
+          bottom: 0,
+          right: 0,
+          left: 0
+        }
       })}
     >
-      <div className={css({ width: '33%', height: '50%', display: 'inline-block' })}>
-        <MessageSection />
+      <div
+        className={css({
+          alignItems: 'flex-start',
+          justifyContent: 'flex-start'
+        })}
+      >
+        <MessageListContainer>
+          <MessageList {...getAppropriateMessageList(EMessageLocation.TopLeft)} />
+        </MessageListContainer>
       </div>
-      <div className={css({ width: '33%', height: '50%', display: 'inline-block' })}>
-        <MessageSection />
+      <div
+        className={css({
+          alignItems: 'center',
+          justifyContent: 'flex-start'
+        })}
+      >
+        <MessageListContainer>
+          <MessageList {...getAppropriateMessageList(EMessageLocation.TopCenter)} />
+        </MessageListContainer>
       </div>
-      <div className={css({ width: '33%', height: '50%', display: 'inline-block' })}>
-        <MessageSection />
+      <div
+        className={css({
+          alignItems: 'flex-end',
+          justifyContent: 'flex-start'
+        })}
+      >
+        <MessageListContainer>
+          <MessageList {...getAppropriateMessageList(EMessageLocation.TopRight)} />
+        </MessageListContainer>
       </div>
-      <div className={css({ width: '33%', height: '50%', display: 'inline-block' })}>
-        <MessageSection />
+      <div
+        className={css({
+          alignItems: 'flex-start',
+          justifyContent: 'flex-end'
+        })}
+      >
+        <MessageListContainer>
+          <MessageList {...getAppropriateMessageList(EMessageLocation.BottomLeft)} />
+        </MessageListContainer>
       </div>
-      <div className={css({ width: '33%', height: '50%', display: 'inline-block' })}>
-        <MessageSection />
+      <div
+        className={css({
+          alignItems: 'center',
+          justifyContent: 'flex-end'
+        })}
+      >
+        <MessageListContainer>
+          <MessageList {...getAppropriateMessageList(EMessageLocation.BottomCenter)} />
+        </MessageListContainer>
       </div>
-      <div className={css({ width: '33%', height: '50%', display: 'inline-block' })}>
-        <MessageSection />
+      <div
+        className={css({
+          alignItems: 'flex-end',
+          justifyContent: 'flex-end'
+        })}
+      >
+        <MessageListContainer>
+          <MessageList {...getAppropriateMessageList(EMessageLocation.BottomRight)} />
+        </MessageListContainer>
       </div>
     </div>
   );

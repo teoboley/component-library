@@ -8,7 +8,7 @@ import { blue, grey, red } from '@material-ui/core/colors';
 import Button from '../../atoms/Button';
 import Tooltip from '.';
 
-storiesOf('Tooltip', module)
+storiesOf('Molecules/Tooltip', module)
   .add('With arrow', () => {
     return (
       <div style={{ padding: 50 }}>

@@ -3,7 +3,7 @@ import { storiesOf } from '@storybook/react';
 
 import Tag from '.';
 
-storiesOf('Tag', module)
+storiesOf('Atoms/Tag', module)
   .add('Not Renaming', () => {
     return (
       <div style={{ padding: 50 }}>

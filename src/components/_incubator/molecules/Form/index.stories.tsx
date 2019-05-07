@@ -5,7 +5,7 @@ import { css } from 'emotion';
 import Card from '../../../atoms/Card';
 import Form from './index';
 
-storiesOf('Form', module).add('Incubator/Default', () => {
+storiesOf('_Incubating/Molecules/Form', module).add('Incubator/Default', () => {
   return (
     <Card>
       <Form

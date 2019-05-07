@@ -6,7 +6,7 @@ import { EHeadingType } from './Heading';
 import { ETextType } from './Text';
 import { Heading, Text } from '.';
 
-storiesOf('Typography', module).add('Default', () => {
+storiesOf('Atoms/Typography', module).add('Default', () => {
   return (
     <div style={{ padding: 50 }}>
       <Heading type={EHeadingType.HERO}>Hero</Heading>
@@ -21,9 +21,7 @@ storiesOf('Typography', module).add('Default', () => {
       <Text type={ETextType.Label}>Label</Text>
     </div>
   );
-});
-
-storiesOf('Typography', module).add('Themed', () => {
+}).add('Themed', () => {
   return (
     <ThemeProvider
       theme={createTheme({

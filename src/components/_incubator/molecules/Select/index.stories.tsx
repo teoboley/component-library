@@ -5,7 +5,7 @@ import { css } from 'emotion';
 import Card from '../../../atoms/Card';
 import FormFieldSelect from './index';
 
-storiesOf('Select', module).add('Incubator/Default', () => {
+storiesOf('_Incubating/Molecules/Select', module).add('Incubator/Default', () => {
   return (
     <Card>
       <FormFieldSelect

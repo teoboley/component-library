@@ -8,7 +8,7 @@ import FormFieldNumber from './Number';
 import FormFieldCheckbox from './Checkbox';
 import FormFieldRadio from './Radio';
 
-storiesOf('Form', module).add('Fields', () => {
+storiesOf('Atoms/Form', module).add('Fields', () => {
   return (
     <div style={{ padding: 50 }}>
       <div style={{ marginBottom: 15 }}>

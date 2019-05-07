@@ -4,7 +4,7 @@ import { storiesOf } from '@storybook/react';
 import Card from '../../../atoms/Card';
 import Tree from '.';
 
-storiesOf('Tree', module).add('Default', () => {
+storiesOf('_Incubating/Molecules/Tree', module).add('Default', () => {
   return (
     <div style={{ padding: 50 }}>
       <Card>

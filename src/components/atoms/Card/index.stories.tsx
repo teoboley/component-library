@@ -6,7 +6,7 @@ import { EHeadingType } from '../Typography/Heading';
 import { ETextType } from '../Typography/Text';
 import Card from '.';
 
-storiesOf('Card', module).add('Default', () => {
+storiesOf('Atoms/Card', module).add('Default', () => {
   return (
     <div style={{ padding: 50 }}>
       <Card style={{ maxWidth: 300, margin: 30 }}>

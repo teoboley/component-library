@@ -87,7 +87,7 @@ const renderButtonsWithType = (type: EButtonType) => {
   );
 };
 
-storiesOf('Button', module)
+storiesOf('Atoms/Button', module)
   .add('Highlight', () => {
     return renderButtonsWithType(EButtonType.Highlight);
   })
