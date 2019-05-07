@@ -7,6 +7,7 @@ import Card from '../../atoms/Card';
 import Heading, { EHeadingType } from '../../atoms/Typography/Heading';
 import Text, { ETextType } from '../../atoms/Typography/Text';
 import Button, { EButtonType } from '../../atoms/Button';
+import { useOverride } from '../../../lib/theme';
 
 let id = 0;
 
@@ -33,8 +34,6 @@ export type AddMessageFunc = (
   timeout?: number | null
 ) => void;
 
-export const messageHubOverrideName = 'messageHub';
-
 export interface IMessageHubProps {
   children: (input: AddMessageFunc) => void;
 }
@@ -44,6 +43,7 @@ export const useMessageList = () => {
   const [dismissMap] = React.useState<WeakMap<IMessage, () => void>>(() => new WeakMap());
   const [items, setItems] = React.useState<IMessage[]>([]);
 
+  // TODO: figure out a way to extract this for customizability
   const transitions = useTransition(items, item => item.key, {
     from: { opacity: 0, height: 0, marginTop: 0 },
     enter: ((item: IMessage) => async (next: any) => {
@@ -72,34 +72,24 @@ export const useMessageList = () => {
     refMap,
     dismissMap,
     setItems,
-    transitions
+    messageList: transitions.map(({ key, item, props: style }) => {
+      return (
+        <animated.div
+          key={key}
+          style={style}
+          className={css({
+            boxSizing: 'border-box',
+            position: 'relative',
+            overflow: 'hidden'
+          })}
+        >
+          <div ref={ref => ref && refMap.set(item, ref)}>{item.msgElement(() => {
+            dismissMap.has(item) && dismissMap.get(item)!();
+          })}</div>
+        </animated.div>
+      );
+    })
   };
-};
-
-const MessageList: React.FC<ReturnType<typeof useMessageList>> = props => {
-  return (
-    <>
-      {props.transitions.map(({ key, item, props: style }) => {
-        const Message = item.msgElement(() => {
-          props.dismissMap.has(item) && props.dismissMap.get(item)!();
-        });
-
-        return (
-          <animated.div
-            key={key}
-            style={style}
-            className={css({
-              boxSizing: 'border-box',
-              position: 'relative',
-              overflow: 'hidden'
-            })}
-          >
-            <div ref={ref => ref && props.refMap.set(item, ref)}>{Message}</div>
-          </animated.div>
-        );
-      })}
-    </>
-  );
 };
 
 const MessageListContainer: React.FC = containerProps => (
@@ -113,12 +103,6 @@ const MessageListContainer: React.FC = containerProps => (
 );
 
 export const MessageHub: React.FC<IMessageHubProps> = props => {
-  // FIXME: add when moved out of incubating
-  // const Override = useOverride(messageHubOverrideName);
-  // if (Override) {
-  //   return <Override {...props}/>;
-  // }
-
   const topLeftMessageList = useMessageList();
   const topCenterMessageList = useMessageList();
   const topRightMessageList = useMessageList();
@@ -183,7 +167,7 @@ export const MessageHub: React.FC<IMessageHubProps> = props => {
         })}
       >
         <MessageListContainer>
-          <MessageList {...getAppropriateMessageList(EMessageLocation.TopLeft)} />
+          { getAppropriateMessageList(EMessageLocation.TopLeft).messageList }
         </MessageListContainer>
       </div>
       <div
@@ -193,7 +177,7 @@ export const MessageHub: React.FC<IMessageHubProps> = props => {
         })}
       >
         <MessageListContainer>
-          <MessageList {...getAppropriateMessageList(EMessageLocation.TopCenter)} />
+          {getAppropriateMessageList(EMessageLocation.TopCenter).messageList}
         </MessageListContainer>
       </div>
       <div
@@ -203,7 +187,7 @@ export const MessageHub: React.FC<IMessageHubProps> = props => {
         })}
       >
         <MessageListContainer>
-          <MessageList {...getAppropriateMessageList(EMessageLocation.TopRight)} />
+          {getAppropriateMessageList(EMessageLocation.TopRight).messageList}
         </MessageListContainer>
       </div>
       <div
@@ -213,7 +197,7 @@ export const MessageHub: React.FC<IMessageHubProps> = props => {
         })}
       >
         <MessageListContainer>
-          <MessageList {...getAppropriateMessageList(EMessageLocation.BottomLeft)} />
+          {getAppropriateMessageList(EMessageLocation.BottomLeft).messageList}
         </MessageListContainer>
       </div>
       <div
@@ -223,7 +207,7 @@ export const MessageHub: React.FC<IMessageHubProps> = props => {
         })}
       >
         <MessageListContainer>
-          <MessageList {...getAppropriateMessageList(EMessageLocation.BottomCenter)} />
+          {getAppropriateMessageList(EMessageLocation.BottomCenter).messageList}
         </MessageListContainer>
       </div>
       <div
@@ -233,7 +217,7 @@ export const MessageHub: React.FC<IMessageHubProps> = props => {
         })}
       >
         <MessageListContainer>
-          <MessageList {...getAppropriateMessageList(EMessageLocation.BottomRight)} />
+          {getAppropriateMessageList(EMessageLocation.BottomRight).messageList}
         </MessageListContainer>
       </div>
     </div>
@@ -288,11 +272,10 @@ export type SnackbarProps = ISnackbarViewModel & ISnackbarActions;
 export const snackbarOverrideName = 'snackbar';
 
 export const Snackbar: React.FC<SnackbarProps> = props => {
-  // FIXME: add when moved out of incubating
-  // const Override = useOverride(snackbarOverrideName);
-  // if (Override) {
-  //   return <Override {...props} />;
-  // }
+  const Override = useOverride(snackbarOverrideName);
+  if (Override) {
+    return <Override {...props} />;
+  }
 
   return (
     <Card

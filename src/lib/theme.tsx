@@ -25,6 +25,7 @@ import { alertOverrideName, AlertProps } from '../components/molecules/Alert';
 import { menuOverrideName, MenuProps } from '../components/molecules/Menu';
 import { modalOverrideName, ModalProps } from '../components/molecules/Modal';
 import Global from './global';
+import { snackbarOverrideName, SnackbarProps } from '../components/molecules/Snackbar';
 
 interface ThemeCodePalette {
   window: {
@@ -127,6 +128,7 @@ interface ThemeOverrides {
   [codeOverrideName]?: React.ComponentType<CodeProps>;
   [modalContainerOverrideName]?: React.ComponentType<ModalContainerProps>;
   [popoverOverrideName]?: React.ComponentType<PopoverProps>;
+  [snackbarOverrideName]?: React.ComponentType<SnackbarProps>;
   [tagOverrideName]?: React.ComponentType<TagProps>;
   [tooltipOverrideName]?: React.ComponentType<TooltipProps>;
   [headingOverrideName]?: React.ComponentType<HeadingProps>;
