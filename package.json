@@ -50,7 +50,6 @@
     "prettier": "^1.15.3",
     "raw-loader": "^0.5.1",
     "react": "^16.10.2",
-    "react-apollo": "^2.1.11",
     "react-dom": "^16.10.2",
     "rimraf": "^2.6.2",
     "ts-jest": "^23.1.4",
@@ -89,7 +88,6 @@
   },
   "peerDependencies": {
     "react": "^16.8.1",
-    "react-apollo": "^2.1.11",
     "react-dom": "^16.8.1"
   },
   "resolutions": {
