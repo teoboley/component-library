@@ -3,8 +3,8 @@ import { storiesOf } from '@storybook/react';
 import ThreeDRotationIcon from '@material-ui/icons/ThreeDRotation';
 import FormatBold from '@material-ui/icons/FormatBold';
 import FormatAlignLeft from '@material-ui/icons/FormatAlignLeft';
-import { blue, grey, red } from '@material-ui/core/colors';
 
+import { blue, red, grey } from '../../../colors';
 import Button from '../../atoms/Button';
 import Tooltip from '.';
 

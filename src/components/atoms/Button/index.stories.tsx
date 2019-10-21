@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { storiesOf } from '@storybook/react';
-import { blue, green, red } from '@material-ui/core/colors';
 
+import { blue, green, red } from '../../../colors';
 import { Text } from '../Typography/index';
 import { ETextType } from '../Typography/Text';
 import Button, { EButtonSize, EButtonType } from '.';
