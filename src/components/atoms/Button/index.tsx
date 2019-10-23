@@ -45,7 +45,7 @@ export const ButtonBase: React.FC<ButtonBaseProps> = props => {
     return <Override {...props} />;
   }
 
-  const { onClick, children, style, className, ...otherProps } = props;
+  const { onClick, onContextMenu, children, style, className, ...otherProps } = props;
   const type = props.type || EButtonType.Highlight;
   const size = props.size || EButtonSize.Medium;
 
@@ -185,7 +185,8 @@ export const ButtonBase: React.FC<ButtonBaseProps> = props => {
 
   return (
     <button
-      onClick={onClick}
+      onClick={onClick as any}
+      onContextMenu={onContextMenu as any}
       style={style}
       className={cx(baseStyles, styles, className)}
       {...otherProps}
