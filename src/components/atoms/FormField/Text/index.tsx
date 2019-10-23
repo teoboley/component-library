@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { css, cx } from 'emotion';
 import { withProps } from 'recompose';
-import { ChangeEvent, KeyboardEventHandler, useState } from 'react';
+
 import { useTheme } from '../../../../lib/theme';
 import Text, { ETextType } from '../../Typography/Text';
 import { inactiveColor as sharedInactiveColor } from '../shared';
@@ -30,9 +30,9 @@ interface IFormFieldViewModel<V> {
 }
 
 interface IFormFieldActions<V> {
-  onChange?: (value: V | null, e: ChangeEvent<HTMLInputElement>) => void;
-  onKeyDown?: KeyboardEventHandler<HTMLInputElement>;
-  onKeyPress?: KeyboardEventHandler<HTMLInputElement>;
+  onChange?: (value: V | null, e: React.ChangeEvent<HTMLInputElement>) => void;
+  onKeyDown?: React.KeyboardEventHandler<HTMLInputElement>;
+  onKeyPress?: React.KeyboardEventHandler<HTMLInputElement>;
   onBlur?: () => void;
   onFocus?: () => void;
 }
@@ -41,7 +41,7 @@ export type FormFieldProps<V> = IFormFieldViewModel<V> & IFormFieldActions<V>;
 
 export const FormField: React.FC<FormFieldProps<string | undefined>> = props => {
   const theme = useTheme();
-  const [focused, setFocused] = useState(false);
+  const [focused, setFocused] = React.useState(false);
 
   const activeColor = props.activeColor || theme.palette.primary;
   const inactiveColor = props.inactiveColor || sharedInactiveColor;

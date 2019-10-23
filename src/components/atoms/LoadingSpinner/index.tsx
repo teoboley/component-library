@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { css, cx } from 'emotion';
 import { BounceLoader } from 'react-spinners';
+
 import { useTheme } from '../../../lib/theme';
 
 interface ILoadingSpinnerViewModel {

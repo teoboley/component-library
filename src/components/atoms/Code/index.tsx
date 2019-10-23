@@ -1,10 +1,8 @@
 import * as React from 'react';
-import { useState } from 'react';
 import { Controlled as CodeMirror } from 'react-codemirror2';
 import { css, cx } from 'emotion';
 
-import { Theme, useOverride, useTheme } from '../../../lib/theme';
-
+import { ITheme, useOverride, useTheme } from '../../../lib/theme';
 import codeMirrorBaseStyles from './codemirror.base';
 import predefinedThemes from './themes/index';
 
@@ -44,7 +42,7 @@ const Code: React.FC<CodeProps> = props => {
     return <Override {...props} />;
   }
 
-  const [state, setState] = useState<ICodeState>({ value: props.value });
+  const [state, setState] = React.useState<ICodeState>({ value: props.value });
 
   const theme = useTheme();
   const themeTypography = props.inline ? theme.typography.codeLine : theme.typography.codeBlock;
@@ -117,7 +115,7 @@ function getPredefinedTheme(themeName: keyof typeof predefinedThemes) {
   return predefinedThemes[themeName];
 }
 
-function getCustomTheme(codePalette: Theme['palette']['code']): string {
+function getCustomTheme(codePalette: ITheme['palette']['code']): string {
   // language=CSS
   return css`
     /**

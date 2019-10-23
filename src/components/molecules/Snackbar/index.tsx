@@ -83,9 +83,11 @@ export const useMessageList = () => {
             overflow: 'hidden'
           })}
         >
-          <div ref={ref => ref && refMap.set(item, ref)}>{item.msgElement(() => {
-            dismissMap.has(item) && dismissMap.get(item)!();
-          })}</div>
+          <div ref={ref => ref && refMap.set(item, ref)}>
+            {item.msgElement(() => {
+              dismissMap.has(item) && dismissMap.get(item)!();
+            })}
+          </div>
         </animated.div>
       );
     })
@@ -93,11 +95,13 @@ export const useMessageList = () => {
 };
 
 const MessageListContainer: React.FC = containerProps => (
-  <div className={css({
-    maxHeight: '75%',
-    overflowY: 'scroll',
-    pointerEvents: 'auto'
-  })}>
+  <div
+    className={css({
+      maxHeight: '75%',
+      overflowY: 'scroll',
+      pointerEvents: 'auto'
+    })}
+  >
     {containerProps.children}
   </div>
 );
@@ -167,7 +171,7 @@ export const MessageHub: React.FC<IMessageHubProps> = props => {
         })}
       >
         <MessageListContainer>
-          { getAppropriateMessageList(EMessageLocation.TopLeft).messageList }
+          {getAppropriateMessageList(EMessageLocation.TopLeft).messageList}
         </MessageListContainer>
       </div>
       <div

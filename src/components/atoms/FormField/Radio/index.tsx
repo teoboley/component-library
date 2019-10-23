@@ -1,9 +1,7 @@
 import * as React from 'react';
 import { css, cx } from 'emotion';
 
-import CheckIcon from '@material-ui/icons/Check';
 import { useTheme } from '../../../../lib/theme';
-
 import Text, { ETextType } from '../../Typography/Text';
 import { inactiveColor } from '../shared';
 import { ButtonBase, EButtonType } from '../../Button';

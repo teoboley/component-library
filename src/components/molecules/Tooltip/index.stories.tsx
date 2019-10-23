@@ -39,7 +39,10 @@ storiesOf('Molecules/Tooltip', module)
         <Tooltip
           content={
             <div>
-              <p>Some really long tooltip. This can be multiple sentences, and contain multiple types of content.</p>
+              <p>
+                Some really long tooltip. This can be multiple sentences, and contain multiple types
+                of content.
+              </p>
               <Button>Do Something</Button>
             </div>
           }
@@ -51,13 +54,18 @@ storiesOf('Molecules/Tooltip', module)
           <Tooltip
             content={
               <div>
-                <p>Some really long tooltip. This can be multiple sentences, and contain multiple types of content.</p>
+                <p>
+                  Some really long tooltip. This can be multiple sentences, and contain multiple
+                  types of content.
+                </p>
                 <Button>Do Something</Button>
               </div>
             }
             withArrow
           >
-            <div><p>Within a nested div > p tag.</p></div>
+            <div>
+              <p>Within a nested div > p tag.</p>
+            </div>
           </Tooltip>
         </div>
       </div>

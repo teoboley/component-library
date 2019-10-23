@@ -13,17 +13,17 @@ interface ISandboxActions {
 
 type SandboxProps = ISandboxViewModel & ISandboxActions;
 
-interface SandboxState {
+interface ISandboxState {
   height: number;
 }
 
-class Sandbox extends React.Component<SandboxProps, SandboxState> {
-  private node: HTMLIFrameElement | null;
-  private iframeRoot: HTMLElement | null;
-
-  readonly state: SandboxState = {
+class Sandbox extends React.Component<SandboxProps, ISandboxState> {
+  public readonly state: ISandboxState = {
     height: 0
   };
+
+  private node: HTMLIFrameElement | null;
+  private iframeRoot: HTMLElement | null;
 
   constructor(props: SandboxProps) {
     super(props);
@@ -32,19 +32,19 @@ class Sandbox extends React.Component<SandboxProps, SandboxState> {
     this.handleResize = this.handleResize.bind(this);
   }
 
-  componentDidMount() {
+  public componentDidMount() {
     if (this.node) {
       this.node.addEventListener('load', this.handleLoad);
     }
   }
 
-  componentDidUpdate() {
+  public componentDidUpdate() {
     if (this.props.heightFromContent) {
       this.handleResize();
     }
   }
 
-  componentWillUnmount() {
+  public componentWillUnmount() {
     if (this.node) {
       if (!this.props.heightFromContent && this.node.parentElement) {
         window.removeEventListener('resize', this.handleResize);
@@ -56,7 +56,7 @@ class Sandbox extends React.Component<SandboxProps, SandboxState> {
     }
   }
 
-  handleLoad() {
+  public handleLoad() {
     if (this.node) {
       this.iframeRoot = this.node.contentDocument ? this.node.contentDocument.body : null;
 
@@ -75,19 +75,23 @@ class Sandbox extends React.Component<SandboxProps, SandboxState> {
     }
   }
 
-  handleResize() {
+  public handleResize() {
     if (this.node) {
       if (!this.props.heightFromContent && this.node.parentElement) {
         const parentHeight = this.node.parentElement.offsetHeight;
-        if (parentHeight !== this.state.height) this.setState({ height: parentHeight });
+        if (parentHeight !== this.state.height) {
+          this.setState({ height: parentHeight });
+        }
       } else if (this.node.contentWindow && this.node.contentWindow.document.documentElement) {
         const contentHeight = this.node.contentWindow.document.documentElement.offsetHeight;
-        if (contentHeight !== this.state.height) this.setState({ height: contentHeight });
+        if (contentHeight !== this.state.height) {
+          this.setState({ height: contentHeight });
+        }
       }
     }
   }
 
-  render() {
+  public render() {
     return (
       <iframe
         srcDoc={`<!DOCTYPE html>`}

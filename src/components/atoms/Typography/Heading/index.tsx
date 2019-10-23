@@ -1,6 +1,6 @@
 import * as React from 'react';
-import { CSSProperties } from 'react';
 import { css, cx } from 'emotion';
+
 import { useOverride, useTheme } from '../../../../lib/theme';
 
 export enum EHeadingType {
@@ -16,7 +16,7 @@ export enum EHeadingType {
 interface IHeadingViewModel {
   type: EHeadingType;
 
-  style?: CSSProperties;
+  style?: React.CSSProperties;
   className?: string;
 }
 
