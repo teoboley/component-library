@@ -3,11 +3,13 @@ import * as ReactDOM from 'react-dom';
 import { Popper } from 'react-popper';
 import * as PopperJS from 'popper.js';
 import { css, cx } from 'emotion';
+
 import { ToggleAnimation } from '../../../lib/animation';
 import { useOverride } from '../../../lib/theme';
 import ClickAwayListener from '../ClickAwayListener';
 
 declare global {
+  // tslint:disable-next-line:interface-name
   interface Window {
     tooltipElement: HTMLElement | null;
   }
@@ -20,12 +22,12 @@ if (!window.tooltipElement) {
   document.body.appendChild(window.tooltipElement);
 }
 
-export interface TooltipPlacement {
+export interface ITooltipPlacement {
   horizontal?: 'left' | 'center' | 'right';
   vertical?: 'top' | 'center' | 'bottom';
 }
 
-export interface AnchorPosition {
+export interface IAnchorPosition {
   top: number;
   left: number;
 }
@@ -35,8 +37,8 @@ export type AnchorReference = 'anchorEl' | 'anchorPosition' | 'none';
 interface IPopoverViewModel {
   anchorReference?: AnchorReference;
   anchorEl: null | HTMLElement;
-  placement?: TooltipPlacement;
-  anchorPosition?: AnchorPosition;
+  placement?: ITooltipPlacement;
+  anchorPosition?: IAnchorPosition;
 
   arrowColor?: string;
   placementEnforced?: boolean;
@@ -61,7 +63,7 @@ const Popover: React.FC<PopoverProps> = props => {
     return <Override {...props} />;
   }
 
-  let referenceElement: PopperJS.ReferenceObject | undefined = undefined;
+  let referenceElement: PopperJS.ReferenceObject | undefined;
 
   switch (props.anchorReference) {
     case 'anchorEl':
@@ -139,7 +141,7 @@ const Popover: React.FC<PopoverProps> = props => {
                   onClickAway={
                     isOpen
                       ? e => {
-                          console.log('CLICK AWAY LISTENER, IS OPEN: ' + isOpen);
+                          // console.log('CLICK AWAY LISTENER, IS OPEN: ' + isOpen);
                           props.onClose && props.onClose();
                           /*e.preventDefault();
                 e.stopPropagation();*/
@@ -239,7 +241,7 @@ const getArrowStyle = (arrowColor: string) => {
   `;
 };
 
-const placementConverter = (placement?: TooltipPlacement): PopperJS.Placement => {
+const placementConverter = (placement?: ITooltipPlacement): PopperJS.Placement => {
   let prefix = 'auto';
   let suffix = null;
 

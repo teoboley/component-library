@@ -1,6 +1,7 @@
 import * as React from 'react';
 import * as Modal from 'react-modal';
 import { css } from 'emotion';
+
 import { useOverride } from '../../../lib/theme';
 
 interface IModalContainerViewModel {

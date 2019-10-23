@@ -1,13 +1,14 @@
 import * as React from 'react';
 import { css } from 'emotion';
-import Popover, { TooltipPlacement, AnchorPosition, AnchorReference } from '../../atoms/Popover';
+
+import Popover, { ITooltipPlacement, IAnchorPosition, AnchorReference } from '../../atoms/Popover';
 import Card from '../../atoms/Card';
 import { useOverride } from '../../../lib/theme';
 
 interface IMenuViewModel {
   anchorEl: null | HTMLElement;
-  placement?: TooltipPlacement;
-  anchorPosition?: AnchorPosition;
+  placement?: ITooltipPlacement;
+  anchorPosition?: IAnchorPosition;
   anchorReference?: AnchorReference;
 
   style?: React.CSSProperties;

@@ -3,7 +3,6 @@ import { css, cx } from 'emotion';
 import CloseIcon from '@material-ui/icons/Close';
 
 import { getBWContrastingColor, useOverride, useTheme } from '../../../lib/theme';
-
 import { DisplayToggleAnimation } from '../../../lib/animation';
 import Button, { EButtonType } from '../../atoms/Button';
 

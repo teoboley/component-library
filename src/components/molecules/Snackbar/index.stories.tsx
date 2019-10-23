@@ -27,13 +27,13 @@ export const Test: React.FC<{}> = () => {
         <Button type={EButtonType.Outline}>Bye</Button>
         <Button type={EButtonType.Contained}>Aight</Button>
       </Snackbar>
-      <br/>
+      <br />
       <div>
         <Button onClick={() => showMessage(onClose => <DefaultSnackbar onClose={onClose} />)}>
           Add Snackbar (Default)
         </Button>
       </div>
-      <br/>
+      <br />
       <div>
         <Button
           onClick={() =>

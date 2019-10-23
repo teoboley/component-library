@@ -14,20 +14,16 @@ interface IContextMenuControllerActiveState {
 }
 
 interface IContextMenuControllerViewModel {
-  menuComponent: (
-    menuController: {
-      activeState: IContextMenuControllerActiveState | null;
-      isOpen: boolean;
-      close: () => void;
-    }
-  ) => JSX.Element;
-  children: (
-    contextController: {
-      open: (element: HTMLElement, mousePosition?: { x: number; y: number }) => void;
-      isOpen: boolean;
-      close: () => void;
-    }
-  ) => JSX.Element;
+  menuComponent: (menuController: {
+    activeState: IContextMenuControllerActiveState | null;
+    isOpen: boolean;
+    close: () => void;
+  }) => JSX.Element;
+  children: (contextController: {
+    open: (element: HTMLElement, mousePosition?: { x: number; y: number }) => void;
+    isOpen: boolean;
+    close: () => void;
+  }) => JSX.Element;
 }
 
 type ContextMenuControllerProps = IContextMenuControllerViewModel;
@@ -82,20 +78,20 @@ const ContextMenu: React.FC<ContextMenuProps> = props => {
         <Menu
           anchorEl={activeState && activeState.anchorEl}
           onClose={() => {
-            console.log('onClose');
-            console.log(['isOpen', isOpen]);
+            // console.log('onClose');
+            // console.log(['isOpen', isOpen]);
             close();
           }}
           anchorReference={'anchorEl'}
           placement={{ vertical: 'center', horizontal: 'left' }}
-          {...activeState &&
+          {...(activeState &&
             activeState.mousePosition && {
               anchorPosition: {
                 top: activeState.mousePosition.y,
                 left: activeState.mousePosition.x
               },
               anchorReference: 'anchorPosition'
-            }}
+            })}
           style={props.style}
           className={props.className}
         >

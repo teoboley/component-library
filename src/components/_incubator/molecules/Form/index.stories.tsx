@@ -10,34 +10,34 @@ storiesOf('_Incubating/Molecules/Form', module).add('Incubator/Default', () => {
     <Card>
       <Form
         schema={{
-          title: 'A registration form',
           description: 'A simple form example.',
+          title: 'A registration form',
           type: 'object',
           required: ['firstName', 'lastName'],
           properties: {
             firstName: {
-              type: 'string',
               title: 'First name',
+              type: 'string',
               default: 'Chuck'
             },
             lastName: {
-              type: 'string',
-              title: 'Last name'
+              title: 'Last name',
+              type: 'string'
             },
             isCool: {
-              type: 'boolean',
-              title: 'Is a cool person'
+              title: 'Is a cool person',
+              type: 'boolean'
             },
             isFresh: {
-              type: 'boolean',
-              title: 'Is a fresh person'
+              title: 'Is a fresh person',
+              type: 'boolean'
             },
             multipleChoicesList: {
-              type: 'array',
               title: 'A multiple choices list',
+              type: 'array',
               items: {
-                type: 'string',
-                enum: ['foo', 'bar', 'fuzz', 'qux']
+                enum: ['foo', 'bar', 'fuzz', 'qux'],
+                type: 'string'
               },
               uniqueItems: true
             },

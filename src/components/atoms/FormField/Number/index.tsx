@@ -1,4 +1,5 @@
 import * as React from 'react';
+
 import { specifyFormType } from '../Text';
 
 export const FormFieldNumber = specifyFormType<number>('number', {

@@ -25,7 +25,7 @@ type BaseSchemaDataType<T extends JSONSchema6, A> =
       ? {
           [P in keyof T['properties']]: P extends (NonNullable<T['required']>[number])
             ? NonNullable<SchemaDataType<T['properties'][P]>>
-            : SchemaDataType<T['properties'][P]>
+            : SchemaDataType<T['properties'][P]>;
         }
       : T['type'] extends 'array'
       ? Array<NonNullable<A>>

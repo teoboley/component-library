@@ -1,13 +1,14 @@
 import * as React from 'react';
 import { css, cx } from 'emotion';
 
-import Popover, { TooltipPlacement } from '../../atoms/Popover';
+import Popover, { ITooltipPlacement } from '../../atoms/Popover';
 import { getBWContrastingColor, useOverride, useTheme } from '../../../lib/theme';
 import { ToggleAnimation } from '../../../lib/animation';
 
-type ChildFunction = ((
-  params: { open: (anchorEl?: any) => void; close: () => void }
-) => React.ReactElement<any>);
+type ChildFunction = (params: {
+  open: (anchorEl?: any) => void;
+  close: () => void;
+}) => React.ReactElement<any>;
 
 export interface ITooltipViewModel {
   children: React.ReactElement<any> | ChildFunction;
@@ -18,7 +19,7 @@ export interface ITooltipViewModel {
   backgroundColor?: string;
   maxWidth?: number;
 
-  placement?: TooltipPlacement;
+  placement?: ITooltipPlacement;
   placementEnforced?: boolean;
 
   disableHoverListener?: boolean;
@@ -71,7 +72,12 @@ const Tooltip: React.FC<TooltipProps> = props => {
   const childrenIsFunction = {}.toString.call(props.children) === '[object Function]';
 
   return (
-    <div className={css({ display: 'inline-block' })} onMouseLeave={() => !childrenIsFunction && anchorEl && !props.disableHoverListener && handleTooltipClose()}>
+    <div
+      className={css({ display: 'inline-block' })}
+      onMouseLeave={() =>
+        !childrenIsFunction && anchorEl && !props.disableHoverListener && handleTooltipClose()
+      }
+    >
       <Popover
         anchorEl={anchorEl}
         arrowColor={props.withArrow ? backgroundColor : undefined}
