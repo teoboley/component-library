@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { css, cx } from 'emotion';
 
-import { useOverride, useTheme } from '../../../lib/theme';
+import { getPaletteColorOrDefault, useOverride, useTheme } from '../../../lib/theme';
 
 interface ICardViewModel {
   color?: string;
@@ -29,7 +29,8 @@ const Card: React.FC<CardProps> = props => {
   const theme = useTheme();
   const styles = css({
     backgroundColor:
-      (props.color && theme.palette.getColor(props.color)) || theme.palette.cardBackground
+      (props.color && getPaletteColorOrDefault(props.color, theme.palette)) ||
+      theme.palette.cardBackground
   });
 
   return (

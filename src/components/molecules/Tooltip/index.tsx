@@ -2,7 +2,12 @@ import * as React from 'react';
 import { css, cx } from 'emotion';
 
 import Popover, { ITooltipPlacement } from '../../atoms/Popover';
-import { getBWContrastingColor, useOverride, useTheme } from '../../../lib/theme';
+import {
+  getBWContrastingColor,
+  getPaletteColorOrDefault,
+  useOverride,
+  useTheme
+} from '../../../lib/theme';
 import { ToggleAnimation } from '../../../lib/animation';
 
 type ChildFunction = (params: {
@@ -52,12 +57,13 @@ const Tooltip: React.FC<TooltipProps> = props => {
   };
 
   const color =
-    (props.color && theme.palette.getColor(props.color)) ||
+    (props.color && getPaletteColorOrDefault(props.color, theme.palette)) ||
     (props.backgroundColor
-      ? getBWContrastingColor(theme.palette.getColor(props.backgroundColor))
+      ? getBWContrastingColor(getPaletteColorOrDefault(props.backgroundColor, theme.palette))
       : 'black');
   const backgroundColor =
-    (props.backgroundColor && theme.palette.getColor(props.backgroundColor)) || 'white';
+    (props.backgroundColor && getPaletteColorOrDefault(props.backgroundColor, theme.palette)) ||
+    'white';
 
   const tooltipStyle = css({
     ...theme.typography.tooltip,

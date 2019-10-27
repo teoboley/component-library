@@ -2,7 +2,12 @@ import * as React from 'react';
 import { css, cx } from 'emotion';
 import * as Color from 'color';
 
-import { getBWContrastingColor, useOverride, useTheme } from '../../../lib/theme';
+import {
+  getBWContrastingColor,
+  getPaletteColorOrDefault,
+  useOverride,
+  useTheme
+} from '../../../lib/theme';
 
 export enum EButtonType {
   Overlay = 'overlay',
@@ -72,7 +77,8 @@ export const ButtonBase: React.FC<ButtonBaseProps> = props => {
 
   const color = props.disabled
     ? theme.palette.disabled
-    : (props.color && theme.palette.getColor(props.color)) || theme.palette.primary;
+    : (props.color && getPaletteColorOrDefault(props.color, theme.palette)) ||
+      theme.palette.primary;
 
   const secondaryColor = props.disabled
     ? theme.palette.disabled

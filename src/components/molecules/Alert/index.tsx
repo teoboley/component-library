@@ -2,7 +2,12 @@ import * as React from 'react';
 import { css, cx } from 'emotion';
 import CloseIcon from '@material-ui/icons/Close';
 
-import { getBWContrastingColor, useOverride, useTheme } from '../../../lib/theme';
+import {
+  getBWContrastingColor,
+  getPaletteColorOrDefault,
+  useOverride,
+  useTheme
+} from '../../../lib/theme';
 import { DisplayToggleAnimation } from '../../../lib/animation';
 import Button, { EButtonType } from '../../atoms/Button';
 
@@ -32,7 +37,9 @@ const Alert: React.FC<AlertProps> = props => {
   }
 
   const theme = useTheme();
-  const backgroundColor = props.color ? theme.palette.getColor(props.color) : theme.palette.danger;
+  const backgroundColor = props.color
+    ? getPaletteColorOrDefault(props.color, theme.palette)
+    : theme.palette.danger;
 
   return (
     <DisplayToggleAnimation toggle={props.open}>

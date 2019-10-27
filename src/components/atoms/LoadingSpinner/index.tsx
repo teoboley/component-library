@@ -2,7 +2,7 @@ import * as React from 'react';
 import { css, cx } from 'emotion';
 import { BounceLoader } from 'react-spinners';
 
-import { useTheme } from '../../../lib/theme';
+import { getPaletteColorOrDefault, useTheme } from '../../../lib/theme';
 
 interface ILoadingSpinnerViewModel {
   sizeUnit?: string;
@@ -31,7 +31,9 @@ const LoadingSpinner: React.FC<LoadingSpinnerProps> = props => {
       <BounceLoader
         sizeUnit={props.sizeUnit || 'px'}
         size={props.size || 40}
-        color={props.color ? theme.palette.getColor(props.color) : theme.palette.primary}
+        color={
+          props.color ? getPaletteColorOrDefault(props.color, theme.palette) : theme.palette.primary
+        }
         loading={true}
       />
     </div>
